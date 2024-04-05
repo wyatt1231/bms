@@ -354,7 +354,7 @@ export const DataTableCoAdminView: FC<DataTableCoAdminViewInterface> = memo(
                                         handleSetTableSearch(filter_payload);
                                       }}
                                     >
-                                      Clear Filters
+                                      Reset Filters
                                     </Button>
                                   </Grid>
                                   <Grid item>

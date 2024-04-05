@@ -49,6 +49,20 @@ const initialSearch = {
 
 const initialTableSort: Array<ITableInitialSort> = [
   {
+    label: "Barangay Offical Rank Asc",
+    value: {
+      column: "rank",
+      direction: "asc",
+    },
+  },
+  {
+    label: "Barangay Offical Rank Desc",
+    value: {
+      column: "rank",
+      direction: "desc",
+    },
+  },
+  {
     label: "Newest first",
     value: {
       column: "encoded_at",
@@ -360,7 +374,7 @@ const DataTableBrgyOfficialAdminView: FC<DataTableBrgyOfficialAdminInterface> =
                                         handleSetTableSearch(filter_payload);
                                       }}
                                     >
-                                      Clear Filters
+                                      Reset Filters
                                     </Button>
                                   </Grid>
                                   <Grid item>

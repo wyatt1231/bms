@@ -237,6 +237,9 @@ const getDataTableResident = (payload) => __awaiter(void 0, void 0, void 0, func
     const con = yield (0, DatabaseConfig_1.DatabaseConnection)();
     try {
         yield con.BeginTransaction();
+        console.log(`payload`, payload);
+        // AND age >= ${sqlFilterNumber(payload.filters.min_age, "age")}
+        // AND age <= ${sqlFilterNumber(payload.filters.max_age, "age")}
         const data = yield con.QueryPagination(`
       SELECT * FROM (SELECT r.*,CONCAT(r.first_name,' ',r.last_name) fullname,IF((SELECT COUNT(*) FROM family WHERE ulo_pamilya=r.resident_pk) > 0 , 'oo','dili' ) AS ulo_pamilya,s.sts_desc,s.sts_color,s.sts_backgroundColor,
       YEAR(NOW()) - YEAR(r.birth_date) - (DATE_FORMAT( NOW(), '%m%d') < DATE_FORMAT(r.birth_date, '%m%d')) AS age
@@ -250,7 +253,7 @@ const getDataTableResident = (payload) => __awaiter(void 0, void 0, void 0, func
       AND sts_pk IN @sts_pk
       AND purok IN @purok
       AND age >= ${(0, useDateParser_1.sqlFilterNumber)(payload.filters.min_age, "age")}
-      AND age >= ${(0, useDateParser_1.sqlFilterNumber)(payload.filters.max_age, "age")}
+      AND age <= ${(0, useDateParser_1.sqlFilterNumber)(payload.filters.max_age, "age")}
       AND encoded_at >= ${(0, useDateParser_1.sqlFilterDate)(payload.filters.encoded_from, "encoded_at")}
       AND encoded_at <= ${(0, useDateParser_1.sqlFilterDate)(payload.filters.encoded_to, "encoded_at")}
       `, payload);

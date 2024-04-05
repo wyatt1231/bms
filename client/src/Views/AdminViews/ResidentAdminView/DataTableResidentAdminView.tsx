@@ -535,7 +535,7 @@ export const DataTableResidentAdminView: FC<DataTableResidentAdminInterface> =
                                               );
                                             }}
                                           >
-                                            Clear Filters
+                                            Reset Filters
                                           </Button>
                                         </Grid>
                                         <Grid item>

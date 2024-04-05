@@ -596,6 +596,7 @@ export const EditResident: FC<IEditResident> = memo(
                 color="secondary"
                 disableElevation
                 onClick={() => {
+                  handleClose();
                   // history.push(`/admin/resident`);
                 }}
               >

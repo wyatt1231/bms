@@ -750,7 +750,7 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
                                               );
                                             }}
                                           >
-                                            Clear Filters
+                                            Reset Filters
                                           </Button>
                                         </Grid>
                                         <Grid item>

@@ -281,6 +281,11 @@ const getDataTableResident = async (
   try {
     await con.BeginTransaction();
 
+    console.log(`payload`, payload);
+
+    // AND age >= ${sqlFilterNumber(payload.filters.min_age, "age")}
+    // AND age <= ${sqlFilterNumber(payload.filters.max_age, "age")}
+
     const data: Array<ResidentModel> = await con.QueryPagination(
       `
       SELECT * FROM (SELECT r.*,CONCAT(r.first_name,' ',r.last_name) fullname,IF((SELECT COUNT(*) FROM family WHERE ulo_pamilya=r.resident_pk) > 0 , 'oo','dili' ) AS ulo_pamilya,s.sts_desc,s.sts_color,s.sts_backgroundColor,
@@ -295,7 +300,7 @@ const getDataTableResident = async (
       AND sts_pk IN @sts_pk
       AND purok IN @purok
       AND age >= ${sqlFilterNumber(payload.filters.min_age, "age")}
-      AND age >= ${sqlFilterNumber(payload.filters.max_age, "age")}
+      AND age <= ${sqlFilterNumber(payload.filters.max_age, "age")}
       AND encoded_at >= ${sqlFilterDate(
         payload.filters.encoded_from,
         "encoded_at"

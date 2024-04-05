@@ -33,16 +33,22 @@ export const sqlFilterDate = (
   return column;
 };
 
-export const sqlFilterNumber = (num: number, column: string): string | null => {
+export const sqlFilterNumber = (
+  num: number,
+  column: string
+): number | string => {
   try {
     if (!!num) {
       let parse_num: null | number = null;
       if (typeof num === "string") {
         parse_num = parseInt(num);
+      } else {
+        parse_num = num;
       }
 
       if (!isNaN(parse_num)) {
-        return `'${parse_num}'`;
+        // return `'${parse_num}'`;
+        return parse_num;
       }
     }
     return column;

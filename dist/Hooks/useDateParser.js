@@ -38,8 +38,12 @@ const sqlFilterNumber = (num, column) => {
             if (typeof num === "string") {
                 parse_num = parseInt(num);
             }
+            else {
+                parse_num = num;
+            }
             if (!isNaN(parse_num)) {
-                return `'${parse_num}'`;
+                // return `'${parse_num}'`;
+                return parse_num;
             }
         }
         return column;

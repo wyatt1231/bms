@@ -5,60 +5,39 @@ import { PaginationModel } from "../Models/PaginationModel";
 export let connection_string: mysql.PoolOptions | null = null;
 
 if (process.env.NODE_ENV === "production") {
-  // connection_string = {
-  //   host: "156.67.222.35",
-  //   user: "u583403240_bms",
-  //   password: "BMS@capstone2",
-  //   database: "u583403240_bms",
-  //   port: 3306,
-  //   connectionLimit: 10,
-  //   waitForConnections: true,
-  //   queueLimit: 10,
-  // };
+  //remove in deploy
   connection_string = {
-    host: "127.0.0.1",
-    user: "root",
-    password: "rootsa",
+    host: "brgy-37d-ppvc.mysql.database.azure.com",
+    user: "capstone_admin@brgy-37d-ppvc",
+    password: "C@PsT0n3_!@#",
     database: "bms",
-    port: 3309,
+    port: 3306,
     connectionLimit: 10,
     waitForConnections: true,
     queueLimit: 10,
   };
 } else {
+  // connection_string = {
+  //   host: "127.0.0.1",
+  //   user: "root",
+  //   password: "rootsa",
+  //   database: "bms",
+  //   port: 3309,
+  //   connectionLimit: 10,
+  //   waitForConnections: true,
+  //   queueLimit: 10,
+  // };
+
   connection_string = {
-    host: "127.0.0.1",
-    user: "root",
-    password: "rootsa",
+    host: "brgy-37d-ppvc.mysql.database.azure.com",
+    user: "capstone_admin@brgy-37d-ppvc",
+    password: "C@PsT0n3_!@#",
     database: "bms",
-    port: 3309,
+    port: 3306,
     connectionLimit: 10,
     waitForConnections: true,
     queueLimit: 10,
   };
-
-  //remove in deploy
-  // connection_string = {
-  //   host: "brgy-37d-ppvc.mysql.database.azure.com",
-  //   user: "capstone_admin@brgy-37d-ppvc",
-  //   password: "C@PsT0n3_!@#",
-  //   database: "bms",
-  //   port: 3306,
-  //   connectionLimit: 10,
-  //   waitForConnections: true,
-  //   queueLimit: 10,
-  // };
-
-  // connection_string = {
-  //   host: "156.67.222.35",
-  //   user: "u583403240_bms",
-  //   password: "BMS@capstone2",
-  //   database: "u583403240_bms",
-  //   port: 3306,
-  //   connectionLimit: 10,
-  //   waitForConnections: true,
-  //   queueLimit: 10,
-  // };
 }
 
 const DatabaseConfig: mysql.Pool = mysql.createPool(connection_string);
