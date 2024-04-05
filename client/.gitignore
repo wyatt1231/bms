@@ -1,1 +1,7 @@
-/node_modules
+node_modules
+/client/node_modules
+/client/build
+/src/Storage
+/Storage/Files
+storage
+package-lock.json
