@@ -348,6 +348,27 @@ export const DataTableCoAdminView: FC<DataTableCoAdminViewInterface> = memo(
                                       type="button"
                                       onClick={() => {
                                         const filter_payload = {
+                                          firstname: "",
+                                          lastname: "",
+                                          gender: [],
+                                          sts_pk: [],
+                                          encoded_from: null,
+                                          encoded_to: null,
+                                          search: ``,
+                                        };
+                                        handleSetTableSearch(filter_payload);
+                                      }}
+                                    >
+                                      Clear Filters
+                                    </Button>
+                                  </Grid>
+                                  <Grid item>
+                                    <Button
+                                      variant="contained"
+                                      color="secondary"
+                                      type="button"
+                                      onClick={() => {
+                                        const filter_payload = {
                                           ...initialSearch,
                                           search: tableSearch.search,
                                         };

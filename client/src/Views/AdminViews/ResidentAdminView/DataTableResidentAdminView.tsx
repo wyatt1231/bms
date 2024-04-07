@@ -527,6 +527,35 @@ export const DataTableResidentAdminView: FC<DataTableResidentAdminInterface> =
                                             type="button"
                                             onClick={() => {
                                               const filter_payload = {
+                                                quick_search: "",
+                                                first_name: "",
+                                                last_name: "",
+                                                min_age: "",
+                                                max_age: "",
+                                                gender: [],
+                                                purok: [],
+                                                edad: "",
+                                                sts_pk: [],
+                                                encoded_from: null,
+                                                encoded_to: null,
+                                                search: ``,
+                                              };
+                                              handleSetTableSearch(
+                                                filter_payload
+                                              );
+                                            }}
+                                          >
+                                            Clear Filters
+                                          </Button>
+                                        </Grid>
+
+                                        <Grid item>
+                                          <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            type="button"
+                                            onClick={() => {
+                                              const filter_payload = {
                                                 ...initialSearch,
                                                 search: tableSearch.search,
                                               };

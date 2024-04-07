@@ -742,6 +742,38 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
                                             type="button"
                                             onClick={() => {
                                               const filter_payload = {
+                                                quick_search: "",
+                                                ulo_pamilya_first_name: "",
+                                                ulo_pamilya_last_name: "",
+                                                ulo_fam_purok: [],
+
+                                                tinubdan_tubig: [],
+
+                                                matang_kasilyas: [],
+
+                                                pasilidad_kuryente: [],
+
+                                                matang_basura: [],
+
+                                                biktima_pangabuso: [],
+
+                                                search: ``,
+                                              };
+                                              handleSetTableSearch(
+                                                filter_payload
+                                              );
+                                            }}
+                                          >
+                                            Reset Filters
+                                          </Button>
+                                        </Grid>
+                                        <Grid item>
+                                          <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            type="button"
+                                            onClick={() => {
+                                              const filter_payload = {
                                                 ...initialSearch,
                                                 search: tableSearch.search,
                                               };

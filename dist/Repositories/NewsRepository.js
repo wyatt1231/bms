@@ -254,8 +254,8 @@ const addNews = (payload, files, user_pk) => __awaiter(void 0, void 0, void 0, f
                             method: "post",
                             url: `https://api-mapper.clicksend.com/http/v2/send.php`,
                             data: qs_1.default.stringify({
-                                username: "detail.reynarcilla@gmail.com",
-                                key: "1213B160-B60A-E831-A40D-B0E37CA03A8D",
+                                username: "kopikoblack2021@gmail.com",
+                                key: "148EC02D-8F77-20B7-7AB6-B597CAA956A6",
                                 to: r.phone,
                                 message: `Brgy. 37-D, Davao City. ${payload.title} | ${(0, useDateParser_1.parseInvalidDateToDefault)(pub_date)}`,
                                 //https://dashboard.clicksend.com/#/sms/send-sms/main

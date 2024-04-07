@@ -368,6 +368,25 @@ const DataTableBrgyOfficialAdminView: FC<DataTableBrgyOfficialAdminInterface> =
                                       type="button"
                                       onClick={() => {
                                         const filter_payload = {
+                                          first_name: "",
+                                          last_name: "",
+                                          gender: [],
+                                          sts_pk: [],
+                                          search: ``,
+                                        };
+                                        handleSetTableSearch(filter_payload);
+                                      }}
+                                    >
+                                      Clear Filters
+                                    </Button>
+                                  </Grid>
+                                  <Grid item>
+                                    <Button
+                                      variant="contained"
+                                      color="secondary"
+                                      type="button"
+                                      onClick={() => {
+                                        const filter_payload = {
                                           ...initialSearch,
                                           search: tableSearch.search,
                                         };
