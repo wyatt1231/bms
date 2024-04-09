@@ -14,7 +14,7 @@ const PostsController = async (app: Express): Promise<void> => {
     Authorize("admin,resident"),
     async (req: Request & UserClaims, res: Response) => {
       const offset: number = req.body.offset;
-      res.json(await PostsMobileRepository.getPosts(req.user_pk,offset));
+      res.json(await PostsMobileRepository.getPosts(req.user_pk, offset));
     }
   );
   router.post(

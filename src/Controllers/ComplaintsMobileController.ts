@@ -8,8 +8,8 @@ import ComplaintMobileRepository from "../Repositories/ComplaintsMobileRepositor
 
 const ComplaintMobileController = async (app: Express): Promise<void> => {
   const router = Router();
-  
-router.post(
+
+  router.post(
     "/addComplaintMessage",
     Authorize("admin,resident"),
     async (req: Request & UserClaims, res: Response) => {
@@ -17,12 +17,15 @@ router.post(
       payload.sent_by = req.user_pk;
       res.json(await ComplaintMobileRepository.addComplaintMessage(payload));
     }
-  );  router.post(
+  );
+  router.post(
     "/getSingleComplaint",
     Authorize("admin,resident"),
     async (req: Request & UserClaims, res: Response) => {
       const complaint_pk: number = req.body.complaint_pk;
-      res.json(await ComplaintMobileRepository.getSingleComplaint(complaint_pk));
+      res.json(
+        await ComplaintMobileRepository.getSingleComplaint(complaint_pk)
+      );
     }
   );
 
@@ -31,7 +34,9 @@ router.post(
     Authorize("admin,resident"),
     async (req: Request & UserClaims, res: Response) => {
       const complaint_pk: number = req.body.complaint_pk;
-      res.json(await ComplaintMobileRepository.getComplaintMessage(complaint_pk));
+      res.json(
+        await ComplaintMobileRepository.getComplaintMessage(complaint_pk)
+      );
     }
   );
   router.post(

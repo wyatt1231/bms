@@ -33,6 +33,29 @@ const NewsMobileController = async (app: Express): Promise<void> => {
     }
   );
   router.post(
+    "/getNewsDataPublishedByMonth",
+    Authorize("admin,resident"),
+    async (req: Request & UserClaims, res: Response) => {
+      try {
+        const month: number = req.body.month;
+        res.json(await NewsMobileRepository.getNewsDataPublishedByMonth(month));
+      } catch (error) {
+        res.json(error);
+      }
+    }
+  );
+  router.post(
+    "/getNewsDataPublishedLastWeek",
+    Authorize("admin,resident"),
+    async (req: Request & UserClaims, res: Response) => {
+      try {
+        res.json(await NewsMobileRepository.getNewsDataPublishedLastWeek());
+      } catch (error) {
+        res.json(error);
+      }
+    }
+  );
+  router.post(
     "/getSingleNewsWithPhoto",
     Authorize("admin,resident"),
     async (req: Request & UserClaims, res: Response) => {
@@ -55,7 +78,9 @@ const NewsMobileController = async (app: Express): Promise<void> => {
     Authorize("admin,resident"),
     async (req: Request & UserClaims, res: Response) => {
       const payload: NewsReactionModel = req.body;
-      res.json(await NewsMobileRepository.addNewsReaction(payload, req.user_pk));
+      res.json(
+        await NewsMobileRepository.addNewsReaction(payload, req.user_pk)
+      );
     }
   );
 
@@ -80,7 +105,7 @@ const NewsMobileController = async (app: Express): Promise<void> => {
       );
     }
   );
-  
+
   app.use("/api/newsmobile/", router);
 };
 
