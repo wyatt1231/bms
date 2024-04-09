@@ -173,7 +173,7 @@ const getBrgyOfficialList = async (): Promise<ResponseModel> => {
       SELECT * FROM 
       (SELECT r.first_name,r.middle_name,r.last_name,r.suffix,r.pic,r.gender,bo.position,bo.rank,bo.encoded_at,bo.sts_pk,s.sts_backgroundColor,s.sts_color,s.sts_desc FROM barangay_official bo 
       JOIN resident r ON bo.resident_pk = r.resident_pk
-      LEFT JOIN STATUS s ON s.sts_pk = bo.sts_pk) tmp ORDER BY bo.rank ASC
+      LEFT JOIN STATUS s ON s.sts_pk = bo.sts_pk) tmp ORDER BY tmp.rank ASC
       `,
       null
     );
