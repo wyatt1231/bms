@@ -117,7 +117,6 @@ const getNewsDataPublishedLastWeek = async (): Promise<ResponseModel> => {
   LEFT JOIN vw_users u ON u.user_pk = n.encoder_pk
   WHERE (n.sts_pk = "PU" AND (n.audience = "r" OR n.audience = "all"))
       AND n.encoded_at >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) + 6 DAY
-      AND n.encoded_at < CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) - 1 DAY
   ORDER BY n.encoded_at DESC;
       `,
       null
