@@ -21,9 +21,6 @@ const ComplaintChatSocket = (io: Server) => {
       const socket_id = socket.id;
       const user_pk = socket.user_pk;
 
-      console.log(`socket_id`, socket_id);
-      console.log(`user_pk`, user_pk);
-
       socket.on("disconnect", () => {
         const chat_room_temp = [...chat_room];
         let found_room_index: number;

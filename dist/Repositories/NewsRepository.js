@@ -254,8 +254,8 @@ const addNews = (payload, files, user_pk) => __awaiter(void 0, void 0, void 0, f
                             method: "post",
                             url: `https://api-mapper.clicksend.com/http/v2/send.php`,
                             data: qs_1.default.stringify({
-                                username: "kopikoblack2021@gmail.com",
-                                key: "148EC02D-8F77-20B7-7AB6-B597CAA956A6",
+                                username: "juliusnovachrono07@gmail.com",
+                                key: "AC9557D6-F0B3-0467-1EEA-5F0A560A7767",
                                 to: r.phone,
                                 message: `Brgy. 37-D, Davao City. ${payload.title} | ${(0, useDateParser_1.parseInvalidDateToDefault)(pub_date)}`,
                                 //https://dashboard.clicksend.com/#/sms/send-sms/main
@@ -697,7 +697,9 @@ const getNewsLatest = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield con.BeginTransaction();
         const news_table = yield con.Query(`
-      SELECT * FROM news limit 10
+      SELECT * FROM news
+      order by encoded_at desc
+      LIMIT 10 
       `, null);
         for (const news of news_table) {
             news.status = yield con.QuerySingle(`select * from status where sts_pk=@sts_pk`, {

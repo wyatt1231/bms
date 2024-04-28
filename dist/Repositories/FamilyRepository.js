@@ -650,7 +650,6 @@ const getFamilyDataTablePdf = (payload) => __awaiter(void 0, void 0, void 0, fun
             headless: true,
             ignoreDefaultArgs: ["--disable-extensions"],
         });
-        console.log(`browser`, browser);
         const page = yield browser.newPage();
         yield page.setContent(`${FamilyReport_1.default.Content(all_family, payload)}`);
         const pdfBuffer = yield page.pdf({

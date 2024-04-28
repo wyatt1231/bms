@@ -237,9 +237,6 @@ const getDataTableResident = (payload) => __awaiter(void 0, void 0, void 0, func
     const con = yield (0, DatabaseConfig_1.DatabaseConnection)();
     try {
         yield con.BeginTransaction();
-        console.log(`payload`, payload);
-        // AND age >= ${sqlFilterNumber(payload.filters.min_age, "age")}
-        // AND age <= ${sqlFilterNumber(payload.filters.max_age, "age")}
         const data = yield con.QueryPagination(`
       SELECT * FROM (SELECT r.*,CONCAT(r.first_name,' ',r.last_name) fullname,IF((SELECT COUNT(*) FROM family WHERE ulo_pamilya=r.resident_pk) > 0 , 'oo','dili' ) AS ulo_pamilya,s.sts_desc,s.sts_color,s.sts_backgroundColor,
       YEAR(NOW()) - YEAR(r.birth_date) - (DATE_FORMAT( NOW(), '%m%d') < DATE_FORMAT(r.birth_date, '%m%d')) AS age
@@ -294,7 +291,6 @@ const getDataTableResidentPdf = (payload) => __awaiter(void 0, void 0, void 0, f
         const brand_info = yield con.QuerySingle(`
         SELECT logo FROM brand_logo LIMIT 1
       `, {});
-        console.log(`getDataTableResidentPdf: 06-12-2021 6:29PM`);
         var base64data = brand_info === null || brand_info === void 0 ? void 0 : brand_info.logo.toString("base64");
         const resident_data = yield con.Query(`
       SELECT * FROM
@@ -363,10 +359,14 @@ const getSingleResident = (resident_pk) => __awaiter(void 0, void 0, void 0, fun
       LEFT JOIN status s ON s.sts_pk = r.sts_pk where r.resident_pk =@resident_pk`, {
             resident_pk: resident_pk,
         });
-        data.pic = yield (0, useFileUploader_1.GetUploadedImage)(data.pic);
-        data.status = yield con.QuerySingle(`select * from status where sts_pk = @sts_pk;`, {
-            sts_pk: data.sts_pk,
-        });
+        if (!!(data === null || data === void 0 ? void 0 : data.pic)) {
+            data.pic = yield (0, useFileUploader_1.GetUploadedImage)(data.pic);
+        }
+        if (!!(data === null || data === void 0 ? void 0 : data.status)) {
+            data.status = yield con.QuerySingle(`select * from status where sts_pk = @sts_pk;`, {
+                sts_pk: data === null || data === void 0 ? void 0 : data.sts_pk,
+            });
+        }
         con.Commit();
         return {
             success: true,

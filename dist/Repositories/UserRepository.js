@@ -66,7 +66,6 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
 exports.loginUser = loginUser;
 const currentUser = (user_pk) => __awaiter(void 0, void 0, void 0, function* () {
     const con = yield (0, DatabaseConfig_1.DatabaseConnection)();
-    console.log(`user_pk --------------------`, user_pk);
     try {
         yield con.BeginTransaction();
         const user_data = yield con.QuerySingle(`  SELECT u.user_pk,u.user_type,u.full_name,u.new_user FROM user u LEFT JOIN resident r ON r.user_pk=u.user_pk
@@ -83,7 +82,6 @@ const currentUser = (user_pk) => __awaiter(void 0, void 0, void 0, function* () 
             user_data.pic = yield (0, useFileUploader_1.GetUploadedImage)(sql_get_pic === null || sql_get_pic === void 0 ? void 0 : sql_get_pic.pic);
         }
         yield con.Commit();
-        console.log(`user_data`, user_data);
         return {
             success: true,
             data: user_data,

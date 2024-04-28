@@ -83,7 +83,6 @@ const addMobileResident = async (
            encoder_pk=@encoder_pk;`,
         resident_payload
       );
-      console.log(payload.with_disability);
       if (sql_add_resident.insertedId > 0) {
         con.Commit();
         return {
@@ -265,7 +264,6 @@ const getmembers_ulosapamilya = async (
 };
 const getmembers = async (resident_pk: string): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
-  console.log(resident_pk);
   try {
     await con.BeginTransaction();
 
@@ -302,7 +300,6 @@ const getmembers = async (resident_pk: string): Promise<ResponseModel> => {
 };
 const getresidents = async (search: string): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
-  console.log(search);
   try {
     await con.BeginTransaction();
 
@@ -429,7 +426,6 @@ const forgotpassword = async (
         password: password,
       }
     );
-    console.log(password);
     if (sql_edit_resident > 0) {
       con.Commit();
       return {

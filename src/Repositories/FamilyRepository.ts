@@ -873,8 +873,6 @@ const getFamilyDataTablePdf = async (
       ignoreDefaultArgs: ["--disable-extensions"],
     });
 
-    console.log(`browser`, browser);
-
     const page = await browser.newPage();
     await page.setContent(`${FamilyReport.Content(all_family, payload)}`);
 

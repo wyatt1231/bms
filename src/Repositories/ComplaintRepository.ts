@@ -480,7 +480,9 @@ const getComplaintLatest = async (): Promise<ResponseModel> => {
 
     const data: Array<ComplaintModel> = await con.Query(
       `
-      SELECT * FROM complaint WHERE sts_pk NOT IN('C','X','D') LIMIT 10 
+      SELECT * FROM complaint WHERE sts_pk NOT IN('C','X','D') 
+      order by reported_at desc
+      LIMIT 10 
       `,
       null
     );

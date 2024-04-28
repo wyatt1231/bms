@@ -73,7 +73,6 @@ const addMobileResident = (payload) => __awaiter(void 0, void 0, void 0, functio
            house_ownership=@house_ownership,  
            sts_pk='A',
            encoder_pk=@encoder_pk;`, resident_payload);
-            console.log(payload.with_disability);
             if (sql_add_resident.insertedId > 0) {
                 con.Commit();
                 return {
@@ -227,7 +226,6 @@ const getmembers_ulosapamilya = (fam_pk) => __awaiter(void 0, void 0, void 0, fu
 });
 const getmembers = (resident_pk) => __awaiter(void 0, void 0, void 0, function* () {
     const con = yield (0, DatabaseConfig_1.DatabaseConnection)();
-    console.log(resident_pk);
     try {
         yield con.BeginTransaction();
         const data = yield con.Query(`SELECT  fm.fam_pk,r.first_name,r.middle_name,r.last_name FROM family_member fm JOIN resident r ON fm.resident_pk=r.resident_pk WHERE fm.resident_pk=@resident_pk`, {
@@ -257,10 +255,9 @@ const getmembers = (resident_pk) => __awaiter(void 0, void 0, void 0, function* 
 });
 const getresidents = (search) => __awaiter(void 0, void 0, void 0, function* () {
     const con = yield (0, DatabaseConfig_1.DatabaseConnection)();
-    console.log(search);
     try {
         yield con.BeginTransaction();
-        const data = yield con.Query(`SELECT * FROM searchable_user WHERE first_name LIKE CONCAT('%',@search,'%') || last_name LIKE CONCAT('%',@search,'%') AND resident_pk`, {
+        const data = yield con.Query(`SELECT * FROM resident WHERE first_name LIKE CONCAT('%',@search,'%') || last_name LIKE CONCAT('%',@search,'%') AND resident_pk`, {
             search: search,
         });
         con.Commit();
@@ -357,7 +354,6 @@ const forgotpassword = (email, password) => __awaiter(void 0, void 0, void 0, fu
             email: email,
             password: password,
         });
-        console.log(password);
         if (sql_edit_resident > 0) {
             con.Commit();
             return {

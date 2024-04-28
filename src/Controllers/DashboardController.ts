@@ -88,7 +88,6 @@ const DashboardController = async (app: Express): Promise<void> => {
     Authorize("admin"),
     async (req: Request & UserClaims, res: Response) => {
       const filters: DashboardFilterInterface = req.body;
-      console.log(`total_population`, filters);
       res.json(await DashboardRepository.total_population(filters));
     }
   );

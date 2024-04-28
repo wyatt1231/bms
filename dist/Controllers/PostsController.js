@@ -73,7 +73,6 @@ const PostsController = (app) => __awaiter(void 0, void 0, void 0, function* () 
     router.post("/addPostReaction", (0, Authorize_1.default)("admin,resident"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const payload = req.body;
-            console.log(`sdasd payload`, payload);
             res.json(yield PostsRepository_1.default.addPostReaction(payload, req.user_pk));
         }
         catch (error) {

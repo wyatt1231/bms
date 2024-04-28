@@ -281,11 +281,6 @@ const getDataTableResident = async (
   try {
     await con.BeginTransaction();
 
-    console.log(`payload`, payload);
-
-    // AND age >= ${sqlFilterNumber(payload.filters.min_age, "age")}
-    // AND age <= ${sqlFilterNumber(payload.filters.max_age, "age")}
-
     const data: Array<ResidentModel> = await con.QueryPagination(
       `
       SELECT * FROM (SELECT r.*,CONCAT(r.first_name,' ',r.last_name) fullname,IF((SELECT COUNT(*) FROM family WHERE ulo_pamilya=r.resident_pk) > 0 , 'oo','dili' ) AS ulo_pamilya,s.sts_desc,s.sts_color,s.sts_backgroundColor,
@@ -360,8 +355,6 @@ const getDataTableResidentPdf = async (
       `,
       {}
     );
-
-    console.log(`getDataTableResidentPdf: 06-12-2021 6:29PM`);
 
     var base64data = brand_info?.logo.toString("base64");
 
@@ -452,14 +445,18 @@ const getSingleResident = async (
       }
     );
 
-    data.pic = await GetUploadedImage(data.pic);
+    if (!!data?.pic) {
+      data.pic = await GetUploadedImage(data.pic);
+    }
 
-    data.status = await con.QuerySingle(
-      `select * from status where sts_pk = @sts_pk;`,
-      {
-        sts_pk: data.sts_pk,
-      }
-    );
+    if (!!data?.status) {
+      data.status = await con.QuerySingle(
+        `select * from status where sts_pk = @sts_pk;`,
+        {
+          sts_pk: data?.sts_pk,
+        }
+      );
+    }
 
     con.Commit();
     return {

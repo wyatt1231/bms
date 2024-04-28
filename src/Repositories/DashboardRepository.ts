@@ -202,27 +202,29 @@ const ageGroupStats = async (
   try {
     await con.BeginTransaction();
 
+    console.log(`year`, filters.year);
+
     const ages: Array<any> = await con.Query(
       `
         SELECT * FROM 
         (
-        SELECT '0-10' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 0 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=10 AND died_date IS NULL  AND YEAR(resident_date) = @year  AND purok IN @purok
+        SELECT '0-10' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 0 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=10 AND (died_date IS NULL OR YEAR(died_date) > @year)  AND YEAR(resident_date) = @year  AND purok IN @purok
         UNION ALL
-        SELECT '11-20' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 11 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=20 AND died_date IS NULL AND YEAR(resident_date) = @year  AND purok IN @purok
+        SELECT '11-20' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 11 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=20 AND (died_date IS NULL OR YEAR(died_date) > @year) AND YEAR(resident_date) = @year  AND purok IN @purok
         UNION ALL
-        SELECT '21-30' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 21 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=30 AND died_date IS NULL AND YEAR(resident_date) = @year  AND purok IN @purok
+        SELECT '21-30' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 21 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=30 AND (died_date IS NULL OR YEAR(died_date) > @year) AND YEAR(resident_date) = @year  AND purok IN @purok
         UNION ALL
-        SELECT '31-40' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 31 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=40 AND died_date IS NULL AND YEAR(resident_date) = @year  AND purok IN @purok
+        SELECT '31-40' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 31 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=40 AND (died_date IS NULL OR YEAR(died_date) > @year) AND YEAR(resident_date) = @year  AND purok IN @purok
         UNION ALL
-        SELECT '41-50' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 41 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=50 AND died_date IS NULL AND YEAR(resident_date) = @year  AND purok IN @purok
+        SELECT '41-50' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 41 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=50 AND (died_date IS NULL OR YEAR(died_date) > @year) AND YEAR(resident_date) = @year  AND purok IN @purok
         UNION ALL
-        SELECT '51-60' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 51 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=60 AND died_date IS NULL AND YEAR(resident_date) = @year  AND purok IN @purok
+        SELECT '51-60' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 51 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=60 AND (died_date IS NULL OR YEAR(died_date) > @year) AND YEAR(resident_date) = @year  AND purok IN @purok
         UNION ALL
-        SELECT '61-70' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 61 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=70 AND died_date IS NULL AND YEAR(resident_date) = @year  AND purok IN @purok
+        SELECT '61-70' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 61 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=70 AND (died_date IS NULL OR YEAR(died_date) > @year) AND YEAR(resident_date) = @year  AND purok IN @purok
         UNION ALL
-        SELECT '71-90' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 71 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=80 AND died_date IS NULL AND YEAR(resident_date) = @year  AND purok IN @purok
+        SELECT '71-90' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 71 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=80 AND (died_date IS NULL OR YEAR(died_date) > @year) AND YEAR(resident_date) = @year  AND purok IN @purok
         UNION ALL
-        SELECT '81-90' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 91 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=90 AND died_date IS NULL AND YEAR(resident_date) = @year  AND purok IN @purok
+        SELECT '81-90' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 91 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  <=90 AND (died_date IS NULL OR YEAR(died_date) > @year) AND YEAR(resident_date) = @year  AND purok IN @purok
         UNION ALL
         SELECT '100+' AS x, COUNT(*) y FROM resident WHERE (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365))  >= 100 AND died_date IS  NULL AND YEAR(resident_date) = @year  AND purok IN @purok
         ) tmp
@@ -263,13 +265,13 @@ const lifeStageStats = async (
 
     const life_stage_stats = await con.Query(
       `
-      SELECT 'infant' AS 'x', COUNT(*) AS 'y' FROM resident WHERE died_date IS NULL AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365)) <= 1 AND YEAR(resident_date) = @year  AND purok IN @purok
+      SELECT 'infant' AS 'x', COUNT(*) AS 'y' FROM resident WHERE (died_date IS NULL OR YEAR(died_date) > @year) AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365)) <= 1 AND YEAR(resident_date) = @year  AND purok IN @purok
       UNION ALL
-      SELECT 'children' AS 'x', COUNT(*) AS 'y'  FROM resident WHERE died_date IS NULL AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365)) > 1 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365)) < 18  AND YEAR(resident_date) = @year  AND purok IN @purok
+      SELECT 'children' AS 'x', COUNT(*) AS 'y'  FROM resident WHERE (died_date IS NULL OR YEAR(died_date) > @year) AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365)) > 1 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365)) < 18  AND YEAR(resident_date) = @year  AND purok IN @purok
       UNION ALL
-      SELECT 'adult' AS 'x', COUNT(*) AS 'y'  FROM resident WHERE died_date IS NULL AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365)) > 18 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365)) < 60  AND YEAR(resident_date) = @year  AND purok IN @purok
+      SELECT 'adult' AS 'x', COUNT(*) AS 'y'  FROM resident WHERE (died_date IS NULL OR YEAR(died_date) > @year) AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365)) > 18 AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365)) < 60  AND YEAR(resident_date) = @year  AND purok IN @purok
       UNION ALL
-      SELECT 'senior citizen' AS 'x', COUNT(*) AS 'y'  FROM resident WHERE died_date IS NULL AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365)) >= 60  AND YEAR(resident_date) = @year  AND purok IN @purok
+      SELECT 'senior citizen' AS 'x', COUNT(*) AS 'y'  FROM resident WHERE (died_date IS NULL OR YEAR(died_date) > @year) AND (FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365)) >= 60  AND YEAR(resident_date) = @year  AND purok IN @purok
          `,
       filters
     );
@@ -300,14 +302,14 @@ const genderStats = async (
 
     const total_male = await con.QuerySingle(
       `
-      SELECT COUNT(*) AS total FROM resident WHERE died_date IS NULL  AND gender = 'm'   AND YEAR(resident_date) = @year  AND purok in @purok
+      SELECT COUNT(*) AS total FROM resident WHERE (died_date IS NULL OR YEAR(died_date) > @year)  AND gender = 'm'   AND YEAR(resident_date) = @year  AND purok in @purok
           `,
       filters
     );
 
     const total_female = await con.QuerySingle(
       `
-      SELECT COUNT(*) AS total FROM resident WHERE died_date IS  NULL AND gender = 'f'   AND YEAR(resident_date) = @year  AND purok in @purok
+      SELECT COUNT(*) AS total FROM resident WHERE (died_date IS NULL OR YEAR(died_date) > @year) AND gender = 'f'   AND YEAR(resident_date) = @year  AND purok in @purok
           `,
       filters
     );

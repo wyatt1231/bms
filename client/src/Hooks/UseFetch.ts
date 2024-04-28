@@ -32,7 +32,6 @@ export const PostFetch = async (
   data: any
 ): Promise<IServerResponse> => {
   try {
-    console.log(`endpoint `, data, getAccessToken());
     const serverResponse: IServerResponse = await Axios.post(
       `/` + endpoint,
       !!data ? data : {},

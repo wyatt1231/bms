@@ -17,7 +17,6 @@ export const SetCurrentUserAction =
         isLoading: true,
       });
       const response: IServerResponse = await CurrentUserApi();
-      console.log(`response`, response);
       dispatch({
         type: "SET_LOADING_USER",
         isLoading: false,
@@ -29,7 +28,6 @@ export const SetCurrentUserAction =
         });
 
         const user_type = response?.data?.user_type;
-        console.log(`user_type`, user_type);
         if (
           window.location.pathname === "/login" ||
           window.location.pathname === "/"

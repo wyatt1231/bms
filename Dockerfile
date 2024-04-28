@@ -27,6 +27,6 @@ RUN npm init -y &&  \
 
 # USER pptruser
 
-EXPOSE 443
+EXPOSE 4050
 
 CMD ["node", "dist/index.js" ]

@@ -1,7 +1,6 @@
 import { DatabaseConnection } from "../Configurations/DatabaseConfig";
 import { ErrorMessage } from "../Hooks/useErrorMessage";
 import { GetUploadedImage, UploadFile } from "../Hooks/useFileUploader";
-import { ComplaintLogModel } from "../Models/ComplaintLogModels";
 import { ComplaintMessageModel } from "../Models/ComplaintMessageModels";
 import { ComplaintFilesModel, ComplaintModel } from "../Models/ComplaintModels";
 import { ResponseModel } from "../Models/ResponseModels";
@@ -136,8 +135,6 @@ const getSingleComplaint = async (
         complaint_pk: complaint_pk,
       }
     );
-
-    console.log(`complaints`, data);
 
     data.complaint_file = await con.Query(
       `

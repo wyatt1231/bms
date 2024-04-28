@@ -2,9 +2,6 @@ export let FTP_BASE_URL = process.env.REACT_APP_SERVER_URL;
 
 export let SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL;
 
-console.log(`FTP_BASE_URL`, FTP_BASE_URL);
-console.log(`SERVER_BASE_URL`, SERVER_BASE_URL);
-
 // if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
 //   SERVER_BASE_URL = `http://localhost:4050/`;
 //   FTP_BASE_URL = `http://localhost:4050/`;

@@ -65,8 +65,6 @@ export const loginUser = async (payload: UserLogin): Promise<ResponseModel> => {
 export const currentUser = async (user_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
 
-  console.log(`user_pk --------------------`, user_pk);
-
   try {
     await con.BeginTransaction();
 
@@ -95,7 +93,6 @@ export const currentUser = async (user_pk: number): Promise<ResponseModel> => {
 
     await con.Commit();
 
-    console.log(`user_data`, user_data);
     return {
       success: true,
       data: user_data,

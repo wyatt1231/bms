@@ -26,8 +26,8 @@ import {
 } from "../../../Services/Actions/PageActions";
 import ResidentApi from "../../../Services/Api/ResidentApi";
 import {
-  FamilyModel,
   FamMemberModel,
+  FamilyModel,
 } from "../../../Services/Models/FamilyModel";
 import { ResidentModel } from "../../../Services/Models/ResidentModels";
 import { RootStore } from "../../../Services/Store";
@@ -54,9 +54,8 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
   }, []);
 
   const [fam_members, set_fam_members] = useState<Array<FamMemberModel>>([]);
-  const [selected_resident, set_selected_resident] = useState<ResidentModel>(
-    null
-  );
+  const [selected_resident, set_selected_resident] =
+    useState<ResidentModel>(null);
 
   const handleAddFamMember = useCallback((fam_member: FamMemberModel) => {
     set_fam_members((prev) => {
@@ -116,7 +115,7 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
       if (response.success) {
         set_ulo_pamilya(response.data);
 
-        if (response.data.ulo_pamilya === "oo") {
+        if (response.data?.ulo_pamilya === "oo") {
           dispatch(
             FamilyActions.getSingleFamily(selected_head_fam.resident_pk)
           );

@@ -3,7 +3,7 @@ import { ErrorMessage } from "../Hooks/useErrorMessage";
 import { GetUploadedImage, UploadFile } from "../Hooks/useFileUploader";
 import { NewsCommentModel } from "../Models/NewsCommentModels";
 import { NewsFileModel } from "../Models/NewsFileModel";
-import { NewsLikesModel, NewsModel } from "../Models/NewsModels";
+import { NewsModel } from "../Models/NewsModels";
 import { NewsReactionModel } from "../Models/NewsReactionModels";
 import { ResponseModel } from "../Models/ResponseModels";
 
@@ -173,7 +173,6 @@ const getNewsDataPublishedByMonth = async (
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
-    console.log(month);
     const news_table: Array<NewsModel> = await con.Query(
       `SELECT 
       n.news_pk,

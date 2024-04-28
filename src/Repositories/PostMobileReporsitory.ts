@@ -1,14 +1,9 @@
-import mysql from "mysql2";
 import { DatabaseConnection } from "../Configurations/DatabaseConfig";
 import { ErrorMessage } from "../Hooks/useErrorMessage";
 import { GetUploadedImage, UploadFile } from "../Hooks/useFileUploader";
 import { PostReactionModel } from "../Models/PostReactionModel";
 import { PostsCommentModel } from "../Models/PostsCommentModel";
-import {
-  PostCommentModel,
-  PostFilesModel,
-  PostsModel,
-} from "../Models/PostsModel";
+import { PostFilesModel, PostsModel } from "../Models/PostsModel";
 import { ResponseModel } from "../Models/ResponseModels";
 
 const getPosts = async (
@@ -502,7 +497,6 @@ const getSinglePostWithPhoto = async (
   posts_pk: string,
   user_pk: number
 ): Promise<ResponseModel> => {
-  console.log(posts_pk, " and ", user_pk);
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();

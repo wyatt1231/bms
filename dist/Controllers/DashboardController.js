@@ -71,7 +71,6 @@ const DashboardController = (app) => __awaiter(void 0, void 0, void 0, function*
     }));
     router.post("/total_population", (0, Authorize_1.default)("admin"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const filters = req.body;
-        console.log(`total_population`, filters);
         res.json(yield DashboardRepository_1.default.total_population(filters));
     }));
     router.post("/total_death", (0, Authorize_1.default)("admin"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {

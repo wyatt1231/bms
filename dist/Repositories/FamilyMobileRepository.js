@@ -81,6 +81,6 @@ const getforms = (ulo_pamilya, fam_pk) => __awaiter(void 0, void 0, void 0, func
 });
 exports.default = {
     getfamilyexist,
-    getforms
+    getforms,
 };
 //# sourceMappingURL=FamilyMobileRepository.js.map

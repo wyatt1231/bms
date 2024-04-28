@@ -3,7 +3,6 @@ export const regex_pdf = /[\/.](pdf)$/i;
 
 const GenerateFileType = (file_name: string): "img" | "pdf" | "" => {
   if (regex_pdf.test(file_name)) {
-    console.log(`pdf`);
     return "pdf";
   }
 

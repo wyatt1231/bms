@@ -7,7 +7,6 @@ const API_DEFAULT_ROUTE = `api/dashboard/`;
 const overallPopulation = async (
   filter: Array<string>
 ): Promise<IServerResponse> => {
-  console.log(`filter  overallPopulation`, filter);
   const response = await PostFetch(
     API_DEFAULT_ROUTE + "overallPopulation",
     filter

@@ -41,13 +41,7 @@ const user_repo = __importStar(require("../Repositories/UserRepository"));
 const UserController = (app) => __awaiter(void 0, void 0, void 0, function* () {
     const router = (0, express_1.Router)();
     router.get("/test", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        // res.json("The app is running" + __dirname);
-        const response = yield user_repo.loginUser({
-            email: "bmsadmin",
-            password: "bmsadmin",
-        });
-        console.log(`response`, response);
-        res.json(response);
+        res.json("09/04/2024 1:53pm -The app is running" + __dirname);
     }));
     router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -60,25 +54,21 @@ const UserController = (app) => __awaiter(void 0, void 0, void 0, function* () {
             res.json(response);
         }
         catch (error) {
-            console.log(`error`, error);
             res.json(500);
         }
     }));
     router.get("/currentUser", (0, Authorize_1.default)("admin,resident"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            console.log(`zxc --------------------------- `, req);
             const zxc = yield user_repo.currentUser(req === null || req === void 0 ? void 0 : req.user_pk);
             res.json(zxc);
         }
         catch (error) {
-            console.log(`error`, error);
             res.json(500);
         }
     }));
     router.post("/userinfo", (0, Authorize_1.default)("admin,resident"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const response = yield user_repo.userinfo(req.user_pk);
-            console.log(`userinfo response`, response);
             res.json(response);
         }
         catch (error) {

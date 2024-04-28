@@ -7,6 +7,4 @@
 //     console.log(``);
 // };
 
-export const UseTableFilterGenerator = (): void => {
-  console.log("zxc");
-};
+export const UseTableFilterGenerator = (): void => {};

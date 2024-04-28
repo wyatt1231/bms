@@ -7,13 +7,16 @@ import {
   FormGroup,
   FormLabel,
   Grid,
+  IconButton,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@material-ui/core";
+import ClearAllRounded from "@material-ui/icons/ClearAllOutlined";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import "chartjs-plugin-labels";
 import moment from "moment";
@@ -34,6 +37,7 @@ import { setPageLinks } from "../../../Services/Actions/PageActions";
 import { YearlyStatsModel } from "../../../Services/Models/DashboardModel";
 import { RootStore } from "../../../Services/Store";
 import { Colors } from "../../../Storage/LocalDatabase";
+
 interface IDashbboardAdminView {}
 
 const puroks = ["1", "2", "3", "4", "5", "6", "7", "8"];
@@ -296,6 +300,36 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                     ))}
                   </FormGroup>
                 </FormControl>
+              </Grid>
+
+              <Grid item>
+                <Tooltip title="Clear Filters">
+                  <IconButton
+                    style={{ marginTop: "18px" }}
+                    color="primary"
+                    size="small"
+                    onClick={() => {
+                      set_purok([]);
+                    }}
+                  >
+                    <ClearAllRounded />
+                  </IconButton>
+                </Tooltip>
+
+                {/* <Button
+                  style={{
+                    marginTop: "8px",
+                  }}
+                  variant="contained"
+                  color="secondary"
+                  type="button"
+                  size="small"
+                  onClick={() => {
+                    set_purok([]);
+                  }}
+                >
+                  Clear Filters
+                </Button> */}
               </Grid>
             </Grid>
           </Grid>

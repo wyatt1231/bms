@@ -50,7 +50,6 @@ const DatabaseConnection = () => {
                     // connection.destroy();
                     // connection.release();
                     // connection.end();
-                    console.log(error);
                     return reject(error);
                 }
                 const Query = (sql, binding) => {
@@ -85,7 +84,6 @@ const DatabaseConnection = () => {
                     return new Promise((resolve, reject) => {
                         const { filters, sort, page } = pagination;
                         const { success, message, query } = queryFormat(sql, filters);
-                        // console.log(`QueryPagination`, query);
                         if (!success) {
                             connection.destroy();
                             connection.release();

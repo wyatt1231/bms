@@ -94,7 +94,6 @@ const PostsController = async (app: Express): Promise<void> => {
     async (req: Request & UserClaims, res: Response) => {
       try {
         const payload: PostReactionModel = req.body;
-        console.log(`sdasd payload`, payload);
 
         res.json(await PostsRepository.addPostReaction(payload, req.user_pk));
       } catch (error) {

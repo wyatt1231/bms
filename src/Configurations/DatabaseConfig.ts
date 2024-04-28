@@ -50,7 +50,6 @@ export const DatabaseConnection = (): Promise<DatabaseConnectionModel> => {
           // connection.destroy();
           // connection.release();
           // connection.end();
-          console.log(error);
           return reject(error);
         }
 
@@ -93,8 +92,6 @@ export const DatabaseConnection = (): Promise<DatabaseConnectionModel> => {
           return new Promise((resolve, reject) => {
             const { filters, sort, page } = pagination;
             const { success, message, query } = queryFormat(sql, filters);
-
-            // console.log(`QueryPagination`, query);
 
             if (!success) {
               connection.destroy();

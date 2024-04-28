@@ -10,13 +10,6 @@ const bodyParser = require("body-parser");
 
 export const app = express();
 
-// const jsonErrorHandler = (err, req, res, next) => {
-//   console.log({
-//     error: err,
-//   });
-//   res.status(500).send({ error: err });
-// };
-
 const main = async () => {
   dotenv.config();
 
@@ -52,9 +45,12 @@ const main = async () => {
     });
   });
 
-  const PORT = process.env.PORT || 4050;
+  // const PORT = process.env.PORT || 4050;
+  const PORT = 4050;
   // const PORT = 8080;
-  server.listen(PORT, () => console.log(`listening to ports ${PORT}`));
+  server.listen(PORT, () =>
+    console.log(`09/04/2024 1:53pm - listening to ports ${PORT}`)
+  );
 };
 
 //COPIED FROM LAPTOP

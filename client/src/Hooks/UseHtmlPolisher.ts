@@ -2,7 +2,6 @@ export const UseHtmlPolisher = (html: any | null | undefined): string => {
   if (html == null || typeof html == "undefined") {
     return "";
   } else {
-    // console.log(`unplished`, html);
     // let polishedHtml = html.replaceAll(/(<[^>]+) style=".*?">/gi, "<p>");
     let polishedHtml = html.replaceAll(/(style=".*?")/gi, "");
 

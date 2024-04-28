@@ -68,8 +68,6 @@ const UseConvertHtmlToRtf = (html: any) => {
     // "\\pard\\kerning0\\f1\\fs20\\par" +
     "\n}";
 
-  // console.log(`richText`, richText);
-
   return richText;
 };
 

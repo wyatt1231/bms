@@ -96,8 +96,6 @@ const PostsController = async (app: Express): Promise<void> => {
     Authorize("admin,resident"),
     async (req: Request & UserClaims, res: Response) => {
       const payload: PostReactionModel = req.body;
-      console.log(`sdasd payload`, payload);
-
       res.json(
         await PostsMobileRepository.addPostReaction(payload, req.user_pk)
       );

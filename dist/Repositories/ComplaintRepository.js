@@ -361,7 +361,9 @@ const getComplaintLatest = () => __awaiter(void 0, void 0, void 0, function* () 
     try {
         yield con.BeginTransaction();
         const data = yield con.Query(`
-      SELECT * FROM complaint WHERE sts_pk NOT IN('C','X','D') LIMIT 10 
+      SELECT * FROM complaint WHERE sts_pk NOT IN('C','X','D') 
+      order by reported_at desc
+      LIMIT 10 
       `, null);
         for (const complaint of data) {
             complaint.user = yield con.QuerySingle(`Select * from vw_users where user_pk = @user_pk`, {

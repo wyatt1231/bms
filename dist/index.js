@@ -23,12 +23,6 @@ const ControllerRegistry_1 = require("./Registry/ControllerRegistry");
 const SocketRegistry_1 = __importDefault(require("./Registry/SocketRegistry"));
 const bodyParser = require("body-parser");
 exports.app = (0, express_1.default)();
-// const jsonErrorHandler = (err, req, res, next) => {
-//   console.log({
-//     error: err,
-//   });
-//   res.status(500).send({ error: err });
-// };
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     dotenv_1.default.config();
     //test
@@ -51,9 +45,10 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             root: path_1.default.join(__dirname, "../client/build/"),
         });
     });
-    const PORT = process.env.PORT || 4050;
+    // const PORT = process.env.PORT || 4050;
+    const PORT = 4050;
     // const PORT = 8080;
-    server.listen(PORT, () => console.log(`listening to ports ${PORT}`));
+    server.listen(PORT, () => console.log(`09/04/2024 1:53pm - listening to ports ${PORT}`));
 });
 //COPIED FROM LAPTOP
 main();

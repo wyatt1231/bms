@@ -332,8 +332,8 @@ const addNews = async (
               method: "post",
               url: `https://api-mapper.clicksend.com/http/v2/send.php`,
               data: qs.stringify({
-                username: "kopikoblack2021@gmail.com",
-                key: "148EC02D-8F77-20B7-7AB6-B597CAA956A6",
+                username: "juliusnovachrono07@gmail.com",
+                key: "AC9557D6-F0B3-0467-1EEA-5F0A560A7767",
                 to: r.phone,
                 message: `Brgy. 37-D, Davao City. ${
                   payload.title
@@ -883,7 +883,9 @@ const getNewsLatest = async (): Promise<ResponseModel> => {
 
     const news_table: Array<NewsModel> = await con.Query(
       `
-      SELECT * FROM news limit 10
+      SELECT * FROM news
+      order by encoded_at desc
+      LIMIT 10 
       `,
       null
     );
