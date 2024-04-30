@@ -7,7 +7,9 @@ const UserController = async (app: Express): Promise<void> => {
   const router = Router();
 
   router.get("/test", async (req: Request & UserClaims, res: Response) => {
-    res.json("09/04/2024 1:53pm -The app is running" + __dirname);
+    // console.log(`28/04/2024 04:17pm - listening to ports ${PORT}`)
+
+    res.json("28/04/2024 04:17pm -The app is running" + __dirname);
   });
 
   router.post("/login", async (req: Request & UserClaims, res: Response) => {

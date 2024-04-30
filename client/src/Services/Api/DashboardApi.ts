@@ -82,38 +82,48 @@ const statsComplaint = async (): Promise<IServerResponse> => {
   return response;
 };
 
-const StatsPasilidadKuryente = async (): Promise<IServerResponse> => {
+const StatsPasilidadKuryente = async (
+  filters: DashboardFilterInterface
+): Promise<IServerResponse> => {
   const response = await PostFetch(
     API_DEFAULT_ROUTE + "StatsPasilidadKuryente",
-    null
+    filters
   );
   return response;
 };
-const StatsBiktikmaPangabuso = async (): Promise<IServerResponse> => {
+const StatsBiktikmaPangabuso = async (
+  filters: DashboardFilterInterface
+): Promise<IServerResponse> => {
   const response = await PostFetch(
     API_DEFAULT_ROUTE + "StatsBiktikmaPangabuso",
-    null
+    filters
   );
   return response;
 };
-const StatsKahimtangKomunidad = async (): Promise<IServerResponse> => {
+const StatsKahimtangKomunidad = async (
+  filters: DashboardFilterInterface
+): Promise<IServerResponse> => {
   const response = await PostFetch(
     API_DEFAULT_ROUTE + "StatsKahimtangKomunidad",
-    null
+    filters
   );
   return response;
 };
-const StatsMatangBasura = async (): Promise<IServerResponse> => {
+const StatsMatangBasura = async (
+  filters: DashboardFilterInterface
+): Promise<IServerResponse> => {
   const response = await PostFetch(
     API_DEFAULT_ROUTE + "StatsMatangBasura",
-    null
+    filters
   );
   return response;
 };
-const StatsMatangKasilyas = async (): Promise<IServerResponse> => {
+const StatsMatangKasilyas = async (
+  filters: DashboardFilterInterface
+): Promise<IServerResponse> => {
   const response = await PostFetch(
     API_DEFAULT_ROUTE + "StatsMatangKasilyas",
-    null
+    filters
   );
   return response;
 };

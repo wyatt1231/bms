@@ -101,8 +101,9 @@ const DashboardController = (app) => __awaiter(void 0, void 0, void 0, function*
         }
     }));
     router.post("/StatsPasilidadKuryente", (0, Authorize_1.default)("admin"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const filters = req.body;
         try {
-            res.json(yield DashboardRepository_1.default.StatsPasilidadKuryente());
+            res.json(yield DashboardRepository_1.default.StatsPasilidadKuryente(filters));
         }
         catch (error) {
             res.json(500);
@@ -110,7 +111,8 @@ const DashboardController = (app) => __awaiter(void 0, void 0, void 0, function*
     }));
     router.post("/StatsBiktikmaPangabuso", (0, Authorize_1.default)("admin"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            res.json(yield DashboardRepository_1.default.StatsBiktikmaPangabuso());
+            const filters = req.body;
+            res.json(yield DashboardRepository_1.default.StatsBiktikmaPangabuso(filters));
         }
         catch (error) {
             res.json(500);
@@ -118,7 +120,8 @@ const DashboardController = (app) => __awaiter(void 0, void 0, void 0, function*
     }));
     router.post("/StatsKahimtangKomunidad", (0, Authorize_1.default)("admin"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            res.json(yield DashboardRepository_1.default.StatsKahimtangKomunidad());
+            const filters = req.body;
+            res.json(yield DashboardRepository_1.default.StatsKahimtangKomunidad(filters));
         }
         catch (error) {
             res.json(500);
@@ -126,7 +129,8 @@ const DashboardController = (app) => __awaiter(void 0, void 0, void 0, function*
     }));
     router.post("/StatsMatangBasura", (0, Authorize_1.default)("admin"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            res.json(yield DashboardRepository_1.default.StatsMatangBasura());
+            const filters = req.body;
+            res.json(yield DashboardRepository_1.default.StatsMatangBasura(filters));
         }
         catch (error) {
             res.json(500);
@@ -134,7 +138,8 @@ const DashboardController = (app) => __awaiter(void 0, void 0, void 0, function*
     }));
     router.post("/StatsMatangKasilyas", (0, Authorize_1.default)("admin"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            res.json(yield DashboardRepository_1.default.StatsMatangKasilyas());
+            const filters = req.body;
+            res.json(yield DashboardRepository_1.default.StatsMatangKasilyas(filters));
         }
         catch (error) {
             res.json(500);

@@ -270,14 +270,15 @@ const totalPwd =
   };
 
 const StatsPasilidadKuryente =
-  () => async (dispatch: Dispatch<DashboardReducerTypes>) => {
+  (filters: DashboardFilterInterface) =>
+  async (dispatch: Dispatch<DashboardReducerTypes>) => {
     try {
       dispatch({
         type: "fetch_stats_pasilidad_kuryente",
         fetch_stats_pasilidad_kuryente: true,
       });
       const response: IServerResponse =
-        await DashboardApi.StatsPasilidadKuryente();
+        await DashboardApi.StatsPasilidadKuryente(filters);
 
       if (response.success) {
         dispatch({
@@ -296,14 +297,15 @@ const StatsPasilidadKuryente =
   };
 
 const StatsBiktikmaPangabuso =
-  () => async (dispatch: Dispatch<DashboardReducerTypes>) => {
+  (filters: DashboardFilterInterface) =>
+  async (dispatch: Dispatch<DashboardReducerTypes>) => {
     try {
       dispatch({
         type: "fetch_stats_biktima_pangabuso",
         fetch_stats_biktima_pangabuso: true,
       });
       const response: IServerResponse =
-        await DashboardApi.StatsBiktikmaPangabuso();
+        await DashboardApi.StatsBiktikmaPangabuso(filters);
 
       if (response.success) {
         dispatch({
@@ -322,14 +324,15 @@ const StatsBiktikmaPangabuso =
   };
 
 const StatsKahimtangKomunidad =
-  () => async (dispatch: Dispatch<DashboardReducerTypes>) => {
+  (filters: DashboardFilterInterface) =>
+  async (dispatch: Dispatch<DashboardReducerTypes>) => {
     try {
       dispatch({
         type: "fetch_stats_kahimtang_komunidad",
         fetch_stats_kahimtang_komunidad: true,
       });
       const response: IServerResponse =
-        await DashboardApi.StatsKahimtangKomunidad();
+        await DashboardApi.StatsKahimtangKomunidad(filters);
 
       if (response.success) {
         dispatch({
@@ -348,13 +351,16 @@ const StatsKahimtangKomunidad =
   };
 
 const StatsMatangBasura =
-  () => async (dispatch: Dispatch<DashboardReducerTypes>) => {
+  (filters: DashboardFilterInterface) =>
+  async (dispatch: Dispatch<DashboardReducerTypes>) => {
     try {
       dispatch({
         type: "fetch_stats_matang_basura",
         fetch_stats_matang_basura: true,
       });
-      const response: IServerResponse = await DashboardApi.StatsMatangBasura();
+      const response: IServerResponse = await DashboardApi.StatsMatangBasura(
+        filters
+      );
 
       if (response.success) {
         dispatch({
@@ -373,14 +379,16 @@ const StatsMatangBasura =
   };
 
 const StatsMatangKasilyas =
-  () => async (dispatch: Dispatch<DashboardReducerTypes>) => {
+  (filters: DashboardFilterInterface) =>
+  async (dispatch: Dispatch<DashboardReducerTypes>) => {
     try {
       dispatch({
         type: "fetch_stats_matang_kasilyas",
         fetch_stats_matang_kasilyas: true,
       });
-      const response: IServerResponse =
-        await DashboardApi.StatsMatangKasilyas();
+      const response: IServerResponse = await DashboardApi.StatsMatangKasilyas(
+        filters
+      );
 
       if (response.success) {
         dispatch({

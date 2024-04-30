@@ -135,8 +135,9 @@ const DashboardController = async (app: Express): Promise<void> => {
     "/StatsPasilidadKuryente",
     Authorize("admin"),
     async (req: Request & UserClaims, res: Response) => {
+      const filters: DashboardFilterInterface = req.body;
       try {
-        res.json(await DashboardRepository.StatsPasilidadKuryente());
+        res.json(await DashboardRepository.StatsPasilidadKuryente(filters));
       } catch (error) {
         res.json(500);
       }
@@ -148,7 +149,9 @@ const DashboardController = async (app: Express): Promise<void> => {
     Authorize("admin"),
     async (req: Request & UserClaims, res: Response) => {
       try {
-        res.json(await DashboardRepository.StatsBiktikmaPangabuso());
+        const filters: DashboardFilterInterface = req.body;
+
+        res.json(await DashboardRepository.StatsBiktikmaPangabuso(filters));
       } catch (error) {
         res.json(500);
       }
@@ -160,7 +163,8 @@ const DashboardController = async (app: Express): Promise<void> => {
     Authorize("admin"),
     async (req: Request & UserClaims, res: Response) => {
       try {
-        res.json(await DashboardRepository.StatsKahimtangKomunidad());
+        const filters: DashboardFilterInterface = req.body;
+        res.json(await DashboardRepository.StatsKahimtangKomunidad(filters));
       } catch (error) {
         res.json(500);
       }
@@ -172,7 +176,8 @@ const DashboardController = async (app: Express): Promise<void> => {
     Authorize("admin"),
     async (req: Request & UserClaims, res: Response) => {
       try {
-        res.json(await DashboardRepository.StatsMatangBasura());
+        const filters: DashboardFilterInterface = req.body;
+        res.json(await DashboardRepository.StatsMatangBasura(filters));
       } catch (error) {
         res.json(500);
       }
@@ -184,7 +189,8 @@ const DashboardController = async (app: Express): Promise<void> => {
     Authorize("admin"),
     async (req: Request & UserClaims, res: Response) => {
       try {
-        res.json(await DashboardRepository.StatsMatangKasilyas());
+        const filters: DashboardFilterInterface = req.body;
+        res.json(await DashboardRepository.StatsMatangKasilyas(filters));
       } catch (error) {
         res.json(500);
       }

@@ -18,7 +18,9 @@ import {
 } from "@material-ui/core";
 import ClearAllRounded from "@material-ui/icons/ClearAllOutlined";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import "chartjs-plugin-datalabels";
 import "chartjs-plugin-labels";
+
 import moment from "moment";
 import React, { FC, memo, useCallback, useEffect, useState } from "react";
 import { Doughnut, Line, Pie } from "react-chartjs-2";
@@ -167,7 +169,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
     (store: RootStore) => store.DashboardReducer.fetch_stats_matang_kasilyas
   );
 
-  const [dashboard_year, set_dashboard_year] = useState(new Date());
+  const [dashboard_year, set_dashboard_year] = useState(null);
 
   const [purok, set_purok] = useState(["1", "2", "3", "4", "5", "6", "7", "8"]);
 
@@ -216,11 +218,11 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
     dispatch(DashboardActions.totalPwd(filters));
     dispatch(DashboardActions.totalSc(filters));
 
-    dispatch(DashboardActions.StatsPasilidadKuryente());
-    dispatch(DashboardActions.StatsBiktikmaPangabuso());
-    dispatch(DashboardActions.StatsKahimtangKomunidad());
-    dispatch(DashboardActions.StatsMatangBasura());
-    dispatch(DashboardActions.StatsMatangKasilyas());
+    dispatch(DashboardActions.StatsPasilidadKuryente(filters));
+    dispatch(DashboardActions.StatsBiktikmaPangabuso(filters));
+    dispatch(DashboardActions.StatsKahimtangKomunidad(filters));
+    dispatch(DashboardActions.StatsMatangBasura(filters));
+    dispatch(DashboardActions.StatsMatangKasilyas(filters));
   }, [dispatch, purok, dashboard_year]);
 
   useEffect(() => {

@@ -41,7 +41,8 @@ const user_repo = __importStar(require("../Repositories/UserRepository"));
 const UserController = (app) => __awaiter(void 0, void 0, void 0, function* () {
     const router = (0, express_1.Router)();
     router.get("/test", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        res.json("09/04/2024 1:53pm -The app is running" + __dirname);
+        // console.log(`28/04/2024 04:17pm - listening to ports ${PORT}`)
+        res.json("28/04/2024 04:17pm -The app is running" + __dirname);
     }));
     router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
