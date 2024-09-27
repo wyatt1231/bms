@@ -449,15 +449,16 @@ const forgotpassword = async (
   }
 };
 
-const upadatenewuser = async (user_pk: number): Promise<ResponseModel> => {
+const upadatenewuser = async (user_pk: number,update:string): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     const sql_edit_resident = await con.Modify(
       `UPDATE user SET
-         new_user='false'
+         new_user=@update
         WHERE user_pk=@user_pk;`,
       {
         user_pk: user_pk,
+        update: update
       }
     );
 

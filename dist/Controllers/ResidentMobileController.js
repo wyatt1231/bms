@@ -48,7 +48,8 @@ const ResidentMobileController = (app) => __awaiter(void 0, void 0, void 0, func
     }));
     router.post("/upadatenewuser", (0, Authorize_1.default)("admin,resident"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const user_pk = req.body.user_pk;
-        res.json(yield ResidentMobileRepository_1.default.upadatenewuser(user_pk));
+        const update = req.body.user_pk;
+        res.json(yield ResidentMobileRepository_1.default.upadatenewuser(user_pk, update));
     }));
     router.post("/updatepassword", (0, Authorize_1.default)("admin,resident"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const email = req.body.email;

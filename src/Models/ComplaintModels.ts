@@ -8,6 +8,7 @@ export interface ComplaintModel {
   reported_at?: Date;
   title?: string;
   body?: string;
+  type?:string;
   sts_pk?: string;
   upload_files: Array<any>;
   complaint_file?: Array<ComplaintFilesModel>;

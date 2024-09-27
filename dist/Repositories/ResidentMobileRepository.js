@@ -378,13 +378,14 @@ const forgotpassword = (email, password) => __awaiter(void 0, void 0, void 0, fu
         };
     }
 });
-const upadatenewuser = (user_pk) => __awaiter(void 0, void 0, void 0, function* () {
+const upadatenewuser = (user_pk, update) => __awaiter(void 0, void 0, void 0, function* () {
     const con = yield (0, DatabaseConfig_1.DatabaseConnection)();
     try {
         const sql_edit_resident = yield con.Modify(`UPDATE user SET
-         new_user='false'
+         new_user=@update
         WHERE user_pk=@user_pk;`, {
             user_pk: user_pk,
+            update: update
         });
         if (sql_edit_resident > 0) {
             con.Commit();
