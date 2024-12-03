@@ -66,7 +66,9 @@ const ResidentMobileController = async (app: Express): Promise<void> => {
     Authorize("admin,resident"),
     async (req: Request & UserClaims, res: Response) => {
       const user_pk: number = req.body.user_pk;
-      res.json(await ResidentMobileRepository.upadatenewuser(user_pk));
+      const update: string = req.body.user_pk;
+
+      res.json(await ResidentMobileRepository.upadatenewuser(user_pk,update));
     }
   );
   router.post(

@@ -12,14 +12,14 @@ const addComplaint = async (
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
-
     const sql_add_complaint = await con.Insert(
       `
           INSERT INTO complaint SET
           reported_by=@reported_by,
           title=@subject,
           body=@body,
-          sts_pk="P";
+          sts_pk="P",
+          type=@type;
            `,
       payload
     );
@@ -137,21 +137,19 @@ const getSingleComplaint = async (
     );
 
     data.complaint_file = await con.Query(
-      `
-              select * from complaint_file where complaint_pk=@complaint_pk
-            `,
+      `select * from complaint_file where complaint_pk=@complaint_pk`,
       {
         complaint_pk: complaint_pk,
       }
     );
 
-    data.user = await con.QuerySingle(
-      `Select * from vw_users where user_pk = @user_pk`,
-      {
-        user_pk: data.reported_by,
-      }
-    );
-    data.user.pic = await GetUploadedImage(data.user.pic);
+    // data.user = await con.QuerySingle(
+    //   `Select * from user where user_pk = @user_pk`,
+    //   {
+    //     user_pk: data.reported_by,
+    //   }
+    // );
+    // data.user.pic = await GetUploadedImage(data.user.pic);
 
     data.status = await con.QuerySingle(
       `Select * from status where sts_pk = @sts_pk;`,
@@ -160,6 +158,7 @@ const getSingleComplaint = async (
       }
     );
 
+    console.log(data)
     con.Commit();
     return {
       success: true,

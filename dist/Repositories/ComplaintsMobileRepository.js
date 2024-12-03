@@ -21,7 +21,8 @@ const addComplaint = (payload, files) => __awaiter(void 0, void 0, void 0, funct
           reported_by=@reported_by,
           title=@subject,
           body=@body,
-          sts_pk="P";
+          sts_pk="P",
+          type=@type;
            `, payload);
         if (sql_add_complaint.insertedId > 0) {
             for (const file of files) {
@@ -113,18 +114,20 @@ const getSingleComplaint = (complaint_pk) => __awaiter(void 0, void 0, void 0, f
         const data = yield con.QuerySingle(`SELECT * from complaint where complaint_pk = @complaint_pk`, {
             complaint_pk: complaint_pk,
         });
-        data.complaint_file = yield con.Query(`
-              select * from complaint_file where complaint_pk=@complaint_pk
-            `, {
+        data.complaint_file = yield con.Query(`select * from complaint_file where complaint_pk=@complaint_pk`, {
             complaint_pk: complaint_pk,
         });
-        data.user = yield con.QuerySingle(`Select * from vw_users where user_pk = @user_pk`, {
-            user_pk: data.reported_by,
-        });
-        data.user.pic = yield (0, useFileUploader_1.GetUploadedImage)(data.user.pic);
+        // data.user = await con.QuerySingle(
+        //   `Select * from user where user_pk = @user_pk`,
+        //   {
+        //     user_pk: data.reported_by,
+        //   }
+        // );
+        // data.user.pic = await GetUploadedImage(data.user.pic);
         data.status = yield con.QuerySingle(`Select * from status where sts_pk = @sts_pk;`, {
             sts_pk: data.sts_pk,
         });
+        console.log(data);
         con.Commit();
         return {
             success: true,
