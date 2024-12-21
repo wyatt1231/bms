@@ -21,6 +21,13 @@ export interface StatsModel {
 }
 
 export interface DashboardFilterInterface {
-  year: string;
+  year_1: string;
+  year_2: string;
+  year?: string;
   purok: Array<string>;
+}
+
+export interface PieModel {
+  label?: string;
+  total?: number;
 }

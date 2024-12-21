@@ -5,10 +5,7 @@ import { BarangayOfficialModel } from "../Models/BarangayOfficialModels";
 import { PaginationModel } from "../Models/PaginationModel";
 import { ResponseModel } from "../Models/ResponseModels";
 
-const addBarangayOfficial = async (
-  payload: BarangayOfficialModel,
-  user_pk: number
-): Promise<ResponseModel> => {
+const addBarangayOfficial = async (payload: BarangayOfficialModel, user_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -26,8 +23,7 @@ const addBarangayOfficial = async (
       con.Rollback();
       return {
         success: false,
-        message:
-          "You cannot set this resident as Brgy. Official because he/she has an existing brgy. official position",
+        message: "You cannot set this resident as Brgy. Official because he/she has an existing brgy. official position",
       };
     } else {
       const sql_add_brgy_official = await con.Insert(
@@ -42,8 +38,7 @@ const addBarangayOfficial = async (
         con.Commit();
         return {
           success: true,
-          message:
-            "The position has been granted to the brgy. official successfully",
+          message: "The position has been granted to the brgy. official successfully",
         };
       } else {
         con.Rollback();
@@ -63,9 +58,7 @@ const addBarangayOfficial = async (
   }
 };
 
-const removeBarangayOfficial = async (
-  official_pk: string
-): Promise<ResponseModel> => {
+const removeBarangayOfficial = async (official_pk: string): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -105,9 +98,7 @@ const removeBarangayOfficial = async (
   }
 };
 
-const getBrgyOfficialDataTable = async (
-  payload: PaginationModel
-): Promise<ResponseModel> => {
+const getBrgyOfficialDataTable = async (payload: PaginationModel): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -115,9 +106,16 @@ const getBrgyOfficialDataTable = async (
     const data: Array<BarangayOfficialModel> = await con.QueryPagination(
       `
       SELECT * FROM 
-      (SELECT r.first_name,r.resident_pk,r.middle_name,r.last_name,r.suffix,r.pic,r.gender,bo.official_pk,bo.position,bo.encoded_at,bo.sts_pk,s.sts_backgroundColor,s.sts_color,s.sts_desc, bo.rank FROM barangay_official bo 
+      (SELECT r.first_name,r.resident_pk,r.middle_name,r.last_name,r.suffix,r.pic,r.gender,bo.official_pk,bo.position,bo.encoded_at,bo.sts_pk,s.sts_backgroundColor,s.sts_color,s.sts_desc,
+      (if (bo.position = 'Punong Barangay', 1 ,  
+      if (bo.position = 'Kagawad' , 1, 
+      if (bo.position = 'Secretary' , 2, 
+      if (bo.position = 'Purok Leader' , 4, 5))))) as rank 
+            FROM barangay_official bo 
       JOIN resident r ON bo.resident_pk = r.resident_pk
-      LEFT JOIN status s ON s.sts_pk = bo.sts_pk) tmp
+          LEFT JOIN status s ON s.sts_pk = bo.sts_pk) tmp
+      
+
       WHERE 
       
       first_name like concat('%',@first_name,'%')
@@ -135,9 +133,7 @@ const getBrgyOfficialDataTable = async (
       data.splice(data.length - 1, 1);
     }
 
-    const count: number = hasMore
-      ? -1
-      : payload.page.begin * payload.page.limit + data.length;
+    const count: number = hasMore ? -1 : payload.page.begin * payload.page.limit + data.length;
 
     for (const admin of data) {
       admin.pic = await GetUploadedImage(admin.pic);
@@ -171,7 +167,12 @@ const getBrgyOfficialList = async (): Promise<ResponseModel> => {
     const data: Array<BarangayOfficialModel> = await con.Query(
       `
       SELECT * FROM 
-      (SELECT r.first_name,r.middle_name,r.last_name,r.suffix,r.pic,r.gender,bo.position,bo.rank,bo.encoded_at,bo.sts_pk,s.sts_backgroundColor,s.sts_color,s.sts_desc FROM barangay_official bo 
+      (SELECT r.first_name,r.middle_name,r.last_name,r.suffix,r.pic,r.gender,bo.position,
+      (if (bo.position = 'Punong Barangay', 1 ,  
+      if (bo.position = 'Kagawad' , 1, 
+      if (bo.position = 'Secretary' , 2, 
+      if (bo.position = 'Purok Leader' , 4, 5))))) as rank ,
+          bo.encoded_at,bo.sts_pk,s.sts_backgroundColor,s.sts_color,s.sts_desc FROM barangay_official bo 
       JOIN resident r ON bo.resident_pk = r.resident_pk
       LEFT JOIN STATUS s ON s.sts_pk = bo.sts_pk) tmp ORDER BY tmp.rank ASC
       `,

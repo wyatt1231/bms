@@ -1,5 +1,7 @@
 node_modules
+/dist
 /client/node_modules
+/client/dist
 /src/Storage
 /Storage/Files
 storage

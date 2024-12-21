@@ -2,8 +2,9 @@ import { DatabaseConnection } from "../Configurations/DatabaseConfig";
 import { ErrorMessage } from "../Hooks/useErrorMessage";
 import { GetUploadedImage } from "../Hooks/useFileUploader";
 import { CreateToken } from "../Hooks/useJwt";
+import { DatabaseConnectionModel } from "../Models/DatabaseModel";
 import { ResponseModel } from "../Models/ResponseModels";
-import { UserClaims, UserLogin } from "../Models/UserModels";
+import { UserClaims, UserLogin, UserModel } from "../Models/UserModels";
 
 export const loginUser = async (payload: UserLogin): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
@@ -15,6 +16,12 @@ export const loginUser = async (payload: UserLogin): Promise<ResponseModel> => {
       `SELECT user_pk,user_type,allow_login FROM user u WHERE u.password = AES_ENCRYPT(@password,@email)`,
       payload
     );
+
+    if (user.user_type == `resident`) {
+      const is_resident_admin = await isResidentAdmin(user.user_pk, con);
+      user.user_type = is_resident_admin ? `admin` : `resident`;
+      //check if brgy officials
+    }
 
     if (user) {
       if (user.allow_login === "n") {
@@ -62,13 +69,27 @@ export const loginUser = async (payload: UserLogin): Promise<ResponseModel> => {
   }
 };
 
+const isResidentAdmin = async (user_pk: number, con: DatabaseConnectionModel) => {
+  const sql_get_pic = await con.QuerySingle(
+    `
+    select r.resident_pk  FROM resident r where
+    r.user_pk = @user_pk and  
+    r.resident_pk 
+    in (select bo.resident_pk from barangay_official bo where bo.position in ( 'punong barangay','kagawad', 'secretary ','purok leader')) ;
+    `,
+    { user_pk }
+  );
+
+  return !!sql_get_pic?.resident_pk;
+};
+
 export const currentUser = async (user_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
 
   try {
     await con.BeginTransaction();
 
-    const user_data = await con.QuerySingle(
+    const user_data: UserModel = await con.QuerySingle(
       `  SELECT u.user_pk,u.user_type,u.full_name,u.new_user FROM user u LEFT JOIN resident r ON r.user_pk=u.user_pk
       where u.user_pk = @user_pk
       `,
@@ -78,18 +99,17 @@ export const currentUser = async (user_pk: number): Promise<ResponseModel> => {
     );
 
     if (user_data.user_type === "admin") {
-      const sql_get_pic = await con.QuerySingle(
-        `SELECT pic FROM administrator WHERE user_pk=${user_pk} LIMIT 1`,
-        null
-      );
+      const sql_get_pic = await con.QuerySingle(`SELECT pic FROM administrator WHERE user_pk=${user_pk} LIMIT 1`, null);
       user_data.pic = await GetUploadedImage(sql_get_pic?.pic);
     } else if (user_data.user_type === "resident") {
-      const sql_get_pic = await con.QuerySingle(
-        `SELECT pic FROM resident WHERE user_pk=${user_pk} LIMIT 1`,
-        null
-      );
+      const sql_get_pic = await con.QuerySingle(`SELECT pic FROM resident WHERE user_pk=${user_pk} LIMIT 1`, null);
       user_data.pic = await GetUploadedImage(sql_get_pic?.pic);
+
+      const is_resident_admin = await isResidentAdmin(user_data.user_pk, con);
+      user_data.user_type = is_resident_admin ? `admin` : `resident`;
     }
+
+    console.log(`user_data`, user_data);
 
     await con.Commit();
 
@@ -122,16 +142,10 @@ export const userinfo = async (user_pk: number): Promise<ResponseModel> => {
     );
 
     if (user_data.user_type === "admin") {
-      const sql_get_pic = await con.QuerySingle(
-        `SELECT pic FROM administrator WHERE user_pk=${user_pk} LIMIT 1`,
-        null
-      );
+      const sql_get_pic = await con.QuerySingle(`SELECT pic FROM administrator WHERE user_pk=${user_pk} LIMIT 1`, null);
       user_data.pic = await GetUploadedImage(sql_get_pic?.pic);
     } else if (user_data.user_type === "resident") {
-      const sql_get_pic = await con.QuerySingle(
-        `SELECT pic FROM resident WHERE user_pk=${user_pk} LIMIT 1`,
-        null
-      );
+      const sql_get_pic = await con.QuerySingle(`SELECT pic FROM resident WHERE user_pk=${user_pk} LIMIT 1`, null);
       user_data.pic = await GetUploadedImage(sql_get_pic?.pic);
     }
 

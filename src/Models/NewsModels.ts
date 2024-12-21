@@ -17,7 +17,7 @@ export interface NewsModel {
   pub_date?: Date | string;
   is_prio?: "true" | boolean | 1 | 0;
   news_files?: Array<NewsFileModel>;
-  upload_files: Array<any>;
+  upload_files?: Array<any>;
   user_full_name?: string;
   user_pic?: string;
   user_pk?: string;

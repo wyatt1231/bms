@@ -1,14 +1,8 @@
-import {
-  DashboardReducerModel,
-  DashboardReducerTypes,
-} from "../Types/DashboardTypes";
+import { DashboardReducerModel, DashboardReducerTypes } from "../Types/DashboardTypes";
 
 const defaultState: DashboardReducerModel = {};
 
-const DashboardReducer = (
-  state: DashboardReducerModel = defaultState,
-  action: DashboardReducerTypes
-): DashboardReducerModel => {
+const DashboardReducer = (state: DashboardReducerModel = defaultState, action: DashboardReducerTypes): DashboardReducerModel => {
   switch (action.type) {
     case "overall_population": {
       return {
@@ -22,11 +16,17 @@ const DashboardReducer = (
         fetch_overall_population: action.fetch_overall_population,
       };
     }
-
-    case "age_group_stats": {
+    //
+    case "age_group_stats_year_1": {
       return {
         ...state,
-        age_group_stats: action.age_group_stats,
+        age_group_stats_year_1: action.age_group_stats_year_1,
+      };
+    }
+    case "age_group_stats_year_2": {
+      return {
+        ...state,
+        age_group_stats_year_2: action.age_group_stats_year_2,
       };
     }
     case "fetch_age_group_stats": {
@@ -35,7 +35,7 @@ const DashboardReducer = (
         fetch_age_group_stats: action.fetch_age_group_stats,
       };
     }
-
+    //
     case "gender_stats": {
       return {
         ...state,
@@ -141,10 +141,16 @@ const DashboardReducer = (
     }
 
     //
-    case "stats_biktima_pangabuso": {
+    case "stats_biktima_pangabuso_year_1": {
       return {
         ...state,
-        stats_biktima_pangabuso: action.stats_biktima_pangabuso,
+        stats_biktima_pangabuso_year_1: action.stats_biktima_pangabuso_year_1,
+      };
+    }
+    case "stats_biktima_pangabuso_year_2": {
+      return {
+        ...state,
+        stats_biktima_pangabuso_year_2: action.stats_biktima_pangabuso_year_2,
       };
     }
     case "fetch_stats_biktima_pangabuso": {

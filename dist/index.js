@@ -26,10 +26,13 @@ exports.app = (0, express_1.default)();
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     dotenv_1.default.config();
     //test
-    // app.use(BodyParser.json({ limit: "100mb" }));
+    // app.use(bodyParser.json({ limit: "100mb" }));
     exports.app.use(express_1.default.json({ limit: "100mb" }));
     // app.use(jsonErrorHandler);
-    exports.app.use((0, express_fileupload_1.default)());
+    // app.use(FileUpload());
+    exports.app.use((0, express_fileupload_1.default)({
+        createParentPath: true, // Automatically create directories if they don’t exist
+    }));
     exports.app.use(express_1.default.static("./"));
     const server = http_1.default.createServer(exports.app);
     const socketServer = new socket_io_1.Server(server, {

@@ -40,6 +40,9 @@ import { YearlyStatsModel } from "../../../Services/Models/DashboardModel";
 import { RootStore } from "../../../Services/Store";
 import { Colors } from "../../../Storage/LocalDatabase";
 
+// import { ArcElement, Chart as ChartJS, Tooltip as ChartTooltip, Legend } from "chart.js";
+// ChartJS.register(ArcElement, ChartTooltip, Legend);
+
 interface IDashbboardAdminView {}
 
 const puroks = ["1", "2", "3", "4", "5", "6", "7", "8"];
@@ -47,129 +50,67 @@ const puroks = ["1", "2", "3", "4", "5", "6", "7", "8"];
 export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
   const dispatch = useDispatch();
 
-  const overall_population = useSelector(
-    (store: RootStore) => store.DashboardReducer.overall_population
-  );
+  const overall_population = useSelector((store: RootStore) => store.DashboardReducer.overall_population);
 
-  const fetch_overall_population = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_overall_population
-  );
+  const fetch_overall_population = useSelector((store: RootStore) => store.DashboardReducer.fetch_overall_population);
 
-  const gender_stats = useSelector(
-    (store: RootStore) => store.DashboardReducer.gender_stats
-  );
+  const gender_stats = useSelector((store: RootStore) => store.DashboardReducer.gender_stats);
 
-  const fetch_gender_stats = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_gender_stats
-  );
+  const fetch_gender_stats = useSelector((store: RootStore) => store.DashboardReducer.fetch_gender_stats);
 
-  const age_group_stats = useSelector(
-    (store: RootStore) => store.DashboardReducer.age_group_stats
-  );
-  const fetch_age_group_stats = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_age_group_stats
-  );
+  const age_group_stats_year_1 = useSelector((store: RootStore) => store.DashboardReducer.age_group_stats_year_1);
+  const age_group_stats_year_2 = useSelector((store: RootStore) => store.DashboardReducer.age_group_stats_year_2);
+  const fetch_age_group_stats = useSelector((store: RootStore) => store.DashboardReducer.fetch_age_group_stats);
 
-  const life_stage_stats = useSelector(
-    (store: RootStore) => store.DashboardReducer.life_stage_stats
-  );
-  const fetch_life_stage_stats = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_life_stage_stats
-  );
+  const life_stage_stats = useSelector((store: RootStore) => store.DashboardReducer.life_stage_stats);
+  const fetch_life_stage_stats = useSelector((store: RootStore) => store.DashboardReducer.fetch_life_stage_stats);
 
-  const news_stats = useSelector(
-    (store: RootStore) => store.DashboardReducer.news_stats
-  );
-  const fetch_news_stats = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_news_stats
-  );
+  const news_stats = useSelector((store: RootStore) => store.DashboardReducer.news_stats);
+  const fetch_news_stats = useSelector((store: RootStore) => store.DashboardReducer.fetch_news_stats);
 
-  const complaint_stats = useSelector(
-    (store: RootStore) => store.DashboardReducer.complaint_stats
-  );
+  const complaint_stats = useSelector((store: RootStore) => store.DashboardReducer.complaint_stats);
 
-  const fetch_complaint_stats = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_complaint_stats
-  );
+  const fetch_complaint_stats = useSelector((store: RootStore) => store.DashboardReducer.fetch_complaint_stats);
 
-  const news_latest = useSelector(
-    (store: RootStore) => store.NewsReducer.news_latest
-  );
-  const fetch_news_latest = useSelector(
-    (store: RootStore) => store.NewsReducer.fetch_news_latest
-  );
+  const news_latest = useSelector((store: RootStore) => store.NewsReducer.news_latest);
+  const fetch_news_latest = useSelector((store: RootStore) => store.NewsReducer.fetch_news_latest);
 
-  const latest_complaint = useSelector(
-    (store: RootStore) => store.ComplaintReducer.latest_complaint
-  );
-  const fetch_latest_complaint = useSelector(
-    (store: RootStore) => store.ComplaintReducer.fetch_latest_complaint
-  );
+  const latest_complaint = useSelector((store: RootStore) => store.ComplaintReducer.latest_complaint);
+  const fetch_latest_complaint = useSelector((store: RootStore) => store.ComplaintReducer.fetch_latest_complaint);
 
-  const total_population = useSelector(
-    (store: RootStore) => store.DashboardReducer.total_population
-  );
-  const fetch_total_population = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_total_population
-  );
+  const total_population = useSelector((store: RootStore) => store.DashboardReducer.total_population);
+  const fetch_total_population = useSelector((store: RootStore) => store.DashboardReducer.fetch_total_population);
 
-  const total_death = useSelector(
-    (store: RootStore) => store.DashboardReducer.total_death
-  );
-  const fetch_total_death = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_total_death
-  );
+  const total_death = useSelector((store: RootStore) => store.DashboardReducer.total_death);
+  const fetch_total_death = useSelector((store: RootStore) => store.DashboardReducer.fetch_total_death);
 
-  const total_sc = useSelector(
-    (store: RootStore) => store.DashboardReducer.total_sc
-  );
-  const fetch_total_sc = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_total_sc
-  );
+  const total_sc = useSelector((store: RootStore) => store.DashboardReducer.total_sc);
+  const fetch_total_sc = useSelector((store: RootStore) => store.DashboardReducer.fetch_total_sc);
 
-  const total_pwd = useSelector(
-    (store: RootStore) => store.DashboardReducer.total_pwd
-  );
-  const fetch_total_pwd = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_total_pwd
-  );
+  const total_pwd = useSelector((store: RootStore) => store.DashboardReducer.total_pwd);
+  const fetch_total_pwd = useSelector((store: RootStore) => store.DashboardReducer.fetch_total_pwd);
 
   //
-  const stats_pasilidad_kuryente = useSelector(
-    (store: RootStore) => store.DashboardReducer.stats_pasilidad_kuryente
-  );
-  const fetch_stats_pasilidad_kuryente = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_stats_pasilidad_kuryente
-  );
-  const stats_biktima_pangabuso = useSelector(
-    (store: RootStore) => store.DashboardReducer.stats_biktima_pangabuso
-  );
-  const fetch_stats_biktima_pangabuso = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_stats_biktima_pangabuso
-  );
-  //
-  const stats_kahimtang_komunidad = useSelector(
-    (store: RootStore) => store.DashboardReducer.stats_kahimtang_komunidad
-  );
-  const fetch_stats_kahimtang_komunidad = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_stats_kahimtang_komunidad
-  );
-  //
-  const stats_matang_basura = useSelector(
-    (store: RootStore) => store.DashboardReducer.stats_matang_basura
-  );
-  const fetch_stats_matang_basura = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_stats_matang_basura
-  );
-  //
-  const stats_matang_kasilyas = useSelector(
-    (store: RootStore) => store.DashboardReducer.stats_matang_kasilyas
-  );
-  const fetch_stats_matang_kasilyas = useSelector(
-    (store: RootStore) => store.DashboardReducer.fetch_stats_matang_kasilyas
-  );
 
-  const [dashboard_year, set_dashboard_year] = useState(null);
+  const stats_biktima_pangabuso_year_1 = useSelector((store: RootStore) => store.DashboardReducer.stats_biktima_pangabuso_year_1);
+  const stats_biktima_pangabuso_year_2 = useSelector((store: RootStore) => store.DashboardReducer.stats_biktima_pangabuso_year_2);
+  const fetch_stats_biktima_pangabuso = useSelector((store: RootStore) => store.DashboardReducer.fetch_stats_biktima_pangabuso);
+  //
+  const stats_pasilidad_kuryente = useSelector((store: RootStore) => store.DashboardReducer.stats_pasilidad_kuryente);
+  const fetch_stats_pasilidad_kuryente = useSelector((store: RootStore) => store.DashboardReducer.fetch_stats_pasilidad_kuryente);
+
+  //
+  const stats_kahimtang_komunidad = useSelector((store: RootStore) => store.DashboardReducer.stats_kahimtang_komunidad);
+  const fetch_stats_kahimtang_komunidad = useSelector((store: RootStore) => store.DashboardReducer.fetch_stats_kahimtang_komunidad);
+  //
+  const stats_matang_basura = useSelector((store: RootStore) => store.DashboardReducer.stats_matang_basura);
+  const fetch_stats_matang_basura = useSelector((store: RootStore) => store.DashboardReducer.fetch_stats_matang_basura);
+  //
+  const stats_matang_kasilyas = useSelector((store: RootStore) => store.DashboardReducer.stats_matang_kasilyas);
+  const fetch_stats_matang_kasilyas = useSelector((store: RootStore) => store.DashboardReducer.fetch_stats_matang_kasilyas);
+
+  const [dashboard_year_1, set_dashboard_year_1] = useState(moment().subtract(1, `year`).toDate());
+  const [dashboard_year_2, set_dashboard_year_2] = useState(moment().toDate());
 
   const [purok, set_purok] = useState(["1", "2", "3", "4", "5", "6", "7", "8"]);
 
@@ -182,10 +123,6 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
 
       return [...p];
     });
-  }, []);
-
-  const handleChangeDashboardYear = useCallback((date: Date) => {
-    set_dashboard_year(date);
   }, []);
 
   const handleCheckPurok = useCallback((purok: string) => {
@@ -203,11 +140,13 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
 
   useEffect(() => {
     // dispatch(FamilyActions.getAllFamily(purok));
-    const year = moment(dashboard_year).format("YYYY");
+    const year_1 = moment(dashboard_year_1).format("YYYY");
+    const year_2 = moment(dashboard_year_2).format("YYYY");
 
     const filters = {
       purok: purok,
-      year: year,
+      year_1: year_1,
+      year_2: year_2,
     };
 
     dispatch(DashboardActions.totalPopulation(filters));
@@ -223,7 +162,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
     dispatch(DashboardActions.StatsKahimtangKomunidad(filters));
     dispatch(DashboardActions.StatsMatangBasura(filters));
     dispatch(DashboardActions.StatsMatangKasilyas(filters));
-  }, [dispatch, purok, dashboard_year]);
+  }, [dispatch, purok, dashboard_year_1, dashboard_year_2]);
 
   useEffect(() => {
     dispatch(DashboardActions.setOverallPopulation(purok));
@@ -255,6 +194,19 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
       mounted = false;
     };
   }, [dispatch]);
+
+  const setToArray = (arr: any[]) => {
+    const uniqueSet: any = new Set(arr);
+    const uniqueArray = [...uniqueSet];
+    return uniqueArray;
+  };
+  const getYear1 = () => {
+    return !!dashboard_year_1 ? moment(dashboard_year_1).format(`YYYY`) : `<Not Set>`;
+  };
+
+  const getYear2 = () => {
+    return !!dashboard_year_2 ? moment(dashboard_year_2).format(`YYYY`) : `<Not Set>`;
+  };
 
   return (
     <>
@@ -336,6 +288,34 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
             </Grid>
           </Grid>
 
+          <Grid item container spacing={2} xs={12}>
+            <Grid item xs={6} md={3}>
+              <div className="stats-item">
+                <div className="value">{fetch_total_population ? <CircularProgress /> : total_population}</div>
+                <div className="label">TIBUOK PAPOLASYON</div>
+              </div>
+            </Grid>
+
+            <Grid item xs={6} md={3}>
+              <div className="stats-item">
+                <div className="value">{fetch_total_death ? <CircularProgress /> : total_death}</div>
+                <div className="label">NAMATAY</div>
+              </div>
+            </Grid>
+            <Grid item xs={6} md={3}>
+              <div className="stats-item">
+                <div className="value">{fetch_total_pwd ? <CircularProgress /> : total_pwd}</div>
+                <div className="label">PWD</div>
+              </div>
+            </Grid>
+            <Grid item xs={6} md={3}>
+              <div className="stats-item">
+                <div className="value">{fetch_total_sc ? <CircularProgress /> : total_sc}</div>
+                <div className="label">Senior Citizen</div>
+              </div>
+            </Grid>
+          </Grid>
+
           <Grid item xs={12}>
             <div
               style={{
@@ -347,9 +327,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                 boxShadow: `0 2px 5px rgba(0,0,0,.1)`,
               }}
             >
-              <div className="title">
-                Tinuig nga Estadistika sa sulod sa pulo (10) ka tuig
-              </div>
+              <div className="title">Tinuig nga Estadistika sa sulod sa pulo (10) ka tuig</div>
               {fetch_overall_population || !overall_population ? (
                 <CircularLoadingProgress />
               ) : (
@@ -428,60 +406,38 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
           </Grid>
 
           <Grid item xs={12}>
-            <Grid container justify="center">
+            <Grid container justify="center" spacing={3}>
               <Grid item>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <DatePicker
                     views={["year"]}
-                    label={"Ipakita ang Tuig"}
-                    value={dashboard_year}
-                    onChange={handleChangeDashboardYear}
+                    label={"Unang Tuig"}
+                    value={dashboard_year_1}
+                    onChange={(date: Date) => {
+                      set_dashboard_year_1(date);
+                    }}
                     autoOk
                     disableFuture
                     fullWidth
                   />
                 </MuiPickersUtilsProvider>
               </Grid>
-            </Grid>
-          </Grid>
 
-          <Grid item container spacing={2} xs={12}>
-            <Grid item xs={6} md={3}>
-              <div className="stats-item">
-                <div className="value">
-                  {fetch_total_population ? (
-                    <CircularProgress />
-                  ) : (
-                    total_population
-                  )}
-                </div>
-                <div className="label">TIBUOK PAPOLASYON</div>
-              </div>
-            </Grid>
-
-            <Grid item xs={6} md={3}>
-              <div className="stats-item">
-                <div className="value">
-                  {fetch_total_death ? <CircularProgress /> : total_death}
-                </div>
-                <div className="label">NAMATAY</div>
-              </div>
-            </Grid>
-            <Grid item xs={6} md={3}>
-              <div className="stats-item">
-                <div className="value">
-                  {fetch_total_pwd ? <CircularProgress /> : total_pwd}
-                </div>
-                <div className="label">PWD</div>
-              </div>
-            </Grid>
-            <Grid item xs={6} md={3}>
-              <div className="stats-item">
-                <div className="value">
-                  {fetch_total_sc ? <CircularProgress /> : total_sc}
-                </div>
-                <div className="label">Senior Citizen</div>
-              </div>
+              <Grid item>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <DatePicker
+                    views={["year"]}
+                    label={"Ikaduhang Tuig"}
+                    value={dashboard_year_2}
+                    onChange={(date: Date) => {
+                      set_dashboard_year_2(date);
+                    }}
+                    autoOk
+                    disableFuture
+                    fullWidth
+                  />
+                </MuiPickersUtilsProvider>
+              </Grid>
             </Grid>
           </Grid>
 
@@ -499,16 +455,17 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
             >
               <div className="title">Estadistika sa Grupo sa Edad</div>
 
-              {fetch_age_group_stats || !age_group_stats ? (
+              {fetch_age_group_stats || !age_group_stats_year_1 || !age_group_stats_year_2 ? (
                 <CircularLoadingProgress />
               ) : (
                 <Line
                   type="line"
+                  height={175}
                   data={{
-                    labels: age_group_stats.labels,
+                    labels: setToArray([...age_group_stats_year_1.labels, ...age_group_stats_year_2.labels]),
                     datasets: [
                       {
-                        label: "Han-ay sa Edad",
+                        label: getYear1(),
                         fillColor: "blue",
                         strokeColor: "blue",
                         highlightFill: "blue",
@@ -521,7 +478,23 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                             },
                           ],
                         },
-                        data: age_group_stats.data_set,
+                        data: age_group_stats_year_1.data_set,
+                      },
+                      {
+                        label: getYear2(),
+                        fillColor: "red",
+                        strokeColor: "red",
+                        highlightFill: "red",
+                        highlightStroke: "red",
+                        borderColor: "red",
+                        scales: {
+                          yAxes: [
+                            {
+                              stacked: true,
+                            },
+                          ],
+                        },
+                        data: age_group_stats_year_2.data_set,
                       },
                     ],
                   }}
@@ -574,47 +547,101 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                   paddingTop: `.5em`,
                 }}
               >
-                {fetch_stats_biktima_pangabuso || !stats_biktima_pangabuso ? (
+                {fetch_stats_biktima_pangabuso || !stats_biktima_pangabuso_year_1 || !stats_biktima_pangabuso_year_2 ? (
                   <CircularLoadingProgress />
                 ) : (
-                  <Pie
-                    type="pie"
-                    height={200}
-                    data={{
-                      labels: stats_biktima_pangabuso.map((a) => a.label),
-                      datasets: [
-                        {
-                          labels: stats_biktima_pangabuso.map((a) => a.label),
-                          data: stats_biktima_pangabuso.map((a) => a.total),
-                          backgroundColor: stats_biktima_pangabuso.map((a) => {
-                            const color =
-                              Colors[Math.floor(Math.random() * Colors.length)];
-                            return color;
-                          }),
-                          borderColor: "#fff",
-                        },
-                      ],
-                    }}
-                    options={{
-                      responsiveAnimationDuration: 1,
-                      tooltips: {
-                        enabled: false,
-                      },
-                      plugins: {
-                        labels: {
-                          render: "percentage",
-                          precision: 0,
-                          showZero: true,
-                          fontSize: 12,
-                          fontColor: "#fff",
-                        },
-                      },
-                    }}
-                  />
+                  <div style={{ display: `grid`, gridAutoFlow: `column`, gridAutoColumns: `1fr 1fr` }}>
+                    <div className="pie-chart-wrapper">
+                      <label>{getYear1()}</label>
+
+                      {stats_biktima_pangabuso_year_1.some((p) => p.total > 0) ? (
+                        <Pie
+                          type="pie"
+                          data={{
+                            datasets: [
+                              {
+                                labels: stats_biktima_pangabuso_year_1.map((a) => a.label),
+                                data: stats_biktima_pangabuso_year_1.map((a) => a.total),
+                                backgroundColor: [`red`, `orange`, `yellow`, `green`, `blue`],
+                                borderColor: "#fff",
+                              },
+                            ],
+                          }}
+                          options={{
+                            responsive: true, // Disable responsiveness
+                            maintainAspectRatio: false, // Allow custom width & height
+                            tooltips: {
+                              callbacks: {
+                                label: function (tooltipItem) {
+                                  const label = stats_biktima_pangabuso_year_1.map((a) => a.label)[tooltipItem.index]; // Corresponding label
+                                  return `${label}`;
+                                },
+                              },
+                            },
+                            plugins: {
+                              labels: {
+                                render: "percentage",
+                                precision: 0,
+                                showZero: true,
+                                fontSize: 12,
+                                fontColor: "#fff",
+                              },
+                            },
+                          }}
+                        />
+                      ) : (
+                        <label>No census found in {getYear1()}</label>
+                      )}
+                    </div>
+
+                    <div className="pie-chart-wrapper">
+                      <label>{getYear2()}</label>
+                      {stats_biktima_pangabuso_year_2.some((p) => p.total > 0) ? (
+                        <Pie
+                          type="pie"
+                          data={{
+                            datasets: [
+                              {
+                                labels: stats_biktima_pangabuso_year_2.map((a) => a.label),
+                                data: stats_biktima_pangabuso_year_2.map((a) => a.total),
+                                backgroundColor: [`red`, `orange`, `yellow`, `green`, `blue`],
+                                borderColor: "#fff",
+                              },
+                            ],
+                          }}
+                          options={{
+                            responsive: true, // Disable responsiveness
+                            maintainAspectRatio: false, // Allow custom width & height
+                            tooltips: {
+                              callbacks: {
+                                label: function (tooltipItem) {
+                                  const label = stats_biktima_pangabuso_year_2.map((a) => a.label)[tooltipItem.index]; // Corresponding label
+                                  return `${label}`;
+                                },
+                              },
+                            },
+                            plugins: {
+                              labels: {
+                                render: "percentage",
+                                precision: 0,
+                                showZero: true,
+                                fontSize: 12,
+                                fontColor: "#fff",
+                              },
+                            },
+                          }}
+                        />
+                      ) : (
+                        <label>No census found in {getYear2()}</label>
+                      )}
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
           </Grid>
+
+          <Grid item xs={12} md={4}></Grid>
 
           <Grid item xs={12} md={4}>
             <div
@@ -648,8 +675,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                           labels: stats_pasilidad_kuryente.map((a) => a.label),
                           data: stats_pasilidad_kuryente.map((a) => a.total),
                           backgroundColor: stats_pasilidad_kuryente.map((a) => {
-                            const color =
-                              Colors[Math.floor(Math.random() * Colors.length)];
+                            const color = Colors[Math.floor(Math.random() * Colors.length)];
                             return color;
                           }),
                           borderColor: "#fff",
@@ -696,8 +722,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                   paddingTop: `.5em`,
                 }}
               >
-                {fetch_stats_kahimtang_komunidad ||
-                !stats_kahimtang_komunidad ? (
+                {fetch_stats_kahimtang_komunidad || !stats_kahimtang_komunidad ? (
                   <CircularLoadingProgress />
                 ) : (
                   <Pie
@@ -709,15 +734,10 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                         {
                           labels: stats_kahimtang_komunidad.map((a) => a.label),
                           data: stats_kahimtang_komunidad.map((a) => a.total),
-                          backgroundColor: stats_kahimtang_komunidad.map(
-                            (a) => {
-                              const color =
-                                Colors[
-                                  Math.floor(Math.random() * Colors.length)
-                                ];
-                              return color;
-                            }
-                          ),
+                          backgroundColor: stats_kahimtang_komunidad.map((a) => {
+                            const color = Colors[Math.floor(Math.random() * Colors.length)];
+                            return color;
+                          }),
                           borderColor: "#fff",
                         },
                       ],
@@ -775,8 +795,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                           labels: stats_matang_basura.map((a) => a.label),
                           data: stats_matang_basura.map((a) => a.total),
                           backgroundColor: stats_matang_basura.map((a) => {
-                            const color =
-                              Colors[Math.floor(Math.random() * Colors.length)];
+                            const color = Colors[Math.floor(Math.random() * Colors.length)];
                             return color;
                           }),
                           borderColor: "#fff",
@@ -836,8 +855,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                           labels: stats_matang_kasilyas.map((a) => a.label),
                           data: stats_matang_kasilyas.map((a) => a.total),
                           backgroundColor: stats_matang_kasilyas.map((a) => {
-                            const color =
-                              Colors[Math.floor(Math.random() * Colors.length)];
+                            const color = Colors[Math.floor(Math.random() * Colors.length)];
                             return color;
                           }),
                           borderColor: "#fff",
@@ -1021,14 +1039,10 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                                   className="image"
                                   variant="circle"
                                   src={`${f.user?.pic}`}
-                                  errorMessage={`${f.user?.full_name?.charAt(
-                                    0
-                                  )}`}
+                                  errorMessage={`${f.user?.full_name?.charAt(0)}`}
                                 />
                                 <div className="title">
-                                  <span style={{ textTransform: "capitalize" }}>
-                                    {f.user.full_name}
-                                  </span>
+                                  <span style={{ textTransform: "capitalize" }}>{f.user.full_name}</span>
                                 </div>
                               </div>
                             </TableCell>
@@ -1036,9 +1050,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                               <b>{f.title}</b>
                             </TableCell>
                             <TableCell>
-                              <small>
-                                {InvalidDateTimeToDefault(f.reported_at, "-")}
-                              </small>
+                              <small>{InvalidDateTimeToDefault(f.reported_at, "-")}</small>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -1059,9 +1071,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                     height: `100%`,
                   }}
                 >
-                  <div className="title">
-                    Proporsyon sa estado sa mga reklamo
-                  </div>
+                  <div className="title">Proporsyon sa estado sa mga reklamo</div>
                   <div
                     style={{
                       padding: `1em`,
@@ -1080,9 +1090,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                             {
                               labels: complaint_stats.map((a) => a.label),
                               data: complaint_stats.map((a) => a.total),
-                              backgroundColor: complaint_stats.map(
-                                (a) => a.backgroundColor
-                              ),
+                              backgroundColor: complaint_stats.map((a) => a.backgroundColor),
                               borderColor: "#fff",
                             },
                           ],
@@ -1145,14 +1153,10 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                                   className="image"
                                   variant="circle"
                                   src={`${f.user?.pic}`}
-                                  errorMessage={`${f.user?.full_name?.charAt(
-                                    0
-                                  )}`}
+                                  errorMessage={`${f.user?.full_name?.charAt(0)}`}
                                 />
                                 <div className="title">
-                                  <span style={{ textTransform: "capitalize" }}>
-                                    {f.user?.full_name}
-                                  </span>
+                                  <span style={{ textTransform: "capitalize" }}>{f.user?.full_name}</span>
                                 </div>
                               </div>
                             </TableCell>
@@ -1160,9 +1164,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                               <b>{f.title}</b>
                             </TableCell>
                             <TableCell>
-                              <small>
-                                {InvalidDateTimeToDefault(f.encoded_at, "-")}
-                              </small>
+                              <small>{InvalidDateTimeToDefault(f.encoded_at, "-")}</small>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -1184,9 +1186,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                     height: `100%`,
                   }}
                 >
-                  <div className="title">
-                    Proporsyon sa estado sa mga balita
-                  </div>
+                  <div className="title">Proporsyon sa estado sa mga balita</div>
                   <div
                     style={{
                       padding: `1em`,
@@ -1205,9 +1205,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                             {
                               labels: news_stats.map((a) => a.label),
                               data: news_stats.map((a) => a.total),
-                              backgroundColor: news_stats.map(
-                                (a) => a.backgroundColor
-                              ),
+                              backgroundColor: news_stats.map((a) => a.backgroundColor),
                               borderColor: "black",
                               color: `black`,
                               borderWidth: 0.5,
@@ -1244,9 +1242,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
 
 export default DashbboardAdminView;
 
-const findValuesOfStats = (
-  data_set: Array<YearlyStatsModel>
-): Array<number | string> => {
+const findValuesOfStats = (data_set: Array<YearlyStatsModel>): Array<number | string> => {
   const values: Array<number | string> = [];
 
   data_set.forEach((d) => {

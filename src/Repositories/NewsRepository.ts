@@ -1,10 +1,7 @@
 import axios from "axios";
 import qs from "qs";
 import { DatabaseConnection } from "../Configurations/DatabaseConfig";
-import {
-  parseInvalidDateToDefault,
-  sqlFilterDate,
-} from "../Hooks/useDateParser";
+import { parseInvalidDateToDefault, sqlFilterDate } from "../Hooks/useDateParser";
 import { ErrorMessage } from "../Hooks/useErrorMessage";
 import { GetUploadedImage, UploadFile } from "../Hooks/useFileUploader";
 import { NewsCommentModel } from "../Models/NewsCommentModels";
@@ -26,10 +23,7 @@ const getNewsComments = async (news_pk: string): Promise<ResponseModel> => {
       }
     );
     for (const file of data) {
-      const sql_get_pic = await con.QuerySingle(
-        `SELECT pic FROM resident WHERE user_pk=${file?.user_pk} LIMIT 1`,
-        null
-      );
+      const sql_get_pic = await con.QuerySingle(`SELECT pic FROM resident WHERE user_pk=${file?.user_pk} LIMIT 1`, null);
       file.user_pic = await GetUploadedImage(sql_get_pic?.pic);
       console.error(`error`, file.user_pk);
     }
@@ -48,9 +42,7 @@ const getNewsComments = async (news_pk: string): Promise<ResponseModel> => {
     };
   }
 };
-const getSingleNewsWithPhoto = async (
-  news_pk: string
-): Promise<ResponseModel> => {
+const getSingleNewsWithPhoto = async (news_pk: string): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -147,9 +139,7 @@ const getNewsDataPublished = async (): Promise<ResponseModel> => {
     };
   }
 };
-const getNewsDataTable = async (
-  payload: PaginationModel
-): Promise<ResponseModel> => {
+const getNewsDataTable = async (payload: PaginationModel): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -159,10 +149,7 @@ const getNewsDataTable = async (
       SELECT * FROM news WHERE
       title like concat('%',@search,'%')
       AND sts_pk in @sts_pk
-      AND encoded_at >= ${sqlFilterDate(
-        payload.filters.date_from,
-        "encoded_at"
-      )}
+      AND encoded_at >= ${sqlFilterDate(payload.filters.date_from, "encoded_at")}
       AND encoded_at <= ${sqlFilterDate(payload.filters.date_to, "encoded_at")}
       `,
       payload
@@ -173,19 +160,13 @@ const getNewsDataTable = async (
     }
 
     for (const news of news_table) {
-      news.status = await con.QuerySingle(
-        `select * from status where sts_pk=@sts_pk`,
-        {
-          sts_pk: news.sts_pk,
-        }
-      );
+      news.status = await con.QuerySingle(`select * from status where sts_pk=@sts_pk`, {
+        sts_pk: news.sts_pk,
+      });
 
-      news.user = await con.QuerySingle(
-        `select * from vw_users where user_pk=@user_pk`,
-        {
-          user_pk: news.encoder_pk,
-        }
-      );
+      news.user = await con.QuerySingle(`select * from vw_users where user_pk=@user_pk`, {
+        user_pk: news.encoder_pk,
+      });
 
       if (!!news?.user?.pic) {
         news.user.pic = await GetUploadedImage(news?.user?.pic);
@@ -248,11 +229,7 @@ const getNewsFiles = async (news_pk: number): Promise<ResponseModel> => {
   }
 };
 
-const addNews = async (
-  payload: NewsModel,
-  files: Array<File>,
-  user_pk: number
-): Promise<ResponseModel> => {
+const addNews = async (payload: NewsModel, files: Array<File>, user_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -261,8 +238,7 @@ const addNews = async (
     const pub_date = payload.pub_date;
     payload.pub_date = parseInvalidDateToDefault(payload.pub_date, "(NULL)");
 
-    payload.is_prio =
-      payload.is_prio === true || payload.is_prio === "true" ? 1 : 0;
+    payload.is_prio = payload.is_prio === true || payload.is_prio === "true" ? 1 : 0;
 
     const sql_add_news = await con.Insert(
       `INSERT INTO news SET
@@ -274,6 +250,8 @@ const addNews = async (
          encoder_pk=@encoder_pk;`,
       payload
     );
+
+    console.log(`files`, files);
 
     if (sql_add_news.insertedId > 0) {
       for (const file of files) {
@@ -308,8 +286,7 @@ const addNews = async (
 
           return {
             success: false,
-            message:
-              "The process has been terminated when trying to save the file!",
+            message: "The process has been terminated when trying to save the file!",
           };
         }
       }
@@ -320,10 +297,7 @@ const addNews = async (
         if (payload.audience === "r" || payload.audience === "all") {
           residents = await con.Query(`SELECT phone FROM resident`, null);
         } else if (payload.audience === "b") {
-          residents = await con.Query(
-            `SELECT phone FROM resident where resident_pk in (select resident_pk from barangay_official)`,
-            null
-          );
+          residents = await con.Query(`SELECT phone FROM resident where resident_pk in (select resident_pk from barangay_official)`, null);
         }
 
         for (const r of residents) {
@@ -335,9 +309,7 @@ const addNews = async (
                 username: "juliusnovachrono07@gmail.com",
                 key: "AC9557D6-F0B3-0467-1EEA-5F0A560A7767",
                 to: r.phone,
-                message: `Brgy. 37-D, Davao City. ${
-                  payload.title
-                } | ${parseInvalidDateToDefault(pub_date)}`,
+                message: `Brgy. 37-D, Davao City. ${payload.title} | ${parseInvalidDateToDefault(pub_date)}`,
                 //https://dashboard.clicksend.com/#/sms/send-sms/main
               }),
               headers: {
@@ -371,11 +343,7 @@ const addNews = async (
   }
 };
 
-const addNewsFiles = async (
-  payload: NewsModel,
-  files: Array<File>,
-  user_pk: number
-): Promise<ResponseModel> => {
+const addNewsFiles = async (payload: NewsModel, files: Array<File>, user_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -414,8 +382,7 @@ const addNewsFiles = async (
 
         return {
           success: false,
-          message:
-            "The process has been terminated when trying to save the file!",
+          message: "The process has been terminated when trying to save the file!",
         };
       }
     }
@@ -427,7 +394,7 @@ const addNewsFiles = async (
     };
   } catch (error) {
     await con.Rollback();
-    // console.error(`error`, error);
+    console.error(`error`, error);
     return {
       success: false,
       message: ErrorMessage(error),
@@ -435,10 +402,7 @@ const addNewsFiles = async (
   }
 };
 
-const republishNews = async (
-  news_pk: number,
-  user_pk: number
-): Promise<ResponseModel> => {
+const republishNews = async (news_pk: number, user_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -475,19 +439,14 @@ const republishNews = async (
   }
 };
 
-const deleteNewsFile = async (
-  news_file: NewsFileModel
-): Promise<ResponseModel> => {
+const deleteNewsFile = async (news_file: NewsFileModel): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
 
-    const sql_delete_file = await con.Modify(
-      `DELETE FROM news_file WHERE news_file_pk = @news_file_pk`,
-      {
-        news_file_pk: news_file.news_file_pk,
-      }
-    );
+    const sql_delete_file = await con.Modify(`DELETE FROM news_file WHERE news_file_pk = @news_file_pk`, {
+      news_file_pk: news_file.news_file_pk,
+    });
 
     if (sql_delete_file > 0) {
       // await RemoveImage(news_file.file_path);
@@ -512,10 +471,7 @@ const deleteNewsFile = async (
   }
 };
 
-const unpublishNews = async (
-  news_pk: number,
-  user_pk: number
-): Promise<ResponseModel> => {
+const unpublishNews = async (news_pk: number, user_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -553,18 +509,14 @@ const unpublishNews = async (
   }
 };
 
-const updateNews = async (
-  payload: NewsModel,
-  user_pk: number
-): Promise<ResponseModel> => {
+const updateNews = async (payload: NewsModel, user_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
 
     payload.encoder_pk = user_pk;
     payload.pub_date = parseInvalidDateToDefault(payload.pub_date, "(NULL)");
-    payload.is_prio =
-      payload.is_prio === true || payload.is_prio === "true" ? 1 : 0;
+    payload.is_prio = payload.is_prio === true || payload.is_prio === "true" ? 1 : 0;
 
     const sql_add_news = await con.Modify(
       `UPDATE news SET
@@ -601,19 +553,13 @@ const updateNews = async (
   }
 };
 
-const addNewsReaction = async (
-  payload: NewsReactionModel,
-  user_pk: number
-): Promise<ResponseModel> => {
+const addNewsReaction = async (payload: NewsReactionModel, user_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
 
     payload.user_pk = user_pk;
-    const sql_check_exist = await con.Query(
-      `SELECT * FROM news_reaction WHERE news_pk=@news_pk AND resident_pk=@user_pk`,
-      payload
-    );
+    const sql_check_exist = await con.Query(`SELECT * FROM news_reaction WHERE news_pk=@news_pk AND resident_pk=@user_pk`, payload);
     if (sql_check_exist.toString() == "") {
       const sql_add_news_reaction = await con.Modify(
         `INSERT INTO news_reaction SET
@@ -633,8 +579,7 @@ const addNewsReaction = async (
         con.Rollback();
         return {
           success: false,
-          message:
-            "Looks like something went wrong, unable to save your reaction!",
+          message: "Looks like something went wrong, unable to save your reaction!",
         };
       }
     } else {
@@ -656,8 +601,7 @@ const addNewsReaction = async (
         con.Rollback();
         return {
           success: false,
-          message:
-            "2 Looks like something went wrong, unable to save your reaction!",
+          message: "2 Looks like something went wrong, unable to save your reaction!",
         };
       }
     }
@@ -671,10 +615,7 @@ const addNewsReaction = async (
   }
 };
 
-const updateNewsReaction = async (
-  payload: NewsReactionModel,
-  user_pk: number
-): Promise<ResponseModel> => {
+const updateNewsReaction = async (payload: NewsReactionModel, user_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -697,8 +638,7 @@ const updateNewsReaction = async (
       con.Rollback();
       return {
         success: false,
-        message:
-          "Looks like something went wrong, unable to save your reaction!",
+        message: "Looks like something went wrong, unable to save your reaction!",
       };
     }
   } catch (error) {
@@ -711,10 +651,7 @@ const updateNewsReaction = async (
   }
 };
 
-const addNewsComment = async (
-  payload: NewsCommentModel,
-  user_pk: number
-): Promise<ResponseModel> => {
+const addNewsComment = async (payload: NewsCommentModel, user_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -739,8 +676,7 @@ const addNewsComment = async (
       con.Rollback();
       return {
         success: false,
-        message:
-          "Looks like something went wrong, unable to save your reaction!",
+        message: "Looks like something went wrong, unable to save your reaction!",
       };
     }
   } catch (error) {
@@ -784,8 +720,7 @@ const toggleLike = async (payload: NewsLikesModel): Promise<ResponseModel> => {
         con.Rollback();
         return {
           success: false,
-          message:
-            "Looks like something went wrong, unable to save your like action!",
+          message: "Looks like something went wrong, unable to save your like action!",
         };
       }
     } else {
@@ -807,8 +742,7 @@ const toggleLike = async (payload: NewsLikesModel): Promise<ResponseModel> => {
         con.Rollback();
         return {
           success: false,
-          message:
-            "Looks like something went wrong, unable to save your like action!",
+          message: "Looks like something went wrong, unable to save your like action!",
         };
       }
     }
@@ -827,26 +761,17 @@ const getSingleNews = async (news_pk: string): Promise<ResponseModel> => {
   try {
     await con.BeginTransaction();
 
-    const news: NewsModel = await con.QuerySingle(
-      `select * from news where news_pk = @news_pk`,
-      {
-        news_pk: news_pk,
-      }
-    );
+    const news: NewsModel = await con.QuerySingle(`select * from news where news_pk = @news_pk`, {
+      news_pk: news_pk,
+    });
 
-    news.status = await con.QuerySingle(
-      `select * from status where sts_pk=@sts_pk`,
-      {
-        sts_pk: news.sts_pk,
-      }
-    );
+    news.status = await con.QuerySingle(`select * from status where sts_pk=@sts_pk`, {
+      sts_pk: news.sts_pk,
+    });
 
-    news.user = await con.QuerySingle(
-      `select * from vw_users where user_pk=@user_pk`,
-      {
-        user_pk: news.encoder_pk,
-      }
-    );
+    news.user = await con.QuerySingle(`select * from vw_users where user_pk=@user_pk`, {
+      user_pk: news.encoder_pk,
+    });
 
     news.news_files = await con.Query(
       `
@@ -856,6 +781,8 @@ const getSingleNews = async (news_pk: string): Promise<ResponseModel> => {
         news_pk: news.news_pk,
       }
     );
+
+    console.log(`news.news_files`, news.news_files, news.news_pk);
 
     if (news?.user?.pic) {
       news.user.pic = await GetUploadedImage(news?.user?.pic);
@@ -891,19 +818,13 @@ const getNewsLatest = async (): Promise<ResponseModel> => {
     );
 
     for (const news of news_table) {
-      news.status = await con.QuerySingle(
-        `select * from status where sts_pk=@sts_pk`,
-        {
-          sts_pk: news.sts_pk,
-        }
-      );
+      news.status = await con.QuerySingle(`select * from status where sts_pk=@sts_pk`, {
+        sts_pk: news.sts_pk,
+      });
 
-      news.user = await con.QuerySingle(
-        `select * from vw_users where user_pk=@user_pk`,
-        {
-          user_pk: news.encoder_pk,
-        }
-      );
+      news.user = await con.QuerySingle(`select * from vw_users where user_pk=@user_pk`, {
+        user_pk: news.encoder_pk,
+      });
 
       if (news?.user?.pic) {
         news.user.pic = await GetUploadedImage(news?.user?.pic);

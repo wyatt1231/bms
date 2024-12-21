@@ -203,8 +203,7 @@ const addNews = (payload, files, user_pk) => __awaiter(void 0, void 0, void 0, f
         payload.encoder_pk = user_pk;
         const pub_date = payload.pub_date;
         payload.pub_date = (0, useDateParser_1.parseInvalidDateToDefault)(payload.pub_date, "(NULL)");
-        payload.is_prio =
-            payload.is_prio === true || payload.is_prio === "true" ? 1 : 0;
+        payload.is_prio = payload.is_prio === true || payload.is_prio === "true" ? 1 : 0;
         const sql_add_news = yield con.Insert(`INSERT INTO news SET
          title=@title,
          audience=@audience,
@@ -212,6 +211,7 @@ const addNews = (payload, files, user_pk) => __awaiter(void 0, void 0, void 0, f
          pub_date=@pub_date,
          is_prio=@is_prio,
          encoder_pk=@encoder_pk;`, payload);
+        console.log(`files`, files);
         if (sql_add_news.insertedId > 0) {
             for (const file of files) {
                 const file_res = yield (0, useFileUploader_1.UploadFile)("/Files/Complaints/", file);
@@ -331,7 +331,7 @@ const addNewsFiles = (payload, files, user_pk) => __awaiter(void 0, void 0, void
     }
     catch (error) {
         yield con.Rollback();
-        // console.error(`error`, error);
+        console.error(`error`, error);
         return {
             success: false,
             message: (0, useErrorMessage_1.ErrorMessage)(error),
@@ -441,8 +441,7 @@ const updateNews = (payload, user_pk) => __awaiter(void 0, void 0, void 0, funct
         yield con.BeginTransaction();
         payload.encoder_pk = user_pk;
         payload.pub_date = (0, useDateParser_1.parseInvalidDateToDefault)(payload.pub_date, "(NULL)");
-        payload.is_prio =
-            payload.is_prio === true || payload.is_prio === "true" ? 1 : 0;
+        payload.is_prio = payload.is_prio === true || payload.is_prio === "true" ? 1 : 0;
         const sql_add_news = yield con.Modify(`UPDATE news SET
        title=@title,
        body=@body,
@@ -673,6 +672,7 @@ const getSingleNews = (news_pk) => __awaiter(void 0, void 0, void 0, function* (
       `, {
             news_pk: news.news_pk,
         });
+        console.log(`news.news_files`, news.news_files, news.news_pk);
         if ((_c = news === null || news === void 0 ? void 0 : news.user) === null || _c === void 0 ? void 0 : _c.pic) {
             news.user.pic = yield (0, useFileUploader_1.GetUploadedImage)((_d = news === null || news === void 0 ? void 0 : news.user) === null || _d === void 0 ? void 0 : _d.pic);
         }

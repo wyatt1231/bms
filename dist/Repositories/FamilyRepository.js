@@ -51,7 +51,8 @@ const addFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, functi
                     };
                 }
             }
-            for (const mk of payload.matang_kasilyas) {
+            for (let mk of payload.matang_kasilyas) {
+                mk = fixDescripMismatch(mk);
                 const sql_pangabasu = yield con.Insert(`
             INSERT INTO family_matang_kasilyas
             SET
@@ -68,7 +69,8 @@ const addFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, functi
                     };
                 }
             }
-            for (const mk of payload.biktima_pangabuso) {
+            for (let mk of payload.biktima_pangabuso) {
+                mk = fixDescripMismatch(mk);
                 const insert = yield con.Insert(`
             INSERT INTO family_biktima_pangabuso
             SET
@@ -85,7 +87,8 @@ const addFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, functi
                     };
                 }
             }
-            for (const mb of payload.kahimtanang_komunidad) {
+            for (let mb of payload.kahimtanang_komunidad) {
+                mb = fixDescripMismatch(mb);
                 const insert = yield con.Insert(`
             INSERT INTO family_kahimtanang_komunidad
             SET
@@ -102,24 +105,8 @@ const addFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, functi
                     };
                 }
             }
-            for (const mk of payload.matang_kasilyas) {
-                const insert = yield con.Insert(`
-            INSERT INTO family_matang_kasilyas
-            SET
-            fam_pk='${fam_pk}',
-            descrip=@descrip; 
-          `, {
-                    descrip: mk,
-                });
-                if (insert.insertedId <= 0) {
-                    con.Rollback();
-                    return {
-                        success: false,
-                        message: "No affected rows while adding the fam member.",
-                    };
-                }
-            }
-            for (const pk of payload.pasilidad_kuryente) {
+            for (let pk of payload.pasilidad_kuryente) {
+                pk = fixDescripMismatch(pk);
                 const insert = yield con.Insert(`
             INSERT INTO family_pasilidad_kuryente
             SET
@@ -136,7 +123,8 @@ const addFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, functi
                     };
                 }
             }
-            for (const mb of payload.matang_basura) {
+            for (let mb of payload.matang_basura) {
+                mb = fixDescripMismatch(mb);
                 const insert = yield con.Insert(`
             INSERT INTO family_matang_basura
             SET
@@ -153,7 +141,8 @@ const addFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, functi
                     };
                 }
             }
-            for (const tt of payload.tinubdan_tubig) {
+            for (let tt of payload.tinubdan_tubig) {
+                tt = fixDescripMismatch(tt);
                 const insert = yield con.Insert(`
             INSERT INTO family_tinubdan_tubig
             SET
@@ -170,7 +159,9 @@ const addFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, functi
                     };
                 }
             }
-            for (const sn of payload.serbisyo_nadawat) {
+            for (let sn of payload.serbisyo_nadawat) {
+                sn.programa = fixDescripMismatch(sn.programa);
+                sn.ahensya = fixDescripMismatch(sn.ahensya);
                 const insert = yield con.Insert(`
             INSERT INTO family_serbisyo_nadawat
             SET
@@ -247,7 +238,8 @@ const updateFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, fun
                 }
             }
             yield con.Modify(`DELETE FROM family_matang_kasilyas where fam_pk=@fam_pk;`, { fam_pk });
-            for (const mk of payload.matang_kasilyas) {
+            for (let mk of payload.matang_kasilyas) {
+                mk = fixDescripMismatch(mk);
                 const sql_pangabasu = yield con.Insert(`
             INSERT INTO family_matang_kasilyas
             SET
@@ -265,7 +257,8 @@ const updateFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, fun
                 }
             }
             yield con.Modify(`DELETE FROM family_biktima_pangabuso where fam_pk=@fam_pk;`, { fam_pk });
-            for (const mk of payload.biktima_pangabuso) {
+            for (let mk of payload.biktima_pangabuso) {
+                mk = fixDescripMismatch(mk);
                 const insert = yield con.Insert(`
             INSERT INTO family_biktima_pangabuso
             SET
@@ -283,7 +276,8 @@ const updateFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, fun
                 }
             }
             yield con.Modify(`DELETE FROM family_kahimtanang_komunidad where fam_pk=@fam_pk;`, { fam_pk });
-            for (const mb of payload.kahimtanang_komunidad) {
+            for (let mb of payload.kahimtanang_komunidad) {
+                mb = fixDescripMismatch(mb);
                 const insert = yield con.Insert(`
             INSERT INTO family_kahimtanang_komunidad
             SET
@@ -300,26 +294,9 @@ const updateFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, fun
                     };
                 }
             }
-            yield con.Modify(`DELETE FROM family_matang_kasilyas where fam_pk=@fam_pk;`, { fam_pk });
-            for (const mk of payload.matang_kasilyas) {
-                const insert = yield con.Insert(`
-            INSERT INTO family_matang_kasilyas
-            SET
-            fam_pk='${fam_pk}',
-            descrip=@descrip; 
-          `, {
-                    descrip: mk,
-                });
-                if (insert.insertedId <= 0) {
-                    con.Rollback();
-                    return {
-                        success: false,
-                        message: "No affected rows while adding the fam member.",
-                    };
-                }
-            }
             yield con.Modify(`DELETE FROM family_pasilidad_kuryente where fam_pk=@fam_pk;`, { fam_pk });
-            for (const pk of payload.pasilidad_kuryente) {
+            for (let pk of payload.pasilidad_kuryente) {
+                pk = fixDescripMismatch(pk);
                 const insert = yield con.Insert(`
             INSERT INTO family_pasilidad_kuryente
             SET
@@ -337,7 +314,8 @@ const updateFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, fun
                 }
             }
             yield con.Modify(`DELETE FROM family_matang_basura where fam_pk=@fam_pk;`, { fam_pk });
-            for (const mb of payload.matang_basura) {
+            for (let mb of payload.matang_basura) {
+                mb = fixDescripMismatch(mb);
                 const insert = yield con.Insert(`
             INSERT INTO family_matang_basura
             SET
@@ -355,7 +333,8 @@ const updateFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, fun
                 }
             }
             yield con.Modify(`DELETE FROM family_tinubdan_tubig where fam_pk=@fam_pk;`, { fam_pk });
-            for (const tt of payload.tinubdan_tubig) {
+            for (let tt of payload.tinubdan_tubig) {
+                tt = fixDescripMismatch(tt);
                 const insert = yield con.Insert(`
             INSERT INTO family_tinubdan_tubig
             SET
@@ -373,7 +352,9 @@ const updateFamily = (payload, user_pk) => __awaiter(void 0, void 0, void 0, fun
                 }
             }
             yield con.Modify(`DELETE FROM family_serbisyo_nadawat where fam_pk=@fam_pk;`, { fam_pk });
-            for (const sn of payload.serbisyo_nadawat) {
+            for (let sn of payload.serbisyo_nadawat) {
+                sn.programa = fixDescripMismatch(sn.programa);
+                sn.ahensya = fixDescripMismatch(sn.ahensya);
                 const insert = yield con.Insert(`
             INSERT INTO family_serbisyo_nadawat
             SET
@@ -804,6 +785,23 @@ const searchFamMember = (payload) => __awaiter(void 0, void 0, void 0, function*
         };
     }
 });
+const fixDescripMismatch = (txt) => {
+    if (txt.toLowerCase() == "walay connection sa tubig".toLowerCase())
+        txt = `walay konesyon sa tubig`;
+    if (txt.toLowerCase() == "lamapara (gas)".toLowerCase())
+        txt = `lampara (gas)`;
+    if (txt.toLowerCase() == "petromaks".toLowerCase())
+        txt = `petromaks (gas)`;
+    if (txt.toLowerCase() == "gikolekta sa CENRO or Barangay".toLowerCase())
+        txt = `ginakolekta sa CENTRO O Barangay`;
+    if (txt.toLowerCase() == "walay igong o layo sa eskewlahan".toLowerCase())
+        txt = `walay igong o layo sa eskwelahan`;
+    if (txt.toLowerCase() == "dulaana sa mga bata".toLowerCase())
+        txt = `dulaanan sa mga bata`;
+    if (txt.toLowerCase() == "buhosbuhos".toLowerCase())
+        txt = `buhos`;
+    return txt;
+};
 exports.default = {
     addFamily,
     updateFamily,

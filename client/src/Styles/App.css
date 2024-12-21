@@ -477,3 +477,19 @@ canvas {
 .MuiTypography-root.MuiFormControlLabel-label.MuiTypography-body1 {
   padding: 0.3em 0;
 }
+
+
+.pie-chart-wrapper {
+  width: 200px;
+  height: 200px;
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+}
+
+.pie-chart-wrapper > label {
+  font-size: .8em;
+    font-weight: bold;
+    opacity: .7;
+}
+

@@ -1,8 +1,4 @@
-import { StatsModel } from "../Models/DashboardModel";
-import {
-  OverallPopulationModel,
-  StatsDataSetModel,
-} from "../Models/DashboardModel";
+import { OverallPopulationModel, PieModel, StatsDataSetModel, StatsModel } from "../Models/DashboardModel";
 
 export type DashboardReducerTypes =
   | {
@@ -13,14 +9,20 @@ export type DashboardReducerTypes =
       type: "fetch_overall_population";
       fetch_overall_population?: boolean;
     }
+  //
   | {
-      type: "age_group_stats";
-      age_group_stats?: StatsDataSetModel;
+      type: "age_group_stats_year_1";
+      age_group_stats_year_1?: StatsDataSetModel;
+    }
+  | {
+      type: "age_group_stats_year_2";
+      age_group_stats_year_2?: StatsDataSetModel;
     }
   | {
       type: "fetch_age_group_stats";
       fetch_age_group_stats?: boolean;
     }
+  //
   | {
       type: "gender_stats";
       gender_stats?: StatsDataSetModel;
@@ -93,8 +95,12 @@ export type DashboardReducerTypes =
     }
   //
   | {
-      type: "stats_biktima_pangabuso";
-      stats_biktima_pangabuso?: Array<StatsModel>;
+      type: "stats_biktima_pangabuso_year_1";
+      stats_biktima_pangabuso_year_1?: PieModel[];
+    }
+  | {
+      type: "stats_biktima_pangabuso_year_2";
+      stats_biktima_pangabuso_year_2?: PieModel[];
     }
   | {
       type: "fetch_stats_biktima_pangabuso";
@@ -141,7 +147,8 @@ export interface DashboardReducerModel {
   overall_population?: OverallPopulationModel;
   fetch_overall_population?: boolean;
 
-  age_group_stats?: StatsDataSetModel;
+  age_group_stats_year_1?: StatsDataSetModel;
+  age_group_stats_year_2?: StatsDataSetModel;
   fetch_age_group_stats?: boolean;
 
   gender_stats?: StatsDataSetModel;
@@ -170,7 +177,8 @@ export interface DashboardReducerModel {
   fetch_total_pwd?: boolean;
 
   //
-  stats_biktima_pangabuso?: Array<StatsModel>;
+  stats_biktima_pangabuso_year_1?: PieModel[];
+  stats_biktima_pangabuso_year_2?: PieModel[];
   fetch_stats_biktima_pangabuso?: boolean;
   //
   stats_kahimtang_komunidad?: Array<StatsModel>;

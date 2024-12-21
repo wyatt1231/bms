@@ -42,7 +42,7 @@ const UserController = (app) => __awaiter(void 0, void 0, void 0, function* () {
     const router = (0, express_1.Router)();
     router.get("/test", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         // console.log(`28/04/2024 04:17pm - listening to ports ${PORT}`)
-        res.json("28/04/2024 04:17pm -The app is running" + __dirname);
+        res.json("02/05/2024 02:31AM -The app is running" + __dirname);
     }));
     router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {

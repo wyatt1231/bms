@@ -1,16 +1,10 @@
 import moment from "moment";
 import { DatabaseConnection } from "../Configurations/DatabaseConfig";
 import { ErrorMessage } from "../Hooks/useErrorMessage";
-import {
-  DashboardFilterInterface,
-  OverallPopulationModel,
-  YearlyStatsModel,
-} from "../Models/DashboardModels";
+import { DashboardFilterInterface, OverallPopulationModel, PieModel, YearlyStatsModel } from "../Models/DashboardModels";
 import { ResponseModel } from "../Models/ResponseModels";
 
-const overallPopulation = async (
-  purok: Array<string>
-): Promise<ResponseModel> => {
+const overallPopulation = async (purok: Array<string>): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -79,9 +73,7 @@ const isInvalidYear = (year) => {
   return year == "Invalid date";
 };
 
-const total_population = async (
-  filters: DashboardFilterInterface
-): Promise<ResponseModel> => {
+const total_population = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -89,9 +81,7 @@ const total_population = async (
     const db_res = await con.QuerySingle(
       `
       select count(*) as total from resident where died_date is  null AND 
-      ${
-        isInvalidYear(filters.year) ? `` : `  YEAR(resident_date) = @year AND`
-      }  purok in @purok ;
+      ${isInvalidYear(filters.year) ? `` : `  YEAR(resident_date) = @year AND`}  purok in @purok ;
     `,
       filters
     );
@@ -111,9 +101,7 @@ const total_population = async (
   }
 };
 
-const total_death = async (
-  filters: DashboardFilterInterface
-): Promise<ResponseModel> => {
+const total_death = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -142,9 +130,7 @@ const total_death = async (
   }
 };
 
-const total_pwd = async (
-  filters: DashboardFilterInterface
-): Promise<ResponseModel> => {
+const total_pwd = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -173,9 +159,7 @@ const total_pwd = async (
   }
 };
 
-const total_sc = async (
-  filters: DashboardFilterInterface
-): Promise<ResponseModel> => {
+const total_sc = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -185,9 +169,7 @@ const total_sc = async (
       SELECT count(*) as total FROM (
         SELECT  FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365) AS age
         FROM resident WHERE died_date IS NULL  AND 
-        ${
-          isInvalidYear(filters.year) ? `` : `  YEAR(resident_date) = @year AND`
-        } 
+        ${isInvalidYear(filters.year) ? `` : `  YEAR(resident_date) = @year AND`} 
         purok IN @purok
         ) AS tmp
         WHERE  age >= 60 
@@ -210,9 +192,7 @@ const total_sc = async (
   }
 };
 
-const ageGroupStats = async (
-  filters: DashboardFilterInterface
-): Promise<ResponseModel> => {
+const ageGroupStats = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -301,9 +281,7 @@ const ageGroupStats = async (
   }
 };
 
-const lifeStageStats = async (
-  filters: DashboardFilterInterface
-): Promise<ResponseModel> => {
+const lifeStageStats = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -360,9 +338,7 @@ const lifeStageStats = async (
   }
 };
 
-const genderStats = async (
-  filters: DashboardFilterInterface
-): Promise<ResponseModel> => {
+const genderStats = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     let total_male;
@@ -403,10 +379,7 @@ const genderStats = async (
     return {
       success: true,
       data: {
-        labels: [
-          `lalaki (${total_male.total})`,
-          `babae (${total_female.total})`,
-        ],
+        labels: [`lalaki (${total_male.total})`, `babae (${total_female.total})`],
         data_set: [
           {
             x: "lalaki",
@@ -482,30 +455,45 @@ const statsNews = async (): Promise<ResponseModel> => {
   }
 };
 
-const StatsBiktikmaPangabuso = async (
-  filters: DashboardFilterInterface
-): Promise<ResponseModel> => {
+const StatsBiktikmaPangabuso = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
 
-    const stats_complaint: Array<any> = await con.Query(
+    const data: PieModel[] = await con.Query(
       `
-      select total, concat(label,' (',total,')' ) as label, purok   from (
-        SELECT COUNT(fpk.descrip) AS total ,fpk.descrip as label, r.purok FROM family_biktima_pangabuso fpk
+     SELECT total, CONCAT(label,' (',total,')' ) AS label, purok   FROM (
+        SELECT COUNT(fpk.descrip) AS total ,fpk.descrip AS label, r.purok FROM family_biktima_pangabuso fpk
         JOIN family f ON f.fam_pk = fpk.fam_pk
         JOIN resident r ON r.resident_pk = f.ulo_pamilya
-        WHERE r.purok IN @purok
+        WHERE YEAR(r.resident_date) = '${filters.year}' AND r.purok IN @purok  
         GROUP BY fpk.descrip
-        ) as tmp  
+        ) AS tmp  
       `,
-      filters
+      {
+        purok: filters.purok,
+        year: filters.year,
+      }
     );
+
+    //YEAR(resident_date) = @year
+
+    const labels: string[] = [`gibeya-an`, `pangulata`, `ginabaligya/illegal rekroter`, `droga`, `krime`];
+
+    const rows: PieModel[] = [];
+
+    labels.forEach((l) => {
+      const item = data.find((p) => p.label.includes(l));
+      rows.push({
+        label: item?.label ?? `${l} (0)`,
+        total: item?.total ?? 0,
+      });
+    });
 
     con.Commit();
     return {
       success: true,
-      data: stats_complaint,
+      data: rows,
     };
   } catch (error) {
     await con.Rollback();
@@ -516,9 +504,7 @@ const StatsBiktikmaPangabuso = async (
   }
 };
 
-const StatsKahimtangKomunidad = async (
-  filters: DashboardFilterInterface
-): Promise<ResponseModel> => {
+const StatsKahimtangKomunidad = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -551,9 +537,7 @@ const StatsKahimtangKomunidad = async (
   }
 };
 
-const StatsMatangBasura = async (
-  filters: DashboardFilterInterface
-): Promise<ResponseModel> => {
+const StatsMatangBasura = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -586,9 +570,7 @@ const StatsMatangBasura = async (
   }
 };
 
-const StatsMatangKasilyas = async (
-  filters: DashboardFilterInterface
-): Promise<ResponseModel> => {
+const StatsMatangKasilyas = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -621,9 +603,7 @@ const StatsMatangKasilyas = async (
   }
 };
 
-const StatsPasilidadKuryente = async (
-  filters: DashboardFilterInterface
-): Promise<ResponseModel> => {
+const StatsPasilidadKuryente = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();

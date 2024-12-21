@@ -8,12 +8,22 @@ const mysql2_1 = __importDefault(require("mysql2"));
 exports.connection_string = null;
 if (process.env.NODE_ENV === "production") {
     //remove in deploy
+    // connection_string = {
+    //   host: "brgy-37d-ppvc.mysql.database.azure.com",
+    //   user: "capstone_admin@brgy-37d-ppvc",
+    //   password: "C@PsT0n3_!@#",
+    //   database: "bms",
+    //   port: 3306,
+    //   connectionLimit: 10,
+    //   waitForConnections: true,
+    //   queueLimit: 10,
+    // };
     exports.connection_string = {
-        host: "brgy-37d-ppvc.mysql.database.azure.com",
-        user: "capstone_admin@brgy-37d-ppvc",
-        password: "C@PsT0n3_!@#",
+        host: "127.0.0.1",
+        user: "root",
+        password: "rootsa",
         database: "bms",
-        port: 3306,
+        port: 3309,
         connectionLimit: 10,
         waitForConnections: true,
         queueLimit: 10,
@@ -21,21 +31,21 @@ if (process.env.NODE_ENV === "production") {
 }
 else {
     // connection_string = {
-    //   host: "127.0.0.1",
-    //   user: "root",
-    //   password: "rootsa",
+    //   host: "brgy-37d-ppvc.mysql.database.azure.com",
+    //   user: "capstone_admin@brgy-37d-ppvc",
+    //   password: "C@PsT0n3_!@#",
     //   database: "bms",
-    //   port: 3309,
+    //   port: 3306,
     //   connectionLimit: 10,
     //   waitForConnections: true,
     //   queueLimit: 10,
     // };
     exports.connection_string = {
-        host: "brgy-37d-ppvc.mysql.database.azure.com",
-        user: "capstone_admin@brgy-37d-ppvc",
-        password: "C@PsT0n3_!@#",
+        host: "127.0.0.1",
+        user: "root",
+        password: "rootsa",
         database: "bms",
-        port: 3306,
+        port: 3309,
         connectionLimit: 10,
         waitForConnections: true,
         queueLimit: 10,

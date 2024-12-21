@@ -19,6 +19,11 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield con.BeginTransaction();
         const user = yield con.QuerySingle(`SELECT user_pk,user_type,allow_login FROM user u WHERE u.password = AES_ENCRYPT(@password,@email)`, payload);
+        if (user.user_type == `resident`) {
+            const is_resident_admin = yield isResidentAdmin(user.user_pk, con);
+            user.user_type = is_resident_admin ? `admin` : `resident`;
+            //check if brgy officials
+        }
         if (user) {
             if (user.allow_login === "n") {
                 return {
@@ -64,6 +69,15 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.loginUser = loginUser;
+const isResidentAdmin = (user_pk, con) => __awaiter(void 0, void 0, void 0, function* () {
+    const sql_get_pic = yield con.QuerySingle(`
+    select r.resident_pk  FROM resident r where
+    r.user_pk = @user_pk and  
+    r.resident_pk 
+    in (select bo.resident_pk from barangay_official bo where bo.position in ( 'punong barangay','kagawad', 'secretary ','purok leader')) ;
+    `, { user_pk });
+    return !!(sql_get_pic === null || sql_get_pic === void 0 ? void 0 : sql_get_pic.resident_pk);
+});
 const currentUser = (user_pk) => __awaiter(void 0, void 0, void 0, function* () {
     const con = yield (0, DatabaseConfig_1.DatabaseConnection)();
     try {
@@ -80,7 +94,10 @@ const currentUser = (user_pk) => __awaiter(void 0, void 0, void 0, function* () 
         else if (user_data.user_type === "resident") {
             const sql_get_pic = yield con.QuerySingle(`SELECT pic FROM resident WHERE user_pk=${user_pk} LIMIT 1`, null);
             user_data.pic = yield (0, useFileUploader_1.GetUploadedImage)(sql_get_pic === null || sql_get_pic === void 0 ? void 0 : sql_get_pic.pic);
+            const is_resident_admin = yield isResidentAdmin(user_data.user_pk, con);
+            user_data.user_type = is_resident_admin ? `admin` : `resident`;
         }
+        console.log(`user_data`, user_data);
         yield con.Commit();
         return {
             success: true,

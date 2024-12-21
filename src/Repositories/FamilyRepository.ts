@@ -54,7 +54,8 @@ const addFamily = async (
         }
       }
 
-      for (const mk of payload.matang_kasilyas) {
+      for (let mk of payload.matang_kasilyas) {
+        mk = fixDescripMismatch(mk);
         const sql_pangabasu = await con.Insert(
           `
             INSERT INTO family_matang_kasilyas
@@ -75,7 +76,8 @@ const addFamily = async (
         }
       }
 
-      for (const mk of payload.biktima_pangabuso) {
+      for (let mk of payload.biktima_pangabuso) {
+        mk = fixDescripMismatch(mk);
         const insert = await con.Insert(
           `
             INSERT INTO family_biktima_pangabuso
@@ -96,7 +98,9 @@ const addFamily = async (
         }
       }
 
-      for (const mb of payload.kahimtanang_komunidad) {
+      for (let mb of payload.kahimtanang_komunidad) {
+        mb = fixDescripMismatch(mb);
+
         const insert = await con.Insert(
           `
             INSERT INTO family_kahimtanang_komunidad
@@ -118,29 +122,9 @@ const addFamily = async (
         }
       }
 
-      for (const mk of payload.matang_kasilyas) {
-        const insert = await con.Insert(
-          `
-            INSERT INTO family_matang_kasilyas
-            SET
-            fam_pk='${fam_pk}',
-            descrip=@descrip; 
-          `,
-          {
-            descrip: mk,
-          }
-        );
+      for (let pk of payload.pasilidad_kuryente) {
+        pk = fixDescripMismatch(pk);
 
-        if (insert.insertedId <= 0) {
-          con.Rollback();
-          return {
-            success: false,
-            message: "No affected rows while adding the fam member.",
-          };
-        }
-      }
-
-      for (const pk of payload.pasilidad_kuryente) {
         const insert = await con.Insert(
           `
             INSERT INTO family_pasilidad_kuryente
@@ -162,7 +146,8 @@ const addFamily = async (
         }
       }
 
-      for (const mb of payload.matang_basura) {
+      for (let mb of payload.matang_basura) {
+        mb = fixDescripMismatch(mb);
         const insert = await con.Insert(
           `
             INSERT INTO family_matang_basura
@@ -184,7 +169,9 @@ const addFamily = async (
         }
       }
 
-      for (const tt of payload.tinubdan_tubig) {
+      for (let tt of payload.tinubdan_tubig) {
+        tt = fixDescripMismatch(tt);
+
         const insert = await con.Insert(
           `
             INSERT INTO family_tinubdan_tubig
@@ -206,7 +193,9 @@ const addFamily = async (
         }
       }
 
-      for (const sn of payload.serbisyo_nadawat) {
+      for (let sn of payload.serbisyo_nadawat) {
+        sn.programa = fixDescripMismatch(sn.programa);
+        sn.ahensya = fixDescripMismatch(sn.ahensya);
         const insert = await con.Insert(
           `
             INSERT INTO family_serbisyo_nadawat
@@ -304,7 +293,8 @@ const updateFamily = async (
         { fam_pk }
       );
 
-      for (const mk of payload.matang_kasilyas) {
+      for (let mk of payload.matang_kasilyas) {
+        mk = fixDescripMismatch(mk);
         const sql_pangabasu = await con.Insert(
           `
             INSERT INTO family_matang_kasilyas
@@ -330,7 +320,8 @@ const updateFamily = async (
         { fam_pk }
       );
 
-      for (const mk of payload.biktima_pangabuso) {
+      for (let mk of payload.biktima_pangabuso) {
+        mk = fixDescripMismatch(mk);
         const insert = await con.Insert(
           `
             INSERT INTO family_biktima_pangabuso
@@ -355,7 +346,8 @@ const updateFamily = async (
         `DELETE FROM family_kahimtanang_komunidad where fam_pk=@fam_pk;`,
         { fam_pk }
       );
-      for (const mb of payload.kahimtanang_komunidad) {
+      for (let mb of payload.kahimtanang_komunidad) {
+        mb = fixDescripMismatch(mb);
         const insert = await con.Insert(
           `
             INSERT INTO family_kahimtanang_komunidad
@@ -378,36 +370,11 @@ const updateFamily = async (
       }
 
       await con.Modify(
-        `DELETE FROM family_matang_kasilyas where fam_pk=@fam_pk;`,
-        { fam_pk }
-      );
-      for (const mk of payload.matang_kasilyas) {
-        const insert = await con.Insert(
-          `
-            INSERT INTO family_matang_kasilyas
-            SET
-            fam_pk='${fam_pk}',
-            descrip=@descrip; 
-          `,
-          {
-            descrip: mk,
-          }
-        );
-
-        if (insert.insertedId <= 0) {
-          con.Rollback();
-          return {
-            success: false,
-            message: "No affected rows while adding the fam member.",
-          };
-        }
-      }
-
-      await con.Modify(
         `DELETE FROM family_pasilidad_kuryente where fam_pk=@fam_pk;`,
         { fam_pk }
       );
-      for (const pk of payload.pasilidad_kuryente) {
+      for (let pk of payload.pasilidad_kuryente) {
+        pk = fixDescripMismatch(pk);
         const insert = await con.Insert(
           `
             INSERT INTO family_pasilidad_kuryente
@@ -433,7 +400,9 @@ const updateFamily = async (
         `DELETE FROM family_matang_basura where fam_pk=@fam_pk;`,
         { fam_pk }
       );
-      for (const mb of payload.matang_basura) {
+      for (let mb of payload.matang_basura) {
+        mb = fixDescripMismatch(mb);
+
         const insert = await con.Insert(
           `
             INSERT INTO family_matang_basura
@@ -459,7 +428,8 @@ const updateFamily = async (
         `DELETE FROM family_tinubdan_tubig where fam_pk=@fam_pk;`,
         { fam_pk }
       );
-      for (const tt of payload.tinubdan_tubig) {
+      for (let tt of payload.tinubdan_tubig) {
+        tt = fixDescripMismatch(tt);
         const insert = await con.Insert(
           `
             INSERT INTO family_tinubdan_tubig
@@ -485,7 +455,9 @@ const updateFamily = async (
         `DELETE FROM family_serbisyo_nadawat where fam_pk=@fam_pk;`,
         { fam_pk }
       );
-      for (const sn of payload.serbisyo_nadawat) {
+      for (let sn of payload.serbisyo_nadawat) {
+        sn.programa = fixDescripMismatch(sn.programa);
+        sn.ahensya = fixDescripMismatch(sn.ahensya);
         const insert = await con.Insert(
           `
             INSERT INTO family_serbisyo_nadawat
@@ -1061,6 +1033,23 @@ const searchFamMember = async (payload: any): Promise<ResponseModel> => {
       message: ErrorMessage(error),
     };
   }
+};
+
+const fixDescripMismatch = (txt: string): string => {
+  if (txt.toLowerCase() == "walay connection sa tubig".toLowerCase())
+    txt = `walay konesyon sa tubig`;
+  if (txt.toLowerCase() == "lamapara (gas)".toLowerCase())
+    txt = `lampara (gas)`;
+  if (txt.toLowerCase() == "petromaks".toLowerCase()) txt = `petromaks (gas)`;
+  if (txt.toLowerCase() == "gikolekta sa CENRO or Barangay".toLowerCase())
+    txt = `ginakolekta sa CENTRO O Barangay`;
+  if (txt.toLowerCase() == "walay igong o layo sa eskewlahan".toLowerCase())
+    txt = `walay igong o layo sa eskwelahan`;
+  if (txt.toLowerCase() == "dulaana sa mga bata".toLowerCase())
+    txt = `dulaanan sa mga bata`;
+  if (txt.toLowerCase() == "buhosbuhos".toLowerCase()) txt = `buhos`;
+
+  return txt;
 };
 
 export default {

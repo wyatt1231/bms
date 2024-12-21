@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
-import FileUpload from "express-fileupload";
+import fileUpload from "express-fileupload";
 import http from "http";
 import path from "path";
 import { Server } from "socket.io";
@@ -15,12 +15,18 @@ const main = async () => {
 
   //test
 
-  // app.use(BodyParser.json({ limit: "100mb" }));
+  // app.use(bodyParser.json({ limit: "100mb" }));
 
   app.use(express.json({ limit: "100mb" }));
   // app.use(jsonErrorHandler);
 
-  app.use(FileUpload());
+  // app.use(FileUpload());
+
+  app.use(
+    fileUpload({
+      createParentPath: true, // Automatically create directories if they don’t exist
+    })
+  );
 
   app.use(express.static("./"));
 
@@ -34,10 +40,7 @@ const main = async () => {
   ControllerRegistry(app);
   SocketRegistry(socketServer);
 
-  app.use(
-    "/static",
-    express.static(path.join(__dirname, "../client/build//static"))
-  );
+  app.use("/static", express.static(path.join(__dirname, "../client/build//static")));
 
   app.get("*", function (req, res) {
     res.sendFile("index.html", {
@@ -48,9 +51,7 @@ const main = async () => {
   // const PORT = process.env.PORT || 4050;
   const PORT = 4050;
   // const PORT = 8080;
-  server.listen(PORT, () =>
-    console.log(`28/04/2024 04:17pm - listening to ports ${PORT}`)
-  );
+  server.listen(PORT, () => console.log(`28/04/2024 04:17pm - listening to ports ${PORT}`));
 };
 
 //COPIED FROM LAPTOP

@@ -56,10 +56,8 @@ const NewsController = (app) => __awaiter(void 0, void 0, void 0, function* () {
         var _a, _b;
         try {
             const payload = req.body;
-            let files = ((_a = req.files) === null || _a === void 0 ? void 0 : _a.uploaded_files) ? (_b = req.files) === null || _b === void 0 ? void 0 : _b.uploaded_files : [];
-            if (files instanceof Array) {
-            }
-            else {
+            let files = (_b = (_a = req.files) === null || _a === void 0 ? void 0 : _a.uploaded_files) !== null && _b !== void 0 ? _b : [];
+            if (!(files instanceof Array)) {
                 files = [files];
             }
             res.json(yield NewsRepository_1.default.addNews(payload, files instanceof Array ? files : [files], req.user_pk));
@@ -72,15 +70,22 @@ const NewsController = (app) => __awaiter(void 0, void 0, void 0, function* () {
         var _c, _d;
         try {
             const payload = req.body;
-            let files = ((_c = req.files) === null || _c === void 0 ? void 0 : _c.uploaded_files) ? (_d = req.files) === null || _d === void 0 ? void 0 : _d.uploaded_files : [];
-            if (files instanceof Array) {
-            }
-            else {
+            let files = (_d = (_c = req.files) === null || _c === void 0 ? void 0 : _c.uploaded_files) !== null && _d !== void 0 ? _d : [];
+            if (!(files instanceof Array)) {
                 files = [files];
             }
-            res.json(yield NewsRepository_1.default.addNewsFiles(payload, files instanceof Array ? files : [files], req.user_pk));
+            if (files.length <= 0) {
+                res.json({
+                    success: false,
+                    message: "Please add at least one file!",
+                });
+            }
+            else {
+                res.json(yield NewsRepository_1.default.addNewsFiles(payload, files, req.user_pk));
+            }
         }
         catch (error) {
+            console.error(error);
             res.json(500);
         }
     }));

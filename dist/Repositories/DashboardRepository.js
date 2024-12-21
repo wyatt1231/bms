@@ -321,10 +321,7 @@ const genderStats = (filters) => __awaiter(void 0, void 0, void 0, function* () 
         return {
             success: true,
             data: {
-                labels: [
-                    `lalaki (${total_male.total})`,
-                    `babae (${total_female.total})`,
-                ],
+                labels: [`lalaki (${total_male.total})`, `babae (${total_female.total})`],
                 data_set: [
                     {
                         x: "lalaki",
@@ -394,19 +391,33 @@ const StatsBiktikmaPangabuso = (filters) => __awaiter(void 0, void 0, void 0, fu
     const con = yield (0, DatabaseConfig_1.DatabaseConnection)();
     try {
         yield con.BeginTransaction();
-        const stats_complaint = yield con.Query(`
-      select total, concat(label,' (',total,')' ) as label, purok   from (
-        SELECT COUNT(fpk.descrip) AS total ,fpk.descrip as label, r.purok FROM family_biktima_pangabuso fpk
+        const data = yield con.Query(`
+     SELECT total, CONCAT(label,' (',total,')' ) AS label, purok   FROM (
+        SELECT COUNT(fpk.descrip) AS total ,fpk.descrip AS label, r.purok FROM family_biktima_pangabuso fpk
         JOIN family f ON f.fam_pk = fpk.fam_pk
         JOIN resident r ON r.resident_pk = f.ulo_pamilya
-        WHERE r.purok IN @purok
+        WHERE YEAR(r.resident_date) = '${filters.year}' AND r.purok IN @purok  
         GROUP BY fpk.descrip
-        ) as tmp  
-      `, filters);
+        ) AS tmp  
+      `, {
+            purok: filters.purok,
+            year: filters.year,
+        });
+        //YEAR(resident_date) = @year
+        const labels = [`gibeya-an`, `pangulata`, `ginabaligya/illegal rekroter`, `droga`, `krime`];
+        const rows = [];
+        labels.forEach((l) => {
+            var _a, _b;
+            const item = data.find((p) => p.label.includes(l));
+            rows.push({
+                label: (_a = item === null || item === void 0 ? void 0 : item.label) !== null && _a !== void 0 ? _a : `${l} (0)`,
+                total: (_b = item === null || item === void 0 ? void 0 : item.total) !== null && _b !== void 0 ? _b : 0,
+            });
+        });
         con.Commit();
         return {
             success: true,
-            data: stats_complaint,
+            data: rows,
         };
     }
     catch (error) {

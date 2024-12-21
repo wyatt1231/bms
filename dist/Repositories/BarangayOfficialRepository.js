@@ -99,9 +99,16 @@ const getBrgyOfficialDataTable = (payload) => __awaiter(void 0, void 0, void 0, 
         yield con.BeginTransaction();
         const data = yield con.QueryPagination(`
       SELECT * FROM 
-      (SELECT r.first_name,r.resident_pk,r.middle_name,r.last_name,r.suffix,r.pic,r.gender,bo.official_pk,bo.position,bo.encoded_at,bo.sts_pk,s.sts_backgroundColor,s.sts_color,s.sts_desc, bo.rank FROM barangay_official bo 
+      (SELECT r.first_name,r.resident_pk,r.middle_name,r.last_name,r.suffix,r.pic,r.gender,bo.official_pk,bo.position,bo.encoded_at,bo.sts_pk,s.sts_backgroundColor,s.sts_color,s.sts_desc,
+      (if (bo.position = 'Punong Barangay', 1 ,  
+      if (bo.position = 'Kagawad' , 1, 
+      if (bo.position = 'Secretary' , 2, 
+      if (bo.position = 'Purok Leader' , 4, 5))))) as rank 
+            FROM barangay_official bo 
       JOIN resident r ON bo.resident_pk = r.resident_pk
-      LEFT JOIN status s ON s.sts_pk = bo.sts_pk) tmp
+          LEFT JOIN status s ON s.sts_pk = bo.sts_pk) tmp
+      
+
       WHERE 
       
       first_name like concat('%',@first_name,'%')
@@ -114,9 +121,7 @@ const getBrgyOfficialDataTable = (payload) => __awaiter(void 0, void 0, void 0, 
         if (hasMore) {
             data.splice(data.length - 1, 1);
         }
-        const count = hasMore
-            ? -1
-            : payload.page.begin * payload.page.limit + data.length;
+        const count = hasMore ? -1 : payload.page.begin * payload.page.limit + data.length;
         for (const admin of data) {
             admin.pic = yield (0, useFileUploader_1.GetUploadedImage)(admin.pic);
         }
@@ -146,7 +151,12 @@ const getBrgyOfficialList = () => __awaiter(void 0, void 0, void 0, function* ()
         yield con.BeginTransaction();
         const data = yield con.Query(`
       SELECT * FROM 
-      (SELECT r.first_name,r.middle_name,r.last_name,r.suffix,r.pic,r.gender,bo.position,bo.rank,bo.encoded_at,bo.sts_pk,s.sts_backgroundColor,s.sts_color,s.sts_desc FROM barangay_official bo 
+      (SELECT r.first_name,r.middle_name,r.last_name,r.suffix,r.pic,r.gender,bo.position,
+      (if (bo.position = 'Punong Barangay', 1 ,  
+      if (bo.position = 'Kagawad' , 1, 
+      if (bo.position = 'Secretary' , 2, 
+      if (bo.position = 'Purok Leader' , 4, 5))))) as rank ,
+          bo.encoded_at,bo.sts_pk,s.sts_backgroundColor,s.sts_color,s.sts_desc FROM barangay_official bo 
       JOIN resident r ON bo.resident_pk = r.resident_pk
       LEFT JOIN STATUS s ON s.sts_pk = bo.sts_pk) tmp ORDER BY tmp.rank ASC
       `, null);

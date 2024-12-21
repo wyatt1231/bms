@@ -41,3 +41,8 @@ export interface DashboardFilterInterface {
   year: string;
   purok: Array<string>;
 }
+
+export interface PieModel {
+  label?: string;
+  total?: number;
+}
