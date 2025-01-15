@@ -6,49 +6,49 @@ export let connection_string: mysql.PoolOptions | null = null;
 
 if (process.env.NODE_ENV === "production") {
   //remove in deploy
-  // connection_string = {
-  //   host: "brgy-37d-ppvc.mysql.database.azure.com",
-  //   user: "capstone_admin@brgy-37d-ppvc",
-  //   password: "C@PsT0n3_!@#",
-  //   database: "bms",
-  //   port: 3306,
-  //   connectionLimit: 10,
-  //   waitForConnections: true,
-  //   queueLimit: 10,
-  // };
-
   connection_string = {
-    host: "127.0.0.1",
-    user: "root",
-    password: "rootsa",
+    host: "brgy-37d-ppvc.mysql.database.azure.com",
+    user: "capstone_admin",
+    password: "C@PsT0n3_!@#",
     database: "bms",
-    port: 3309,
+    port: 3306,
     connectionLimit: 10,
     waitForConnections: true,
     queueLimit: 10,
   };
+
+  // connection_string = {
+  //   host: "127.0.0.1",
+  //   user: "root",
+  //   password: "rootsa",
+  //   database: "bms",
+  //   port: 3309,
+  //   connectionLimit: 10,
+  //   waitForConnections: true,
+  //   queueLimit: 10,
+  // };
 } else {
-  // connection_string = {
-  //   host: "brgy-37d-ppvc.mysql.database.azure.com",
-  //   user: "capstone_admin@brgy-37d-ppvc",
-  //   password: "C@PsT0n3_!@#",
-  //   database: "bms",
-  //   port: 3306,
-  //   connectionLimit: 10,
-  //   waitForConnections: true,
-  //   queueLimit: 10,
-  // };
-
   connection_string = {
-    host: "127.0.0.1",
-    user: "root",
-    password: "rootsa",
+    host: "brgy-37d-ppvc.mysql.database.azure.com",
+    user: "capstone_admin",
+    password: "C@PsT0n3_!@#",
     database: "bms",
-    port: 3309,
+    port: 3306,
     connectionLimit: 10,
     waitForConnections: true,
     queueLimit: 10,
   };
+
+  // connection_string = {
+  //   host: "127.0.0.1",
+  //   user: "root",
+  //   password: "rootsa",
+  //   database: "bms",
+  //   port: 3309,
+  //   connectionLimit: 10,
+  //   waitForConnections: true,
+  //   queueLimit: 10,
+  // };
 }
 
 const DatabaseConfig: mysql.Pool = mysql.createPool(connection_string);
@@ -64,10 +64,7 @@ export const DatabaseConnection = (): Promise<DatabaseConnectionModel> => {
           return reject(error);
         }
 
-        const Query = (
-          sql: string,
-          binding: any
-        ): Promise<RowDataPacket[][]> => {
+        const Query = (sql: string, binding: any): Promise<RowDataPacket[][]> => {
           return new Promise((resolve, reject) => {
             const { success, message, query } = queryFormat(sql, binding);
 
@@ -96,10 +93,7 @@ export const DatabaseConnection = (): Promise<DatabaseConnectionModel> => {
           });
         };
 
-        const QueryPagination = (
-          sql: string,
-          pagination: PaginationModel
-        ): Promise<Array<any>> => {
+        const QueryPagination = (sql: string, pagination: PaginationModel): Promise<Array<any>> => {
           return new Promise((resolve, reject) => {
             const { filters, sort, page } = pagination;
             const { success, message, query } = queryFormat(sql, filters);
@@ -339,39 +333,47 @@ const queryFormat = (query: string, values: any): QueryFormatModel => {
     success: true,
     query: query,
   };
-  formattedQuery.query = query.replace(
-    /\@(\w+)/g,
-    (str: string, key: string | Array<string>) => {
-      if (typeof key === "string") {
-        if (values.hasOwnProperty(key)) {
-          if (values[key] === null || typeof values[key] === "undefined") {
-            return "(NULL)";
-          }
-          if (values[key] instanceof Array) {
-            const furnished_arr = values[key].filter((v) => !!v);
-
-            if (furnished_arr.length > 0) {
-              const formatArritem = furnished_arr.map((v) => mysql.escape(v));
-              const arr_rep: string = formatArritem.join(",");
-              return ` (${arr_rep}) `;
-            } else {
-              return ` ('') `;
-            }
-          }
-
-          return mysql.escape(values[key]);
-        } else {
-          if (typeof formattedQuery.message === "undefined") {
-            formattedQuery.message = `Column value error : ${key} cannot be found`;
-          }
-          formattedQuery.success = false;
-          return str;
+  formattedQuery.query = query.replace(/\@(\w+)/g, (str: string, key: string | Array<string>) => {
+    if (typeof key === "string") {
+      if (values.hasOwnProperty(key)) {
+        if (values[key] === null || typeof values[key] === "undefined") {
+          return "(NULL)";
         }
-      }
+        if (values[key] instanceof Array) {
+          const furnished_arr = values[key].filter((v) => !!v);
 
-      return str;
+          if (furnished_arr.length > 0) {
+            const formatArritem = furnished_arr.map((v) => mysql.escape(v));
+            const arr_rep: string = formatArritem.join(",");
+            return ` (${arr_rep}) `;
+          } else {
+            return ` ('') `;
+          }
+        }
+
+        return mysql.escape(values[key]);
+      } else {
+        if (typeof formattedQuery.message === "undefined") {
+          formattedQuery.message = `Column value error : ${key} cannot be found`;
+        }
+        formattedQuery.success = false;
+        return str;
+      }
     }
-  );
+
+    return str;
+  });
 
   return formattedQuery;
 };
+
+/*
+
+CREATE VIEW `vw_users` AS 
+select `resident`.`user_pk` AS `user_pk`,`resident`.`pic` AS `pic`,concat(`resident`.`last_name`,', ',`resident`.`first_name`) AS `full_name` from `resident` 
+union all 
+select `user_pk` AS `user_pk`, `pic` AS `pic`,concat(`lastname`,', ',`firstname`) AS `full_name` from `administrator`
+
+
+
+*/

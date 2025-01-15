@@ -396,7 +396,8 @@ const StatsBiktikmaPangabuso = (filters) => __awaiter(void 0, void 0, void 0, fu
         SELECT COUNT(fpk.descrip) AS total ,fpk.descrip AS label, r.purok FROM family_biktima_pangabuso fpk
         JOIN family f ON f.fam_pk = fpk.fam_pk
         JOIN resident r ON r.resident_pk = f.ulo_pamilya
-        WHERE YEAR(r.resident_date) = '${filters.year}' AND r.purok IN @purok  
+        WHERE r.purok IN @purok 
+        AND YEAR(r.resident_date) = '${filters.year}' 
         GROUP BY fpk.descrip
         ) AS tmp  
       `, {
@@ -438,6 +439,7 @@ const StatsKahimtangKomunidad = (filters) => __awaiter(void 0, void 0, void 0, f
         JOIN family f ON f.fam_pk = fpk.fam_pk
         JOIN resident r ON r.resident_pk = f.ulo_pamilya
         WHERE r.purok IN @purok
+        AND YEAR(r.resident_date) = '${filters.year}' 
         GROUP BY fpk.descrip
         ) as tmp  
       `, filters);
@@ -466,6 +468,7 @@ const StatsMatangBasura = (filters) => __awaiter(void 0, void 0, void 0, functio
         JOIN family f ON f.fam_pk = fpk.fam_pk
         JOIN resident r ON r.resident_pk = f.ulo_pamilya
         WHERE r.purok IN @purok
+        AND YEAR(r.resident_date) = '${filters.year}' 
         GROUP BY fpk.descrip
         ) as tmp  
        `, filters);
@@ -494,6 +497,7 @@ const StatsMatangKasilyas = (filters) => __awaiter(void 0, void 0, void 0, funct
         JOIN family f ON f.fam_pk = fpk.fam_pk
         JOIN resident r ON r.resident_pk = f.ulo_pamilya
         WHERE r.purok IN @purok
+        AND YEAR(r.resident_date) = '${filters.year}' 
         GROUP BY fpk.descrip
         ) as tmp  
       `, filters);
@@ -522,6 +526,7 @@ const StatsPasilidadKuryente = (filters) => __awaiter(void 0, void 0, void 0, fu
         JOIN family f ON f.fam_pk = fpk.fam_pk
         JOIN resident r ON r.resident_pk = f.ulo_pamilya
         WHERE r.purok IN @purok
+        AND YEAR(r.resident_date) = '${filters.year}' 
         GROUP BY fpk.descrip
         ) as tmp   
      

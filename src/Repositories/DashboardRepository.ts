@@ -466,7 +466,8 @@ const StatsBiktikmaPangabuso = async (filters: DashboardFilterInterface): Promis
         SELECT COUNT(fpk.descrip) AS total ,fpk.descrip AS label, r.purok FROM family_biktima_pangabuso fpk
         JOIN family f ON f.fam_pk = fpk.fam_pk
         JOIN resident r ON r.resident_pk = f.ulo_pamilya
-        WHERE YEAR(r.resident_date) = '${filters.year}' AND r.purok IN @purok  
+        WHERE r.purok IN @purok 
+        AND YEAR(r.resident_date) = '${filters.year}' 
         GROUP BY fpk.descrip
         ) AS tmp  
       `,
@@ -516,6 +517,7 @@ const StatsKahimtangKomunidad = async (filters: DashboardFilterInterface): Promi
         JOIN family f ON f.fam_pk = fpk.fam_pk
         JOIN resident r ON r.resident_pk = f.ulo_pamilya
         WHERE r.purok IN @purok
+        AND YEAR(r.resident_date) = '${filters.year}' 
         GROUP BY fpk.descrip
         ) as tmp  
       `,
@@ -549,6 +551,7 @@ const StatsMatangBasura = async (filters: DashboardFilterInterface): Promise<Res
         JOIN family f ON f.fam_pk = fpk.fam_pk
         JOIN resident r ON r.resident_pk = f.ulo_pamilya
         WHERE r.purok IN @purok
+        AND YEAR(r.resident_date) = '${filters.year}' 
         GROUP BY fpk.descrip
         ) as tmp  
        `,
@@ -582,6 +585,7 @@ const StatsMatangKasilyas = async (filters: DashboardFilterInterface): Promise<R
         JOIN family f ON f.fam_pk = fpk.fam_pk
         JOIN resident r ON r.resident_pk = f.ulo_pamilya
         WHERE r.purok IN @purok
+        AND YEAR(r.resident_date) = '${filters.year}' 
         GROUP BY fpk.descrip
         ) as tmp  
       `,
@@ -615,6 +619,7 @@ const StatsPasilidadKuryente = async (filters: DashboardFilterInterface): Promis
         JOIN family f ON f.fam_pk = fpk.fam_pk
         JOIN resident r ON r.resident_pk = f.ulo_pamilya
         WHERE r.purok IN @purok
+        AND YEAR(r.resident_date) = '${filters.year}' 
         GROUP BY fpk.descrip
         ) as tmp   
      
