@@ -1,0 +1,1 @@
+export const GET_DATA_BARANGAY = 'GET_DATA_BARANGAY';
