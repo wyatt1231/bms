@@ -8,6 +8,10 @@ import {TextInput} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {action_Login_user} from '../Services/Actions/LoginAction';
 import Spinner from 'react-native-loading-spinner-overlay';
+import ModernInput from '../components/Forms/ModenInput';
+import GradientContainer from '../components/GradientContainer';
+import { brotliDecompressSync } from 'node:zlib';
+import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -58,67 +62,42 @@ const LoginScreen = () => {
         textContent={'Loading...'}
         textStyle={styles.spinnerTextStyle}
       />
-      <Image
-        source={require('../assets/icons/applogo.jpg')}
-        resizeMode="contain"
-        style={styles.image}
+      <View style={styles.headerContainer}>
+        <View style={{flex:1,backgroundColor: 'white',borderBottomRightRadius:60,borderBottomLeftRadius:60,width: 400}}>
+        
+        <Image
+          source={require('../assets/icons/applogo2.png')}
+          resizeMode="contain"
+          style={styles.image}
+        />
+        
+        
+        <View style={{marginVertical: 5}} />
+        </View>
+      </View>
+      <View style={styles.formContainer}>
+        <GradientContainer
+        gradientStyle={{paddingTop:20}}
+        >
+          <Text style={styles.textTitle}>Brgy. 37-D Davao City</Text>
+          <Text style={styles.textShortTitle}>PPVC</Text>
+          <Text style={styles.textSubtitle}>
+          People Profiling and Violation Complaint
+        </Text>
+      <ModernInput
+        placeholder="Enter your email"
+        value={username}
+        onChangeText={text => setUsername(text)}
+        icon="mail-outline"
+        keyboardType="email-address"
       />
-      <Text style={styles.textTitle}>Brgy. 37-D Davao City</Text>
-      <Text style={styles.textShortTitle}>PPVC</Text>
-      <Text style={styles.textSubtitle}>
-        People Profiling and Violation Complaint
-      </Text>
-      <View style={{marginVertical: 5}} />
-
-      <View style={styles.InputContainer}>
-        <TextInput
-          theme={{
-            colors: {
-              primary: '#623256',
-              background: 'white',
-              underlineColor: 'transparent',
-            },
-          }}
-          mode="flat"
-          onChangeText={text => setUsername(text)}
-          label="Email"
-          value={username}
-        />
-        {/* <Input
-            style={styles.textInput}
-            inputContainerStyle={styles.inputContainer}
-            inputStyle={styles.inputText}
-            placeholder="Username"
-            onChangeText={(text) => setUsername(text)}
-            defaultValue={username}
-          /> */}
-      </View>
-      <View style={styles.InputContainer}>
-        <TextInput
-          theme={{
-            colors: {
-              primary: '#623256',
-              background: 'white',
-              underlineColor: 'transparent',
-            },
-          }}
-          mode="flat"
-          onChangeText={text => setPassword(text)}
-          label="Password"
-          secureTextEntry={true}
-          value={password}
-        />
-        {/* <Input
-            style={styles.textInput}
-            //onFocus={onFocusChange}
-            placeholder="Password"
-            inputContainerStyle={styles.inputContainer}
-            inputStyle={styles.inputText}
-            secureTextEntry={true}
-            onChangeText={(text) => setPassword(text)}
-            defaultValue={password}
-          /> */}
-      </View>
+       <ModernInput
+        placeholder="Enter your password"
+        value={password}
+        onChangeText={text => setPassword(text)}
+        icon="lock-closed-outline"
+        secureTextEntry={true}
+      />
       <View
         style={{
           flex: 1,
@@ -137,18 +116,20 @@ const LoginScreen = () => {
             onPress={() => handleSubmit()}>
             <Text style={styles.submitText}>Login</Text>
           </TouchableHighlight>
-          <Text style={{textAlign: 'center', marginTop: 30}}>
+          <Text style={{textAlign: 'center', marginTop: 30, color:'white'}}>
             Not Yet Registered?{' '}
-            <Text onPress={() => goToSignup()} style={{color: 'blue'}}>
+            <Text onPress={() => goToSignup()} style={{color: 'blue',fontWeight:'bold',textDecorationLine:'underline'}}>
               Sign Up
             </Text>
           </Text>
-          <Text style={{textAlign: 'center', marginTop: 30}}>
-            <Text onPress={() => gotoreset()} style={{color: 'blue'}}>
+          <Text style={{textAlign: 'center', marginTop: 20}}>
+            <Text onPress={() => gotoreset()} style={{color: 'blue',textDecorationLine:'underline'}}>
               Forgot Password
             </Text>
           </Text>
         </View>
+      </View>
+      </GradientContainer>
       </View>
       {/* <View
         style={{
@@ -167,6 +148,15 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,355,0.5)',
     borderWidth: 0.1,
     borderRadius: 5,
+  },
+  headerContainer: {
+    flex:2,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor:'#623256'
+  },
+  formContainer: {
+    flex:5
   },
   login: {
     display: 'flex',
@@ -229,28 +219,28 @@ const styles = StyleSheet.create({
   image: {
     marginTop: 25,
     width: '100%',
-    height: '20%',
+    height: '60%',
   },
 
   textSubtitle: {
     fontFamily: 'Open-Sans',
     fontSize: 18,
     textAlign: 'center',
-    marginVertical: 10,
-    color: 'black',
+    marginBottom: 20,
+    color: 'white',
   },
   textShortTitle: {
     fontFamily: 'Open-Sans',
     fontSize: 20,
     textAlign: 'center',
     marginVertical: 10,
-    color: 'black',
+    color: 'white',
   },
   textTitle: {
     fontFamily: 'Open-Sans',
     textAlign: 'center',
     fontSize: 24,
-    color: 'black',
+    color: 'white',
   },
 });
 

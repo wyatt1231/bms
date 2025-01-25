@@ -4,12 +4,33 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     flex: 1,
   },
+  pickerWrapper: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    overflow: "hidden",
+    backgroundColor: "#f9f9f9",
+    marginHorizontal:10
+  },
+  PickerContainer: {
+    height: 50,
+    width: "100%",
+    color: "#333",
+  },
   avatar: {
     width: '100%',
     height: 500,
     borderColor: 'white',
     alignSelf: 'center',
     resizeMode: 'contain',
+  },
+  imageFile: {
+    width: '100%',
+    height: '100%',
+    borderColor: 'white',
+    alignSelf: 'center',
+    resizeMode: 'contain',
+
   },
   container: {
     flex: 1,
@@ -25,13 +46,13 @@ const styles = StyleSheet.create({
   text: {
     color: 'black',
     fontSize: 14,
-    padding: 5,
+    paddingHorizontal: 5,
+    paddingBottom: 5
   },
   reportedAt: {
     color: 'black',
-    fontSize: 8,
-    padding: 5,
-    marginRight: 10,
+    fontSize: 11,
+    paddingHorizontal: 5,
     textAlign: 'right',
   },
   HeaderText: {
@@ -48,10 +69,30 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
   },
   flatlistcontainer: {
-    flex: 1,
-    height: 500,
-    paddingTop: 10,
+   flex:1,
   },
+  containerTop :{
+    flex:1,
+    backgroundColor:"#623256",
+  },
+  containerContent: {
+    flex:4,
+    alignItems:'center'
+
+  },
+  cardContainer :{
+    marginTop: -50,
+    width: '95%', // Card width relative to the screen
+    padding: 20, // Inner spacing
+    backgroundColor: 'white', // Card background color
+    borderRadius: 20, // Rounded corners
+    shadowColor: '#000', // Shadow color
+    shadowOffset: { width: 0, height: 2 }, // Shadow position
+    shadowOpacity: 0.2, // Shadow transparency
+    shadowRadius: 4, // Shadow blur
+    elevation: 15, // Android shadow effect
+    flex:1,
+    },
   plate: {
     flex: 1,
     backgroundColor: 'rgba(255,255,355,0.5)',
@@ -72,5 +113,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Open-Sans',
     height: 20,
   },
+  InputContainer: {
+    width: '100%',
+    height: 50,
+    marginBottom: 20,
+    padding: 15,
+  }
 });
 export default styles;
