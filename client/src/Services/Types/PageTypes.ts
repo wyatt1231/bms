@@ -60,6 +60,10 @@ export type PageReducerTypes =
   | {
       type: "SET_PAGE_SELECTED_HEAD_FAM";
       selected_head_fam: SelectedFamHeadModel;
+    }
+  | {
+      type: "SET_FILE_PREVIEW";
+      file_preview: { type: string; url: string };
     };
 
 export interface PageReducerModel {
@@ -69,4 +73,5 @@ export interface PageReducerModel {
   page_links: Array<PageLinkTypes>;
   page_success_prompt?: PageSuccessPromptTypes;
   selected_head_fam?: SelectedFamHeadModel;
+  file_preview?: { type: string; url: string };
 }

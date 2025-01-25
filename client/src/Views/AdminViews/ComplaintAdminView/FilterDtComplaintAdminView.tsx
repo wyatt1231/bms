@@ -15,28 +15,28 @@ interface IFilterDtComplaintAdminView {
 
 const initialTableSort: Array<ITableInitialSort> = [
   {
-    label: "Pinakauna gi-report",
+    label: "Reported At (Desc)",
     value: {
       column: "reported_at",
       direction: "desc",
     },
   },
   {
-    label: "Pinakaulahi gi-report",
+    label: "Reported At (Asc)",
     value: {
       column: "reported_at",
       direction: "asc",
     },
   },
   {
-    label: "Titulo (a-z)",
+    label: "Title (a-z)",
     value: {
       column: "title",
       direction: "asc",
     },
   },
   {
-    label: "Titulo (z-a)",
+    label: "Title (z-a)",
     value: {
       column: "title",
       direction: "desc",
@@ -44,190 +44,175 @@ const initialTableSort: Array<ITableInitialSort> = [
   },
 ];
 
-export const FilterDtComplaintAdminView: FC<IFilterDtComplaintAdminView> = memo(
-  ({ handleSetTableFilter, table_filter, handleRefetchTable }) => {
-    // const [open_diaog, set_open_dialog] = useState(false);
+export const FilterDtComplaintAdminView: FC<IFilterDtComplaintAdminView> = memo(({ handleSetTableFilter, table_filter, handleRefetchTable }) => {
+  // const [open_diaog, set_open_dialog] = useState(false);
 
-    const form_add_news = useForm({
-      mode: "onChange",
-      defaultValues: table_filter.filters,
-    });
+  const form_add_news = useForm({
+    mode: "onChange",
+    defaultValues: table_filter.filters,
+  });
 
-    const [selected_sort, set_selected_sort] = useState(0);
+  const [selected_sort, set_selected_sort] = useState(0);
 
-    const handleChangeSort = useCallback((index: number) => {
-      set_selected_sort(index);
-    }, []);
+  const handleChangeSort = useCallback((index: number) => {
+    set_selected_sort(index);
+  }, []);
 
-    const handleSubmitForm = useCallback(
-      (data) => {
-        const payload: PaginationModel = {
-          ...table_filter,
-          filters: {
-            ...data,
-          },
-          sort: initialTableSort[selected_sort].value,
-          page: {
-            begin: 0,
-            limit: 5,
-          },
-        };
+  const handleSubmitForm = useCallback(
+    (data) => {
+      const payload: PaginationModel = {
+        ...table_filter,
+        filters: {
+          ...data,
+        },
+        sort: initialTableSort[selected_sort].value,
+        page: {
+          begin: 0,
+          limit: 5,
+        },
+      };
 
-        handleSetTableFilter(payload);
-        handleRefetchTable();
-      },
-      [handleRefetchTable, handleSetTableFilter, selected_sort]
-    );
+      handleSetTableFilter(payload);
+      handleRefetchTable();
+    },
+    [handleRefetchTable, handleSetTableFilter, selected_sort]
+  );
 
-    // useEffect(() => {
-    //   form_add_news.reset(table_filter.filters);
-    // }, []);
+  // useEffect(() => {
+  //   form_add_news.reset(table_filter.filters);
+  // }, []);
 
-    return (
-      <>
-        <StyledFilter>
-          <FormProvider {...form_add_news}>
-            <form
-              onSubmit={form_add_news.handleSubmit(handleSubmitForm)}
-              noValidate
-              id="form-filter-records"
-            >
-              <Grid container justify="center" spacing={2}>
-                <Grid item xs={12}>
-                  <div className="filter-main-title">Pagpangita</div>
-                  <TextFieldHookForm
-                    name="search"
-                    variant="outlined"
-                    fullWidth={true}
-                    placeholder="Ibutang ang mga letra sa titulo nga gusto makita"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Grid>
+  return (
+    <>
+      <StyledFilter>
+        <FormProvider {...form_add_news}>
+          <form onSubmit={form_add_news.handleSubmit(handleSubmitForm)} noValidate id="form-filter-records">
+            <Grid container justify="center" spacing={2}>
+              <Grid item xs={12}>
+                <div className="filter-main-title">Search</div>
+                <TextFieldHookForm
+                  name="search"
+                  variant="outlined"
+                  fullWidth={true}
+                  placeholder="Ibutang ang mga letra sa Title nga gusto makita"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
 
-                <Grid item xs={12}>
-                  <div className="filter-main-title">Matang</div>
-                  <Grid container spacing={1}>
-                    {initialTableSort.map((s, i) => (
-                      <Grid key={i} item>
-                        <Chip
-                          label={s.label}
-                          clickable
-                          color={selected_sort === i ? "primary" : "default"}
-                          onClick={() => {
-                            handleChangeSort(i);
-                          }}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <div className="filter-main-title">Pagsala</div>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <MultCheckboxHookForm
-                        label="Kahimtang"
-                        name="sts_pk"
-                        row={true}
-                        radio_items={[
-                          {
-                            label: "Pending",
-                            value: "P",
-                          },
-                          {
-                            label: "Disapproved",
-                            value: "D",
-                          },
-                          {
-                            label: "Acknowledged",
-                            value: "AK",
-                          },
-                          {
-                            label: "On-progress",
-                            value: "OP",
-                          },
-                          {
-                            label: "Closed",
-                            value: "C",
-                          },
-                        ]}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <DateFieldHookForm
-                        type="date"
-                        name="date_from"
-                        label="Mahitabo Gikan"
-                        InputLabelProps={{
-                          shrink: true,
+              <Grid item xs={12}>
+                <div className="filter-main-title">Sort</div>
+                <Grid container spacing={1}>
+                  {initialTableSort.map((s, i) => (
+                    <Grid key={i} item>
+                      <Chip
+                        label={s.label}
+                        clickable
+                        color={selected_sort === i ? "primary" : "default"}
+                        onClick={() => {
+                          handleChangeSort(i);
                         }}
-                        clearable
-                        fullWidth
-                        inputVariant="outlined"
-                        autoOk
-                        defaultValue={null}
                       />
                     </Grid>
-                    <Grid item xs={12}>
-                      <DateFieldHookForm
-                        type="date"
-                        name="date_to"
-                        label="Mahitabo Hangtod"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        clearable
-                        fullWidth
-                        inputVariant="outlined"
-                        autoOk
-                        defaultValue={null}
-                      />
-                    </Grid>
-                  </Grid>
+                  ))}
                 </Grid>
-
-                <Grid item xs={12}>
-                  <Grid
-                    container
-                    spacing={2}
-                    justify="center"
-                    style={{
-                      marginTop: `2em`,
-                      marginBottom: `2em`,
-                    }}
-                  >
-                    <Grid item>
-                      <Button
-                        type="reset"
-                        onClick={() => {}}
-                        variant="contained"
-                      >
-                        Reset
-                      </Button>
-                    </Grid>
-
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        form="form-filter-records"
-                        color="primary"
-                        type="submit"
-                      >
-                        Apply Filters
-                      </Button>
-                    </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <div className="filter-main-title">Filter</div>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <MultCheckboxHookForm
+                      label="Status"
+                      name="sts_pk"
+                      row={true}
+                      radio_items={[
+                        {
+                          label: "Pending",
+                          value: "P",
+                        },
+                        {
+                          label: "Disapproved",
+                          value: "D",
+                        },
+                        {
+                          label: "Acknowledged",
+                          value: "AK",
+                        },
+                        {
+                          label: "On-progress",
+                          value: "OP",
+                        },
+                        {
+                          label: "Closed",
+                          value: "C",
+                        },
+                      ]}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <DateFieldHookForm
+                      type="date"
+                      name="date_from"
+                      label="Date From"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      clearable
+                      fullWidth
+                      inputVariant="outlined"
+                      autoOk
+                      defaultValue={null}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <DateFieldHookForm
+                      type="date"
+                      name="date_to"
+                      label="Date To"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      clearable
+                      fullWidth
+                      inputVariant="outlined"
+                      autoOk
+                      defaultValue={null}
+                    />
                   </Grid>
                 </Grid>
               </Grid>
-            </form>
-          </FormProvider>
-        </StyledFilter>
-      </>
-    );
-  }
-);
+
+              <Grid item xs={12}>
+                <Grid
+                  container
+                  spacing={2}
+                  justify="center"
+                  style={{
+                    marginTop: `2em`,
+                    marginBottom: `2em`,
+                  }}
+                >
+                  <Grid item>
+                    <Button type="reset" onClick={() => {}} variant="contained">
+                      Reset
+                    </Button>
+                  </Grid>
+
+                  <Grid item>
+                    <Button variant="contained" form="form-filter-records" color="primary" type="submit">
+                      Apply Filters
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </form>
+        </FormProvider>
+      </StyledFilter>
+    </>
+  );
+});
 
 export default FilterDtComplaintAdminView;
 

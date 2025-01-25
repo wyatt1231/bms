@@ -2,10 +2,7 @@ import { NewsReducerModel, NewsReducerTypes } from "../Types/NewsTypes";
 
 const defaultState: NewsReducerModel = {};
 
-const NewsReducer = (
-  state: NewsReducerModel = defaultState,
-  action: NewsReducerTypes
-): NewsReducerModel => {
+const NewsReducer = (state: NewsReducerModel = defaultState, action: NewsReducerTypes): NewsReducerModel => {
   switch (action.type) {
     case "news_table": {
       return {

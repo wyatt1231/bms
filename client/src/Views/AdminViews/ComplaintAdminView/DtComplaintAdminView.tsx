@@ -21,19 +21,11 @@ export const DtComplaintAdminView: FC<DtComplaintAdminViewProps> = memo(() => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const complaint_table = useSelector(
-    (store: RootStore) => store.ComplaintReducer.complaints_table
-  );
+  const complaint_table = useSelector((store: RootStore) => store.ComplaintReducer.complaints_table);
 
-  const fetch_complaint_table = useSelector(
-    (store: RootStore) => store.ComplaintReducer.fetch_complaints_table
-  );
+  const fetch_complaint_table = useSelector((store: RootStore) => store.ComplaintReducer.fetch_complaints_table);
 
-  const has_more = useSelector(
-    (store: RootStore) => store.ComplaintReducer.has_more_complaints_table
-  );
-
-  console.log(`has_more`, has_more);
+  const has_more = useSelector((store: RootStore) => store.ComplaintReducer.has_more_complaints_table);
 
   const [refetch_table, set_refetch_table] = useState(0);
   const handleRefetchTable = useCallback(() => {
@@ -115,9 +107,7 @@ export const DtComplaintAdminView: FC<DtComplaintAdminViewProps> = memo(() => {
               alignItems: `start`,
             }}
           >
-            {complaint_table?.length <= 0 && (
-              <div className="error">No complaints found!!!</div>
-            )}
+            {complaint_table?.length <= 0 && <div className="error">No complaints found!!!</div>}
 
             <InfiniteScroll
               pageStart={5}
@@ -159,9 +149,7 @@ export const DtComplaintAdminView: FC<DtComplaintAdminViewProps> = memo(() => {
                     />
 
                     <div className="name">{comp?.user?.full_name}</div>
-                    <div className="time">
-                      {moment(comp?.reported_at).fromNow()}
-                    </div>
+                    <div className="time">{moment(comp?.reported_at).fromNow()}</div>
 
                     <Chip
                       label={comp?.status?.sts_desc}
@@ -177,12 +165,7 @@ export const DtComplaintAdminView: FC<DtComplaintAdminViewProps> = memo(() => {
                         buttons={[
                           {
                             text: "Go to Complaint",
-                            handleClick: () =>
-                              history.push(
-                                window.location.pathname +
-                                  "/" +
-                                  comp.complaint_pk
-                              ),
+                            handleClick: () => history.push(window.location.pathname + "/" + comp.complaint_pk),
                           },
                         ]}
                       />

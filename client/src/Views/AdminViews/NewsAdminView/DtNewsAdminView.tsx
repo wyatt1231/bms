@@ -11,10 +11,7 @@ import IconButtonPopper from "../../../Component/IconButtonPopper/IconButtonPopp
 import LinearLoadingProgress from "../../../Component/LinearLoadingProgress";
 import { InvalidDateToDefault } from "../../../Hooks/UseDateParser";
 import NewsActions from "../../../Services/Actions/NewsActions";
-import {
-  setGeneralPrompt,
-  setPageLinks,
-} from "../../../Services/Actions/PageActions";
+import { setGeneralPrompt, setPageLinks } from "../../../Services/Actions/PageActions";
 import { NewsModel } from "../../../Services/Models/NewsModels";
 import { PaginationModel } from "../../../Services/Models/PaginationModels";
 import { RootStore } from "../../../Services/Store";
@@ -29,9 +26,7 @@ interface DtNewsAdminViewProps {}
 export const DtNewsAdminView: FC<DtNewsAdminViewProps> = memo(() => {
   const dispatch = useDispatch();
 
-  const [selected_news_pk, set_selected_news_pk] = useState<
-    number | undefined
-  >();
+  const [selected_news_pk, set_selected_news_pk] = useState<number | undefined>();
 
   const handleSetSelectedNews = useCallback((news_pk: number) => {
     set_selected_news_pk(news_pk);
@@ -48,16 +43,10 @@ export const DtNewsAdminView: FC<DtNewsAdminViewProps> = memo(() => {
     set_open_edit_dialog(open);
   }, []);
 
-  const news_table = useSelector(
-    (store: RootStore) => store.NewsReducer.news_table
-  );
-  const news_table_has_more = useSelector(
-    (store: RootStore) => store.NewsReducer.news_table_has_more
-  );
+  const news_table = useSelector((store: RootStore) => store.NewsReducer.news_table);
+  const news_table_has_more = useSelector((store: RootStore) => store.NewsReducer.news_table_has_more);
 
-  const fetch_news_table = useSelector(
-    (store: RootStore) => store.NewsReducer.fetch_news_table
-  );
+  const fetch_news_table = useSelector((store: RootStore) => store.NewsReducer.fetch_news_table);
 
   const [view, set_view] = useState(0);
 
@@ -86,9 +75,7 @@ export const DtNewsAdminView: FC<DtNewsAdminViewProps> = memo(() => {
     set_table_filter(tbl_filter);
   }, []);
 
-  const [selected_file_news_pk, set_selected_file_news_pk] = useState<
-    number | null
-  >(null);
+  const [selected_file_news_pk, set_selected_file_news_pk] = useState<number | null>(null);
 
   const RenderNewsAction = useCallback(
     (news: NewsModel) => {
@@ -181,11 +168,7 @@ export const DtNewsAdminView: FC<DtNewsAdminViewProps> = memo(() => {
     <Container maxWidth="lg">
       <Grid container spacing={3}>
         <Grid item xs={12} md={3}>
-          <FilterDtNewsAdminView
-            handleSetTableFilter={handleSetTableFilter}
-            table_filter={table_filter}
-            handleRefetchTable={handleRefetchTable}
-          />
+          <FilterDtNewsAdminView handleSetTableFilter={handleSetTableFilter} table_filter={table_filter} handleRefetchTable={handleRefetchTable} />
         </Grid>
         <Grid item xs={12} md={9}>
           <div
@@ -217,15 +200,7 @@ export const DtNewsAdminView: FC<DtNewsAdminViewProps> = memo(() => {
                   ]}
                 />
               </Grid>
-              <Grid
-                item
-                xs={12}
-                md={6}
-                spacing={2}
-                container
-                justify="flex-end"
-                alignItems="center"
-              >
+              <Grid item xs={12} md={6} spacing={2} container justify="flex-end" alignItems="center">
                 <Grid item>
                   <AddNewsAdminView handleRefetchTable={handleRefetchTable} />
                 </Grid>
@@ -268,22 +243,12 @@ export const DtNewsAdminView: FC<DtNewsAdminViewProps> = memo(() => {
                         <div className="news-item">
                           <div className="header">
                             <div className="profile">
-                              <CustomAvatar
-                                className="img"
-                                src={news?.user?.pic}
-                                errorMessage={news?.user?.full_name?.charAt(0)}
-                              />
-                              <div className="name">
-                                {news?.user?.full_name}
-                              </div>
-                              <div className="time">
-                                {moment(news?.encoded_at).fromNow()}
-                              </div>
+                              <CustomAvatar className="img" src={news?.user?.pic} errorMessage={news?.user?.full_name?.charAt(0)} />
+                              <div className="name">{news?.user?.full_name}</div>
+                              <div className="time">{moment(news?.encoded_at).fromNow()}</div>
                             </div>
                             <div className="actions">
-                              <IconButtonPopper
-                                buttons={RenderNewsAction(news)}
-                              />
+                              <IconButtonPopper buttons={RenderNewsAction(news)} />
                             </div>
                           </div>
 
@@ -296,8 +261,7 @@ export const DtNewsAdminView: FC<DtNewsAdminViewProps> = memo(() => {
                               label={news?.status?.sts_desc}
                               style={{
                                 color: news?.status?.sts_color,
-                                backgroundColor:
-                                  news?.status?.sts_backgroundColor,
+                                backgroundColor: news?.status?.sts_backgroundColor,
                               }}
                             />
                           </div>
@@ -308,20 +272,11 @@ export const DtNewsAdminView: FC<DtNewsAdminViewProps> = memo(() => {
                               fontSize: `.87em`,
                             }}
                           >
-                            Karong{" "}
-                            {InvalidDateToDefault(
-                              news?.pub_date,
-                              "walay petsa"
-                            )}
+                            Posted on {InvalidDateToDefault(news?.pub_date, "<no date>")}
                           </div>
 
                           <div className="news-title">
-                            {news?.is_prio === 1 && (
-                              <LabelImportantRoundedIcon
-                                fontSize={"small"}
-                                color="primary"
-                              />
-                            )}
+                            {news?.is_prio === 1 && <LabelImportantRoundedIcon fontSize={"small"} color="primary" />}
 
                             <div>{news?.title}</div>
                           </div>
@@ -331,9 +286,7 @@ export const DtNewsAdminView: FC<DtNewsAdminViewProps> = memo(() => {
                             news_pk={news.news_pk}
                             files={news.news_files}
                             selected_file_news_pk={selected_file_news_pk}
-                            handleSetSelectedFileNewsPk={() =>
-                              set_selected_file_news_pk(null)
-                            }
+                            handleSetSelectedFileNewsPk={() => set_selected_file_news_pk(null)}
                             handleRefetchTable={handleRefetchTable}
                           />
                         </div>
@@ -363,9 +316,7 @@ export const DtNewsAdminView: FC<DtNewsAdminViewProps> = memo(() => {
                     handleSetSelectedNews={handleSetSelectedNews}
                     handleRefetchTable={handleRefetchTable}
                     selected_file_news_pk={selected_file_news_pk}
-                    handleSetSelectedFileNewsPk={() =>
-                      set_selected_file_news_pk(null)
-                    }
+                    handleSetSelectedFileNewsPk={() => set_selected_file_news_pk(null)}
                   />
                 )}
               </Grid>

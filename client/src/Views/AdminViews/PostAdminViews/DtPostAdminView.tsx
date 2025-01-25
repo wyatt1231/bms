@@ -1,5 +1,5 @@
-import { Chip, Container, Grid } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
+import { Container, Grid } from "@material-ui/core";
+import { CheckCircleOutlineRounded, CheckCircleRounded } from "@material-ui/icons";
 import moment from "moment";
 import React, { FC, memo, useCallback, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -7,23 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 import CircularLoadingProgress from "../../../Component/CircularLoadingProgress";
 import CustomAvatar from "../../../Component/CustomAvatar";
 import IconButtonPopper from "../../../Component/IconButtonPopper/IconButtonPopper";
-import LinearLoadingProgress from "../../../Component/LinearLoadingProgress";
-import {
-  setGeneralPrompt,
-  setPageLinks,
-} from "../../../Services/Actions/PageActions";
+import { setGeneralPrompt, setPageLinks } from "../../../Services/Actions/PageActions";
 import PostActions from "../../../Services/Actions/PostActions";
 import { PaginationModel } from "../../../Services/Models/PaginationModels";
 import { PostsModel } from "../../../Services/Models/PostModels";
 import { RootStore } from "../../../Services/Store";
 import FilterDtPostAdinView from "./FilterDtPostAdinView";
+import PostFiles from "./PostFiles";
 import PostReaction from "./PostReaction";
 import { StyledPostItem } from "./styles";
-import PostFiles from "./PostFiles";
-import {
-  CheckCircleRounded,
-  CheckCircleOutlineRounded,
-} from "@material-ui/icons";
 
 interface DtPostAdminViewProps {}
 
@@ -32,13 +24,9 @@ export const DtPostAdminView: FC<DtPostAdminViewProps> = memo(() => {
 
   const posts = useSelector((store: RootStore) => store.PostReducer.posts);
 
-  const fetch_posts = useSelector(
-    (store: RootStore) => store.PostReducer.fetch_posts
-  );
+  const fetch_posts = useSelector((store: RootStore) => store.PostReducer.fetch_posts);
 
-  const has_more = useSelector(
-    (store: RootStore) => store.PostReducer.posts_table_has_more
-  );
+  const has_more = useSelector((store: RootStore) => store.PostReducer.posts_table_has_more);
 
   const [table_filter, set_table_filter] = useState<PaginationModel>({
     filters: {
@@ -63,7 +51,7 @@ export const DtPostAdminView: FC<DtPostAdminViewProps> = memo(() => {
 
   const [refetch_table, set_refetch_table] = useState(0);
   const handleRefetchTable = useCallback(() => {
-    set_refetch_table(c => c + 1);
+    set_refetch_table((c) => c + 1);
   }, []);
 
   useEffect(() => {
@@ -83,8 +71,6 @@ export const DtPostAdminView: FC<DtPostAdminViewProps> = memo(() => {
     }
   }, [dispatch, refetch_table]);
 
-  console.log(`posts`, posts);
-
   return (
     <Container maxWidth="lg">
       {/* <LinearLoadingProgress show={fetch_posts} /> */}
@@ -94,11 +80,7 @@ export const DtPostAdminView: FC<DtPostAdminViewProps> = memo(() => {
       ) : (
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
-            <FilterDtPostAdinView
-              handleSetTableFilter={handleSetTableFilter}
-              table_filter={table_filter}
-              handleRefetchTable={handleRefetchTable}
-            />
+            <FilterDtPostAdinView handleSetTableFilter={handleSetTableFilter} table_filter={table_filter} handleRefetchTable={handleRefetchTable} />
           </Grid>
 
           <Grid item xs={12} md={8}>
@@ -143,23 +125,13 @@ export const DtPostAdminView: FC<DtPostAdminViewProps> = memo(() => {
                     <StyledPostItem key={i}>
                       <div className="header">
                         <div className="profile">
-                          <CustomAvatar
-                            src={p.user.pic}
-                            className="img"
-                            errorMessage={p.user.full_name.charAt(0)}
-                          />
+                          <CustomAvatar src={p.user.pic} className="img" errorMessage={p.user.full_name.charAt(0)} />
                           <div className="name">{p.user.full_name}</div>
-                          <div className="time">
-                            {moment(p.encoded_at).fromNow()}
-                          </div>
+                          <div className="time">{moment(p.encoded_at).fromNow()}</div>
 
                           <div className="tag">
-                            {p?.status?.sts_pk === "PU" && (
-                              <CheckCircleRounded color="primary" />
-                            )}
-                            {p?.status?.sts_pk === "UP" && (
-                              <CheckCircleOutlineRounded />
-                            )}
+                            {p?.status?.sts_pk === "PU" && <CheckCircleRounded color="primary" />}
+                            {p?.status?.sts_pk === "UP" && <CheckCircleOutlineRounded />}
                           </div>
                         </div>
 
@@ -167,10 +139,7 @@ export const DtPostAdminView: FC<DtPostAdminViewProps> = memo(() => {
                           <IconButtonPopper
                             buttons={[
                               {
-                                text:
-                                  p.sts_pk === "PU"
-                                    ? "Unpublish Post"
-                                    : "Publish Post",
+                                text: p.sts_pk === "PU" ? "Unpublish Post" : "Publish Post",
                                 handleClick: () => {
                                   dispatch(
                                     setGeneralPrompt({
@@ -178,25 +147,19 @@ export const DtPostAdminView: FC<DtPostAdminViewProps> = memo(() => {
                                       continue_callback: () => {
                                         const payload: PostsModel = {
                                           posts_pk: p.posts_pk,
-                                          sts_pk:
-                                            p.sts_pk === "PU" ? "UP" : "PU",
+                                          sts_pk: p.sts_pk === "PU" ? "UP" : "PU",
                                         };
                                         dispatch(
-                                          PostActions.updatePostStatus(
-                                            payload,
-                                            () => {
-                                              const filter: PaginationModel = {
-                                                ...table_filter,
-                                                page: {
-                                                  begin: 0,
-                                                  limit: 5,
-                                                },
-                                              };
-                                              dispatch(
-                                                PostActions.setPosts(filter)
-                                              );
-                                            }
-                                          )
+                                          PostActions.updatePostStatus(payload, () => {
+                                            const filter: PaginationModel = {
+                                              ...table_filter,
+                                              page: {
+                                                begin: 0,
+                                                limit: 5,
+                                              },
+                                            };
+                                            dispatch(PostActions.setPosts(filter));
+                                          })
                                         );
                                       },
                                     })

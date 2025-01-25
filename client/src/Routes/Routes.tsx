@@ -1,12 +1,13 @@
 import React, { memo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import PageLoader from "../Component/PageLoader";
 import PagePrompt from "../Component/PagePrompt";
 import PageSnackbar from "../Component/PageSnackbar";
 import PageSuccessPrompt from "../Component/PageSuccessPrompt";
 import { SetCurrentUserAction } from "../Services/Actions/UserActions";
 import { RootStore } from "../Services/Store";
+import PreviewFileDialog from "../Views/AdminViews/NewsAdminView/PreviewFileDialog";
 import LoginPortal from "../Views/LoginPortal/LoginPortal";
 import SysAdminRoutes from "./AdminRoutes";
 import Layout from "./Layout/Layout";
@@ -35,6 +36,7 @@ const Routes = memo(() => {
         <PagePrompt />
         <PageSnackbar />
         <PageSuccessPrompt />
+        <PreviewFileDialog />
         <Switch>
           <Route path="/login" exact component={LoginPortal} />
           <Route path="/" exact component={LoginPortal} />

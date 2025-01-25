@@ -1,15 +1,4 @@
-import {
-  Button,
-  Container,
-  Divider,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@material-ui/core";
+import { Button, Container, Divider, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import React, { FC, memo, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
@@ -26,14 +15,11 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
   const dispatch = useDispatch();
   const { fam_pk } = useParams<any>();
 
-  const single_fam_by_fam_pk = useSelector(
-    (store: RootStore) => store.FamilyReducer.single_fam_by_fam_pk
-  );
+  const single_fam_by_fam_pk = useSelector((store: RootStore) => store.FamilyReducer.single_fam_by_fam_pk);
 
   console.log(`single_fam_by_fam_pk --->`, single_fam_by_fam_pk);
 
-  const [selected_resident, set_selected_resident] =
-    useState<ResidentModel>(null);
+  const [selected_resident, set_selected_resident] = useState<ResidentModel>(null);
 
   const handleSetResident = useCallback((resident: ResidentModel | null) => {
     set_selected_resident(resident);
@@ -51,7 +37,7 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
             <Grid container spacing={2} justify="flex-end">
               <NavLink to={`/admin/family/update/${fam_pk}`}>
                 <Button color="primary" variant="contained">
-                  Usabon ang mga Detalye
+                  Reset Details
                 </Button>
               </NavLink>
             </Grid>
@@ -81,49 +67,37 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
                     <Grid item xs={12} lg={6}>
                       <div className="info-group">
                         <div className="label">Pangalan sa Ulo sa Pamilya:</div>
-                        <div className="value">
-                          {single_fam_by_fam_pk?.ulo_fam_name}
-                        </div>
+                        <div className="value">{single_fam_by_fam_pk?.ulo_fam_name}</div>
                       </div>
                     </Grid>
                     <Grid item xs={12} lg={6}>
                       <div className="info-group">
                         <div className="label">Purok:</div>
-                        <div className="value">
-                          {single_fam_by_fam_pk?.ulo_fam_purok}
-                        </div>
+                        <div className="value">{single_fam_by_fam_pk?.ulo_fam_purok}</div>
                       </div>
                     </Grid>
                     <Grid item xs={12} lg={6}>
                       <div className="info-group">
                         <div className="label">Kadugayon sa pagpuyo:</div>
-                        <div className="value">
-                          {single_fam_by_fam_pk?.kadugayon_pagpuyo} ka tuig
-                        </div>
+                        <div className="value">{single_fam_by_fam_pk?.kadugayon_pagpuyo} ka tuig</div>
                       </div>
                     </Grid>
                     <Grid item xs={12} lg={6}>
                       <div className="info-group">
                         <div className="label">Okasyon sa balay:</div>
-                        <div className="value">
-                          {single_fam_by_fam_pk?.okasyon_balay}
-                        </div>
+                        <div className="value">{single_fam_by_fam_pk?.okasyon_balay}</div>
                       </div>
                     </Grid>
                     <Grid item xs={12} lg={6}>
                       <div className="info-group">
                         <div className="label">Structura sa balay:</div>
-                        <div className="value">
-                          {single_fam_by_fam_pk?.straktura}
-                        </div>
+                        <div className="value">{single_fam_by_fam_pk?.straktura}</div>
                       </div>
                     </Grid>
                     <Grid item xs={12} lg={6}>
                       <div className="info-group">
                         <div className="label">Kalig-on sa balay:</div>
-                        <div className="value">
-                          {single_fam_by_fam_pk?.kaligon_balay}
-                        </div>
+                        <div className="value">{single_fam_by_fam_pk?.kaligon_balay}</div>
                       </div>
                     </Grid>
                   </Grid>
@@ -183,16 +157,11 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
                                 <CustomAvatar
                                   height={2.5}
                                   width={2.5}
-                                  errorMessage={
-                                    f?.resident_info?.first_name.charAt(0) +
-                                    f?.resident_info?.last_name.charAt(0)
-                                  }
+                                  errorMessage={f?.resident_info?.first_name.charAt(0) + f?.resident_info?.last_name.charAt(0)}
                                   src={f?.resident_info?.pic}
                                 />
                                 <div>
-                                  {f?.resident_info?.last_name}{" "}
-                                  {f?.resident_info?.first_name}{" "}
-                                  {f?.resident_info?.middle_name}{" "}
+                                  {f?.resident_info?.last_name} {f?.resident_info?.first_name} {f?.resident_info?.middle_name}{" "}
                                   {f?.resident_info?.suffix}
                                 </div>
                               </div>
@@ -238,43 +207,31 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
                   <Grid item xs={12}>
                     <div className="info-group">
                       <div className="label">1. Tinubdan sa tubig :</div>
-                      <div className="value">
-                        {single_fam_by_fam_pk?.tinubdan_tubig}
-                      </div>
+                      <div className="value">{single_fam_by_fam_pk?.tinubdan_tubig}</div>
                     </div>
                   </Grid>
                   <Grid item xs={12}>
                     <div className="info-group">
                       <div className="label">2. Matang sa Kasilyas :</div>
-                      <div className="value">
-                        {single_fam_by_fam_pk?.matang_kasilyas}
-                      </div>
+                      <div className="value">{single_fam_by_fam_pk?.matang_kasilyas}</div>
                     </div>
                   </Grid>
                   <Grid item xs={12}>
                     <div className="info-group">
                       <div className="label">3. Pasilidad sa Kurwente :</div>
-                      <div className="value">
-                        {single_fam_by_fam_pk?.pasilidad_kuryente}
-                      </div>
+                      <div className="value">{single_fam_by_fam_pk?.pasilidad_kuryente}</div>
                     </div>
                   </Grid>
                   <Grid item xs={12}>
                     <div className="info-group">
-                      <div className="label">
-                        4. Matang sa Paghipos sa basura :
-                      </div>
-                      <div className="value">
-                        {single_fam_by_fam_pk?.matang_basura}
-                      </div>
+                      <div className="label">4. Matang sa Paghipos sa basura :</div>
+                      <div className="value">{single_fam_by_fam_pk?.matang_basura}</div>
                     </div>
                   </Grid>
                   <Grid item xs={12}>
                     <div className="info-group">
                       <div className="label">5. Biktima sa pang-abuso :</div>
-                      <div className="value">
-                        {single_fam_by_fam_pk?.biktima_pangabuso}
-                      </div>
+                      <div className="value">{single_fam_by_fam_pk?.biktima_pangabuso}</div>
                     </div>
                   </Grid>
                   <Grid item xs={12}>
@@ -283,9 +240,7 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
                   <Grid item xs={12}>
                     <div className="info-group">
                       <div className="label">Kahimtang sa komunidad: </div>
-                      <div className="value">
-                        {single_fam_by_fam_pk?.kahimtanang_komunidad}
-                      </div>
+                      <div className="value">{single_fam_by_fam_pk?.kahimtanang_komunidad}</div>
                     </div>
                   </Grid>
                 </Grid>
@@ -303,7 +258,7 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
             >
               <Grid container spacing={3}>
                 <Grid item xs={12} container>
-                  <h3>Kahimtang sa komunidad</h3>
+                  <h3>Status</h3>
                 </Grid>
                 <Grid item xs={12} container spacing={1}>
                   {single_fam_by_fam_pk?.kahimtanang_komunidad.map((r, i) => (
@@ -353,10 +308,7 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
         </Grid>
       </Container>
 
-      <ResidentInfo
-        resident={selected_resident}
-        handleSetResident={handleSetResident}
-      />
+      <ResidentInfo resident={selected_resident} handleSetResident={handleSetResident} />
     </>
   );
 });

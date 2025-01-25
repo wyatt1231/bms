@@ -1,38 +1,35 @@
-import React, { memo, FC } from "react";
+import React, { FC, memo } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { FTP_BASE_URL } from "../../../Helpers/Constants";
+import { setFilePreview } from "../../../Services/Actions/PageActions";
 interface PostFilesProps {
   files?: Array<any>;
 }
 
 const PostFiles: FC<PostFilesProps> = memo(({ files }) => {
+  const dispatch = useDispatch();
+
   return (
     <>
       <PostFileBox>
         <div className="files">
           {files.map((file, index) => {
             return (
-              <div key={index} className="file">
-                {/* <IconButton
-                  className="btn"
-                  onClick={() => handleRemoveFile(file)}
-                >
-                  <DeleteRoundedIcon />
-                </IconButton> */}
-                {file?.mimetype?.includes("image") && (
-                  <img
-                    key={index}
-                    alt=""
-                    src={FTP_BASE_URL + file?.file_path}
-                  />
-                )}
-                {file?.mimetype?.includes("video") && (
-                  <video
-                    key={index}
-                    src={FTP_BASE_URL + file?.file_path}
-                    controls
-                  ></video>
-                )}
+              <div
+                key={index}
+                className="file"
+                onClick={() => {
+                  dispatch(
+                    setFilePreview({
+                      url: FTP_BASE_URL + file?.file_path,
+                      type: file?.mimetype,
+                    })
+                  );
+                }}
+              >
+                {file?.mimetype?.includes("image") && <img key={index} alt="" src={FTP_BASE_URL + file?.file_path} />}
+                {file?.mimetype?.includes("video") && <video key={index} src={FTP_BASE_URL + file?.file_path} controls></video>}
               </div>
             );
           })}

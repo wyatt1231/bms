@@ -19,12 +19,10 @@ const defaultState: PageReducerModel = {
     open: false,
     resident_pk: null,
   },
+  // file_preview: { type: string, url: string },
 };
 
-const PageReducer = (
-  state: PageReducerModel = defaultState,
-  action: PageReducerTypes
-): PageReducerModel => {
+const PageReducer = (state: PageReducerModel = defaultState, action: PageReducerTypes): PageReducerModel => {
   switch (action.type) {
     case "SET_PAGE_PROMPT":
       return { ...state, page_prompt: action.page_prompt };
@@ -42,6 +40,8 @@ const PageReducer = (
     case "SET_PAGE_SELECTED_HEAD_FAM":
       return { ...state, selected_head_fam: action.selected_head_fam };
 
+    case "SET_FILE_PREVIEW":
+      return { ...state, file_preview: action.file_preview };
     default:
       return state;
   }

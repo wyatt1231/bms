@@ -4,7 +4,7 @@ import React, { FC, memo, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { FTP_BASE_URL } from "../../../Helpers/Constants";
-import { setGeneralPrompt, setSnackbar } from "../../../Services/Actions/PageActions";
+import { setFilePreview, setGeneralPrompt, setSnackbar } from "../../../Services/Actions/PageActions";
 import NewsApi from "../../../Services/Api/NewsApi";
 import { NewsFileModel } from "../../../Services/Models/NewsModels";
 import AddFilesDialog from "./AddFilesDialog";
@@ -50,16 +50,25 @@ export const NewsFilesDialog: FC<INewsFilesDIalog> = memo(
       [dispatch]
     );
 
-    console.log(`files`, files, FTP_BASE_URL);
-
     return (
       <StyledNewsFilesDialog>
         <div className="files">
           {files.map((file, index) => {
             return (
-              <div key={index} className="file">
-                <IconButton className="btn" onClick={() => handleRemoveFile(file)}>
-                  <DeleteRoundedIcon />
+              <div
+                key={index}
+                className="file"
+                onClick={() => {
+                  dispatch(
+                    setFilePreview({
+                      url: FTP_BASE_URL + file?.file_path,
+                      type: file?.mimetype,
+                    })
+                  );
+                }}
+              >
+                <IconButton size="small" color="primary" className="btn" onClick={() => handleRemoveFile(file)}>
+                  <DeleteRoundedIcon fontSize="small" />
                 </IconButton>
                 {file?.mimetype?.includes("image") && <img key={index} alt="" src={FTP_BASE_URL + file?.file_path} />}
                 {file?.mimetype?.includes("video") && <video key={index} src={FTP_BASE_URL + file?.file_path} controls></video>}

@@ -54,26 +54,26 @@ export const AddNewsAdminView: FC<AddNewsAdminProps> = memo(({ handleRefetchTabl
 
   const Steps = [
     {
-      label: "Punuan sa Detalya",
+      label: "Details",
       View: (
         <div>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <MultiRadioFieldHookForm
                 name="audience"
-                label="Para kinsa ang balita?"
+                label="Who will see the news?"
                 radio_items={[
                   {
                     value: "r",
-                    label: "Residente lang",
+                    label: "Residents Only",
                   },
                   {
                     value: "b",
-                    label: "Mga Opisyal sa brgy lang",
+                    label: "Brgy. Officials Only",
                   },
                   {
                     value: "all",
-                    label: "Tanan",
+                    label: "All",
                   },
                 ]}
               />
@@ -83,7 +83,7 @@ export const AddNewsAdminView: FC<AddNewsAdminProps> = memo(({ handleRefetchTabl
               <DateFieldHookForm
                 type="date"
                 name="pub_date"
-                label="Unsang adlawa mahitabo?"
+                label="Date of the News?"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -97,14 +97,14 @@ export const AddNewsAdminView: FC<AddNewsAdminProps> = memo(({ handleRefetchTabl
             </Grid>
 
             <Grid item xs={12}>
-              <SingleCheckboxHookForm label="Importante o prayoridad ni nga balita?" name="is_prio" />
+              <SingleCheckboxHookForm label="Is the news important or a priority?" name="is_prio" />
             </Grid>
 
             <Grid item xs={12}>
               <TextFieldHookForm
                 fullWidth
                 name="title"
-                label="Ulo sa Balita"
+                label="Title"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -114,7 +114,7 @@ export const AddNewsAdminView: FC<AddNewsAdminProps> = memo(({ handleRefetchTabl
             <Grid item xs={12}>
               <TextFieldHookForm
                 name="body"
-                label="Sulod sa balita"
+                label="Body"
                 fullWidth
                 multiline={true}
                 rows={4}
@@ -128,7 +128,7 @@ export const AddNewsAdminView: FC<AddNewsAdminProps> = memo(({ handleRefetchTabl
       ),
     },
     {
-      label: "Mga File",
+      label: "Files",
       View: (
         <Grid item container>
           <Grid item xs={12}>
@@ -204,10 +204,10 @@ export const AddNewsAdminView: FC<AddNewsAdminProps> = memo(({ handleRefetchTabl
           handleSetOpenNewsDialog(true);
         }}
       >
-        Pagbuhat og Balita
+        Add News
       </Button>
       <FormDialog
-        title="Porma sa pagbuhat og balita"
+        title="News Form"
         handleClose={() => handleSetOpenNewsDialog(false)}
         open={open_add_news_dialog}
         minWidth={500}
@@ -228,7 +228,7 @@ export const AddNewsAdminView: FC<AddNewsAdminProps> = memo(({ handleRefetchTabl
               }}
               variant="contained"
             >
-              Usabon
+              Reset
             </Button>
             <Button
               onClick={() => {
@@ -238,10 +238,10 @@ export const AddNewsAdminView: FC<AddNewsAdminProps> = memo(({ handleRefetchTabl
               variant="contained"
               color="secondary"
             >
-              Balik
+              Back
             </Button>
             <Button variant="contained" form="form_add_news" color="primary" type="submit">
-              {active_step === Steps.length - 1 ? `Ipasa` : "Sunod"}
+              {active_step === Steps.length - 1 ? `Submit` : "Next"}
             </Button>
           </>
         }

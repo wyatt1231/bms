@@ -53,7 +53,7 @@ export const AddFilesDialog: FC<AddNewsAdminProps> = memo(({ handleRefetchFiles,
   return (
     <div>
       <FormDialog
-        title="Pagdungag og files sa balita"
+        title="Add News"
         handleClose={() => handleCloseDialog()}
         open={open_file_dialog}
         minWidth={500}
@@ -72,16 +72,8 @@ export const AddFilesDialog: FC<AddNewsAdminProps> = memo(({ handleRefetchFiles,
         }
         actions={
           <>
-            {/* <Button
-                onClick={() => {
-                  handleReset();
-                }}
-                variant="contained"
-              >
-                Usabon
-              </Button> */}
             <Button variant="contained" form="form_add_news" color="primary" type="submit">
-              Ipasa
+              Submit
             </Button>
           </>
         }

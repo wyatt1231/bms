@@ -1,7 +1,7 @@
-import { Button, Chip, Grid } from "@material-ui/core";
+import { Button, Chip } from "@material-ui/core";
 import LabelImportantRoundedIcon from "@material-ui/icons/LabelImportantRounded";
 import moment from "moment";
-import React, { FC, memo, useCallback, useEffect } from "react";
+import React, { FC, memo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CircularLoadingProgress from "../../../Component/CircularLoadingProgress";
 import CustomAvatar from "../../../Component/CustomAvatar";
@@ -9,7 +9,6 @@ import FormDialog from "../../../Component/FormDialog/FormDialog";
 import { InvalidDateToDefault } from "../../../Hooks/UseDateParser";
 import NewsActions from "../../../Services/Actions/NewsActions";
 import { setGeneralPrompt } from "../../../Services/Actions/PageActions";
-import { NewsModel } from "../../../Services/Models/NewsModels";
 import { RootStore } from "../../../Services/Store";
 import NewsFilesDialog from "./NewsFilesDialog";
 import { StyledNewsContainer } from "./styles";
@@ -41,15 +40,11 @@ export const ViewSelectedNewsDialog: FC<EditNewsAdminProps> = memo(
   }) => {
     const dispatch = useDispatch();
 
-    const single_news = useSelector(
-      (store: RootStore) => store.NewsReducer.single_news
-    );
+    const single_news = useSelector((store: RootStore) => store.NewsReducer.single_news);
 
     console.log(`single_news`, single_news);
 
-    const fetch_single_news = useSelector(
-      (store: RootStore) => store.NewsReducer.fetch_single_news
-    );
+    const fetch_single_news = useSelector((store: RootStore) => store.NewsReducer.fetch_single_news);
 
     useEffect(() => {
       dispatch(NewsActions.setSingleNews(news_pk));
@@ -68,19 +63,11 @@ export const ViewSelectedNewsDialog: FC<EditNewsAdminProps> = memo(
                 <div className="news-item">
                   <div className="header">
                     <div className="profile">
-                      <CustomAvatar
-                        className="img"
-                        src={single_news.user.pic}
-                        errorMessage={"U"}
-                      />
+                      <CustomAvatar className="img" src={single_news.user.pic} errorMessage={"U"} />
                       <div className="name">{single_news?.user?.full_name}</div>
-                      <div className="time">
-                        {moment(single_news?.encoded_at).fromNow()}
-                      </div>
+                      <div className="time">{moment(single_news?.encoded_at).fromNow()}</div>
                     </div>
-                    <div className="actions">
-                      {/* <IconButtonPopper buttons={RenderNewsAction(news)} /> */}
-                    </div>
+                    <div className="actions">{/* <IconButtonPopper buttons={RenderNewsAction(news)} /> */}</div>
                   </div>
 
                   <div
@@ -92,8 +79,7 @@ export const ViewSelectedNewsDialog: FC<EditNewsAdminProps> = memo(
                       label={single_news?.status?.sts_desc}
                       style={{
                         color: single_news?.status?.sts_color,
-                        backgroundColor:
-                          single_news?.status?.sts_backgroundColor,
+                        backgroundColor: single_news?.status?.sts_backgroundColor,
                       }}
                     />
                   </div>
@@ -104,34 +90,21 @@ export const ViewSelectedNewsDialog: FC<EditNewsAdminProps> = memo(
                       fontSize: `.87em`,
                     }}
                   >
-                    Karong{" "}
-                    {InvalidDateToDefault(single_news?.pub_date, "walay petsa")}
+                    Posted on {InvalidDateToDefault(single_news?.pub_date, "<no date>")}
                   </div>
 
                   <div className="news-title">
-                    {single_news?.is_prio === 1 && (
-                      <LabelImportantRoundedIcon
-                        fontSize={"small"}
-                        color="primary"
-                      />
-                    )}
+                    {single_news?.is_prio === 1 && <LabelImportantRoundedIcon fontSize={"small"} color="primary" />}
 
                     <div>{single_news?.title}</div>
                   </div>
                   <div className="body">{single_news.body}</div>
-                  {/* 
-                  <NewsFilesDialog news_pk={single_news.news_pk}
-                  
-                  /> */}
-
                   <NewsFilesDialog
                     files={single_news?.news_files}
                     handleRefetchTable={handleRefetchTable}
                     news_pk={single_news.news_pk}
                     selected_file_news_pk={selected_news_pk}
-                    handleSetSelectedFileNewsPk={() =>
-                      handleSetSelectedFileNewsPk()
-                    }
+                    handleSetSelectedFileNewsPk={() => handleSetSelectedFileNewsPk()}
                   />
                 </div>
               </StyledNewsContainer>
@@ -148,7 +121,7 @@ export const ViewSelectedNewsDialog: FC<EditNewsAdminProps> = memo(
                 }}
                 variant="contained"
               >
-                Usabon ang impormasyon
+                Reset
               </Button>
 
               {single_news?.sts_pk === "UP" ? (

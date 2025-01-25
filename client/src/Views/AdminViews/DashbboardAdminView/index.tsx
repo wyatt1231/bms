@@ -1132,16 +1132,16 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                     height: `100%`,
                   }}
                 >
-                  <div className="title">Mga Bag-ong Balita</div>
+                  <div className="title">New News</div>
 
                   <TableContainer style={{ maxHeight: 300 }}>
                     <LinearLoadingProgress show={fetch_news_latest} />
                     <Table size="small" stickyHeader>
                       <TableHead>
                         <TableRow>
-                          <TableCell>Nag Himo</TableCell>
-                          <TableCell>Ulo sa Balita</TableCell>
-                          <TableCell>Paghitabo</TableCell>
+                          <TableCell>Created</TableCell>
+                          <TableCell>News Title</TableCell>
+                          <TableCell>Date</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>

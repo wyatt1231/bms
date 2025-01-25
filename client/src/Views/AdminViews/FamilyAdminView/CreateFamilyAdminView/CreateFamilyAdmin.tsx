@@ -6,11 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 import CustomStepper from "../../../../Component/CustomStepper/CustomStepper";
 import FamilyActions from "../../../../Services/Actions/FamilyActions";
-import {
-  setGeneralPrompt,
-  setPageLinks,
-  setSnackbar,
-} from "../../../../Services/Actions/PageActions";
+import { setGeneralPrompt, setPageLinks, setSnackbar } from "../../../../Services/Actions/PageActions";
 import { FamMemberModel } from "../../../../Services/Models/FamilyModel";
 import { ResidentModel } from "../../../../Services/Models/ResidentModels";
 import { RootStore } from "../../../../Services/Store";
@@ -26,12 +22,9 @@ export const CreateFamilyAdmin: FC<ICreateFamilyAdmin> = memo(() => {
 
   const [form_schema, set_form_schema] = useState<any>(yup.object());
 
-  const fam_members = useSelector(
-    (store: RootStore) => store.FamilyReducer.fam_members
-  );
+  const fam_members = useSelector((store: RootStore) => store.FamilyReducer.fam_members);
 
-  const [ulo_pamilya_extend_props, set_ulo_pamilya_extend_props] =
-    useState<ResidentModel | null>({});
+  const [ulo_pamilya_extend_props, set_ulo_pamilya_extend_props] = useState<ResidentModel | null>({});
 
   const [active_step, set_active_step] = useState(0);
 
@@ -48,12 +41,7 @@ export const CreateFamilyAdmin: FC<ICreateFamilyAdmin> = memo(() => {
   const Steps = [
     {
       label: "Unang Bahin",
-      View: (
-        <StepUnangBahin
-          handleSetUloPamExtProps={handleSetUloPamExtProps}
-          ulo_pamilya_extend_props={ulo_pamilya_extend_props}
-        />
-      ),
+      View: <StepUnangBahin handleSetUloPamExtProps={handleSetUloPamExtProps} ulo_pamilya_extend_props={ulo_pamilya_extend_props} />,
       subtitle: "Miyembro sa pamilya",
     },
     {
@@ -76,12 +64,7 @@ export const CreateFamilyAdmin: FC<ICreateFamilyAdmin> = memo(() => {
   const submitForm = (payload) => {
     if (active_step === 0) {
       if (fam_members.length < 1) {
-        dispatch(
-          setSnackbar(
-            "Kinahanglan magbutang og bisan isa ka miyembro sa pamilya!",
-            "error"
-          )
-        );
+        dispatch(setSnackbar("Kinahanglan magbutang og bisan isa ka miyembro sa pamilya!", "error"));
         return;
       }
     }
@@ -96,19 +79,11 @@ export const CreateFamilyAdmin: FC<ICreateFamilyAdmin> = memo(() => {
     if (active_step === 3) {
       console.log(`payload`, payload);
 
-      const biktima_pangabuso = payload.biktima_pangabuso.filter(
-        (value) => !!value
-      );
-      const kahimtanang_komunidad = payload.kahimtanang_komunidad.filter(
-        (value) => !!value
-      );
+      const biktima_pangabuso = payload.biktima_pangabuso.filter((value) => !!value);
+      const kahimtanang_komunidad = payload.kahimtanang_komunidad.filter((value) => !!value);
       const matang_basura = payload.matang_basura.filter((value) => !!value);
-      const matang_kasilyas = payload.matang_kasilyas.filter(
-        (value) => !!value
-      );
-      const pasilidad_kuryente = payload.pasilidad_kuryente.filter(
-        (value) => !!value
-      );
+      const matang_kasilyas = payload.matang_kasilyas.filter((value) => !!value);
+      const pasilidad_kuryente = payload.pasilidad_kuryente.filter((value) => !!value);
       const tinubdan_tubig = payload.tinubdan_tubig.filter((value) => !!value);
 
       const serbisyo_nadawat = payload.serbisyo_nadawat.filter((value) => {
@@ -171,11 +146,7 @@ export const CreateFamilyAdmin: FC<ICreateFamilyAdmin> = memo(() => {
       set_form_schema(
         yup.object({
           ulo_pamilya: yup.string().required().label("Ulo sa Pamilya"),
-          kadugayon_pagpuyo: yup
-            .number()
-            .nullable()
-            .required()
-            .label("Kadugayon sa pagpuyo"),
+          kadugayon_pagpuyo: yup.number().nullable().required().label("Kadugayon sa pagpuyo"),
           okasyon_balay: yup.string().required().label("Okasyon sa balay"),
           okasyon_yuta: yup.string().required().label("Okasyon sa yuta"),
           straktura: yup.string().required().label("Straktura sa balay"),
@@ -185,45 +156,17 @@ export const CreateFamilyAdmin: FC<ICreateFamilyAdmin> = memo(() => {
     } else if (active_step === 1) {
       set_form_schema(
         yup.object({
-          tinubdan_tubig: yup
-            .array()
-            .of(yup.string().required())
-            .compact()
-            .min(1)
-            .label("Tinubdan sa tubig"),
-          matang_kasilyas: yup
-            .array()
-            .of(yup.string().required())
-            .compact()
-            .min(1)
-            .label("Matang kasilyas"),
-          pasilidad_kuryente: yup
-            .array()
-            .of(yup.string().required())
-            .compact()
-            .min(1)
-            .label("Pasilidad sa Kurwente"),
-          matang_basura: yup
-            .array()
-            .of(yup.string().required())
-            .compact()
-            .min(1)
-            .label("Matang sa Paghipos sa basura"),
-          biktima_pangabuso: yup
-            .array()
-            .of(yup.string().required())
-            .compact()
-            .label("Biktima sa pang-abuso"),
+          tinubdan_tubig: yup.array().of(yup.string().required()).compact().min(1).label("Tinubdan sa tubig"),
+          matang_kasilyas: yup.array().of(yup.string().required()).compact().min(1).label("Matang kasilyas"),
+          pasilidad_kuryente: yup.array().of(yup.string().required()).compact().min(1).label("Pasilidad sa Kurwente"),
+          matang_basura: yup.array().of(yup.string().required()).compact().min(1).label("Matang sa Paghipos sa basura"),
+          biktima_pangabuso: yup.array().of(yup.string().required()).compact().label("Biktima sa pang-abuso"),
         })
       );
     } else if (active_step === 2) {
       set_form_schema(
         yup.object({
-          kahimtanang_komunidad: yup
-            .array()
-            .of(yup.string().required())
-            .compact()
-            .label("Kahimtang sa komunidad"),
+          kahimtanang_komunidad: yup.array().of(yup.string().required()).compact().label("Kahimtang sa komunidad"),
         })
       );
     } else if (active_step === 3) {
@@ -238,10 +181,7 @@ export const CreateFamilyAdmin: FC<ICreateFamilyAdmin> = memo(() => {
                   if (typeof other === "undefined") {
                     return schema;
                   }
-                  if (
-                    other.toString() === "false" ||
-                    other.toString() === "undefined"
-                  ) {
+                  if (other.toString() === "false" || other.toString() === "undefined") {
                     return schema;
                   } else {
                     return schema.required();
@@ -289,12 +229,7 @@ export const CreateFamilyAdmin: FC<ICreateFamilyAdmin> = memo(() => {
           }}
         >
           <FormProvider {...form_create_fam}>
-            <form
-              id="form-add-fam"
-              noValidate
-              onSubmit={form_create_fam.handleSubmit(submitForm)}
-              style={{ padding: `0 2em` }}
-            >
+            <form id="form-add-fam" noValidate onSubmit={form_create_fam.handleSubmit(submitForm)} style={{ padding: `0 2em` }}>
               <CustomStepper steps={Steps} active_step={active_step} />
 
               <Grid container spacing={1} justify="flex-end">
@@ -316,15 +251,8 @@ export const CreateFamilyAdmin: FC<ICreateFamilyAdmin> = memo(() => {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button
-                    type="submit"
-                    form="form-add-fam"
-                    color="primary"
-                    variant="contained"
-                  >
-                    {active_step === Steps.length - 1
-                      ? "I-pasa"
-                      : "Sunod Bahin"}
+                  <Button type="submit" form="form-add-fam" color="primary" variant="contained">
+                    {active_step === Steps.length - 1 ? "Submit" : "Next"}
                   </Button>
                 </Grid>
               </Grid>
