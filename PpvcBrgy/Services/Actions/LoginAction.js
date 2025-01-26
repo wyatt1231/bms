@@ -30,7 +30,7 @@ export const action_Login_user = (email, password) => async () => {
         return true;
       }
     } else {
-      alert(parseData.message ? parseData.message : 'Wrong Username/Password');
+      alert('Wrong Username/Password');
     }
   } else {
     console.log('Wrong Username/Password');
