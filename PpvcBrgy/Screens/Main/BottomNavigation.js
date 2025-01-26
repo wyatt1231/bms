@@ -209,7 +209,7 @@ function BottomNavigation() {
     return false;
   });
   return (
-    <View>
+    <View style={{flex:1}}>
       {/* <CustomNotification
         title={notify[0]?.title}
         subTitle={notify[0]?.message}

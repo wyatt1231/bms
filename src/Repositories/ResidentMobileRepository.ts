@@ -27,7 +27,8 @@ const addMobileResident = async (
         password=AES_ENCRYPT(@email,@email),
         user_type=@user_type,
         full_name=@full_name,
-        encoder_pk=@encoder_pk; 
+        encoder_pk=@encoder_pk,
+        allow_login='n';
         `,
       user_payload
     );

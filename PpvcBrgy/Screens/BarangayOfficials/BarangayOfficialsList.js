@@ -40,7 +40,7 @@ const BarangayOfficials = () => {
               }}
               key={index}>
               <View style={{display: 'flex', flexDirection: 'row'}}>
-                <View style={{width: screenWidth - 350}}>
+                <View>
                   <Image
                     source={
                       items?.pic?.length > 0 || items?.pic !== null
@@ -57,11 +57,12 @@ const BarangayOfficials = () => {
                     }}
                   />
                 </View>
-                <View style={{width: screenWidth - 120}}>
-                  <Text style={styles.containerNOTIFICATION}>
+                <View style={styles.titleContainer}>
+                  <Text style={styles.officialName}>
                     {items?.first_name} {items?.middle_name} {items?.last_name}{' '}
                     {items?.suffix}
-                    {'\n'}
+                  </Text>
+                  <Text style={styles.officialPosition}>
                     {items?.position}
                   </Text>
                 </View>
@@ -74,10 +75,19 @@ const BarangayOfficials = () => {
   );
 };
 const styles = StyleSheet.create({
-  containerNOTIFICATION: {
+  titleContainer: {
+    marginTop:10
+  },
+  officialName: {
     paddingLeft: 5,
-    paddingRight: 16,
-    paddingVertical: 10,
+    fontSize: 16,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    color: '#000000',
+    fontWeight:'500'
+  },
+  officialPosition: {
+    paddingLeft: 5,
     fontSize: 14,
     flexDirection: 'row',
     alignItems: 'flex-start',
