@@ -62,8 +62,11 @@ const LoginScreen = () => {
         textContent={'Loading...'}
         textStyle={styles.spinnerTextStyle}
       />
-      <View style={styles.headerContainer}>
-        <View style={{flex:1,backgroundColor: 'white',borderBottomRightRadius:60,borderBottomLeftRadius:60,width: 400}}>
+       <GradientContainer
+       gradientStyle={{}}
+        >
+          <View style={{flex:1,marginTop:50}}>
+        <View style={{marginBottom:50,backgroundColor: 'white',alignSelf: 'center',height:110,width:110,borderRadius:55,alignItems:'center',justifyContent:'center'}}>
         
         <Image
           source={require('../assets/icons/applogo2.png')}
@@ -74,11 +77,7 @@ const LoginScreen = () => {
         
         <View style={{marginVertical: 5}} />
         </View>
-      </View>
-      <View style={styles.formContainer}>
-        <GradientContainer
-        gradientStyle={{paddingTop:20}}
-        >
+       
           <Text style={styles.textTitle}>Brgy. 37-D Davao City</Text>
           <Text style={styles.textShortTitle}>PPVC</Text>
           <Text style={styles.textSubtitle}>
@@ -129,14 +128,14 @@ const LoginScreen = () => {
           </Text>
         </View>
       </View>
-      </GradientContainer>
-      </View>
       {/* <View
         style={{
           flex: 1,
           width: '100%',
           alignSelf: 'center',
         }}></View> */}
+        </View>
+      </GradientContainer>
     </SafeAreaView>
   );
 };
@@ -149,14 +148,13 @@ const styles = StyleSheet.create({
     borderWidth: 0.1,
     borderRadius: 5,
   },
-  headerContainer: {
-    flex:2,
+  formContainer: {
+    flex:1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor:'#623256'
-  },
-  formContainer: {
-    flex:5
+    backgroundColor:'#623256',
+    flexDirection:'column',
+
   },
   login: {
     display: 'flex',
@@ -217,9 +215,9 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   image: {
-    marginTop: 25,
-    width: '100%',
-    height: '60%',
+    marginTop:7,
+    width: 150, // Set desired width for the logo
+    height: 150, // Set desired height for the log
   },
 
   textSubtitle: {
