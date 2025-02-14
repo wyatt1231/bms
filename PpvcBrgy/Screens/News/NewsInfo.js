@@ -247,7 +247,19 @@ const UINews = () => {
           visible={visible}
           onRequestClose={() => setvisible(false)}
         />
-
+          <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <View style={styles.baseText}>
+            <Text style={styles.textTitle}>
+              {news_reducers_info.data[0]?.title}
+            </Text>
+           
+            <Text style={styles.text}>{news_reducers_info.data[0]?.body}</Text>
+          </View>
+        </View>
         <Card
           style={{marginTop: -5}}
           radius={1}
@@ -262,16 +274,18 @@ const UINews = () => {
               {getmime ? 
               (
               <TouchableHighlight onPress={() => setvisible(true)}>
+                <View style={{width:'100%'}}>
                 <Carousel
                   ref={carouselRef}
                   sliderWidth={screenWidth}
                   sliderHeight={screenWidth}
-                  itemWidth={screenWidth - 60}
+                  itemWidth={screenWidth}
                   data={entries}
                   renderItem={renderItem}
                   hasParallaxImages={true}
                   onPress={() => setvisible(true)}
                 />
+                </View>
               </TouchableHighlight>
               ):(
                 <RenderFile/>
@@ -279,25 +293,13 @@ const UINews = () => {
               
             </View>
           </View>
-          <Text style={styles.text}>
-            {moment(news_reducers_info.data[0]?.encoded_at).calendar()}
-          </Text>
-        </Card>
-        <View
-          style={{
-            flexDirection: 'row',
-            height: screenHeight - 400,
-            alignItems: 'center',
-          }}>
-          <Text style={styles.baseText}>
-            <Text style={styles.textTitle}>
-              {news_reducers_info.data[0]?.title}
+          <View >
+            <Text style={{...styles.text,paddingLeft:0, marginTop:5}}>
+              {moment(news_reducers_info.data[0]?.encoded_at).calendar()}
             </Text>
-            {'\n'}
-            {'\n'}
-            <Text style={styles.text}>{news_reducers_info.data[0]?.body}</Text>
-          </Text>
-        </View>
+          </View>
+        </Card>
+      
       </ScrollView>
       {/* <Text style={styles.commentlabel}>Comments</Text>
       <FlatList
@@ -531,7 +533,7 @@ const styles = StyleSheet.create({
   text: {
     color: 'black',
     fontSize: 14,
-    padding: 15,
+    paddingVertical: 15,
     textAlign: 'justify',
     backgroundColor: '#000000a0',
   },
@@ -541,18 +543,18 @@ const styles = StyleSheet.create({
   },
   baseText: {
     textAlign: 'justify',
-    padding: 15,
     color: 'black',
+    flexDirection:'column'
   },
   textTitle: {
     fontSize: 24,
-    padding: 15,
+    paddingLeft: 15,
     color: 'black',
     textAlign: 'left',
   },
   text: {
     fontSize: 14,
-    padding: 15,
+    paddingLeft: 15,
     textAlign: 'justify',
   },
   flatlistcontainer: {

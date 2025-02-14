@@ -40,6 +40,11 @@ const Posts = () => {
   const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
   var IMAGES_PER_ROW = 3;
 
+  const defaultImages = {
+    m: require('../../../assets/default/male-profile.png'),
+    f: require('../../../assets/default/female-profile.png'),
+  };
+
   const calculatedSize = () => {
     var size = windowWidth / IMAGES_PER_ROW;
     return {width: size, height: size};
@@ -233,9 +238,9 @@ const Posts = () => {
               }}>
               <View style={{width: 20 + '%', height: 20}}>
                 <Image
-                  source={{
-                    uri: imageUri,
-                  }}
+                  source={ users_reducers.pic ? 
+                    { uri:  imageUri } : defaultImages[users_reducers.gender] || defaultImages.m
+                  }
                   style={{
                     marginTop: 10,
                     marginStart: 10,
@@ -468,15 +473,17 @@ const Posts = () => {
                       flex: 1,
                       flexDirection: 'row',
                       justifyContent: 'space-around',
-                      marginBottom: 50,
+                      marginBottom: 40,
                     }}>
                     <View style={{width: 20 + '%', height: 20}}>
                       <Image
-                        source={{
-                          uri: `data:image/png;base64,${item?.user_pic}`,
-                        }}
+                        source={ item?.user_pic ? 
+                        {
+                          uri: `data:image/png;base64,${item?.user_pic}`
+                        } :
+                        defaultImages[item?.gender] || defaultImages.m
+                        }
                         style={{
-                          marginTop: 10,
                           marginStart: 10,
                           width: 40,
                           height: 40,
@@ -494,8 +501,16 @@ const Posts = () => {
                       </Text>
                     </View>
                   </View>
-
+                  <View style={{
+                    width: '100%', // Adjust width as needed
+                    height: 0.5, // Line thickness
+                    backgroundColor: 'lightgray', // Line color
+                    marginVertical: 10, // Optional spacing
+                    }}>
                   <Text rkType="primary3 mediumLine"></Text>
+              
+
+                  </View>
                 </View>
               </View>
               {item.upload_files[0]?.file_path ? (

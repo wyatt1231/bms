@@ -7,13 +7,17 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
   },
-
-  text: {
-    color: 'white',
+  title: {
+    color: 'black',
+    fontSize: 16,
+    textAlign: 'left',
+    fontWeight: 'bold'
+  },
+  body: {
+    color: 'black',
     fontSize: 14,
-    padding: 15,
     textAlign: 'justify',
-    backgroundColor: '#000000a0',
+    lineHeight:18
   },
   flatlistcontainer: {
     backgroundColor: 'rgba(255,255,355,0.5)',

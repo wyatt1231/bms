@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
   containerNOTIFICATION: {
     paddingLeft: 19,
     paddingRight: 16,
-    paddingVertical: 5,
     flexDirection: 'row',
     maxHeight: 1000,
     alignItems: 'flex-start',
@@ -78,7 +77,6 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
   },
   flatlistcontainer: {
-    backgroundColor: 'rgba(255,255,355,0.5)',
     flex: 1,
     paddingTop: 10,
   },

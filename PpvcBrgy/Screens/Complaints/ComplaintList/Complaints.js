@@ -33,6 +33,10 @@ import {
   action_insert_complaints,
 } from '../../../Services/Actions/ComplaintsActions';
 import styles from './style';
+import { launchCamera } from 'react-native-image-picker';
+import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
+import ModernInput from '../../../components/Forms/ModenInput';
+
 export async function requestStoragePermission() {
   if (Platform.OS !== 'android') return true;
 
@@ -74,10 +78,17 @@ const Complaints = () => {
   const [overlaymessage, setoverlaymessage] = useState('');
   const [reported_by, setreported_by] = useState('');
   const [others, setOther] = useState(false);
-  const [complaintType, setComplaintType] = useState("");
+  const [complaintType, setComplaintType] = useState("Noise Complaint");
   const [complaintTypeOther, setComplaintTypeOther] = useState("");
 
   
+  const complaintStatus = {
+    P: {status: 'Pending', color:'yellowgreen'},
+    D: {status: 'Disapproved', color:'red'},
+    AK: {status: 'Acknowledged', color:'green'},
+    OP: {status: 'On-progress', color:'orange'},
+    C: {status: 'Closed', color:'gray'}
+  }
 
   const [complaintlists, setcomplaintlist] = useState([...complaintslist]);
   const navigation = useNavigation();
@@ -131,6 +142,7 @@ const Complaints = () => {
       alert('Please Fill all fields');
     } else {
       let setComplaintType = others ? complaintTypeOther:complaintType;
+      console.log("input",subjecttext, complaintmessage,setComplaintType, singleFile);
       dispatch(
         action_insert_complaints(subjecttext, complaintmessage,setComplaintType, singleFile),
       );
@@ -167,6 +179,7 @@ const Complaints = () => {
         type: [DocumentPicker.types.images],
         allowMultiSelection: false,
       });
+      console.log("results",results);
       for (const res of results) {
         setSingleFile(prev => [...prev, res]);
         setcomplaintResource(prev => [...prev, {uri: res.uri}]);
@@ -184,6 +197,31 @@ const Complaints = () => {
         throw err;
       }
     }
+  };
+  const takePicture = () => {
+    const options = {
+      mediaType: 'photo',
+      saveToPhotos: true,
+    };
+
+    launchCamera(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled camera');
+      } else if (response.errorMessage) {
+        console.error('Camera error: ', response.errorMessage);
+      } else {
+        console.log(response.assets[0]);
+        console.log(response.assets[0].uri);
+        const fileObjject = {
+          fileCopyUri: null, 
+          name: response.assets[0].fileName, 
+          size: response.assets[0].fileSize, 
+          type: response.assets[0].type, 
+          uri: response.assets[0].uri}
+        setSingleFile(prev => [...prev, fileObjject]);
+        setcomplaintResource(prev => [...prev, {uri: fileObjject.uri}]);
+      }
+    });
   };
   const handleComplaintType = (val,index)=> {
     if(index === 6){
@@ -226,6 +264,10 @@ const Complaints = () => {
 
   return (
     <SafeAreaView style={styles.flatlistcontainer}>
+      <View style={{flex:1,flexDirection:'column'}}>
+      <View style={styles.containerTop}></View>
+      <View style={styles.containerContent}>
+      <View style={styles.cardContainer}>
       <FlatList
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -242,7 +284,7 @@ const Complaints = () => {
           <TouchableHighlight
             onPress={() => gotocomplaints(item)}
             underlayColor="white">
-            <Card radius={15}>
+            <Card containerStyle={{borderRadius:15,elevation: 5}}>
               <View
                 style={{
                   flex: 1,
@@ -252,18 +294,22 @@ const Complaints = () => {
                 <View
                   style={{
                     width: '100%',
-                    height: 20,
                     padding: 5,
+                    flexDirection: 'row',
+                    justifyContent:'space-between',
+                    alignItems:'center'
                   }}>
                   <Text numberOfLines={1} style={styles.Titletext}>
                     Subject: {item?.title}
                   </Text>
+                 
+                 
+                  
                 </View>
                 <View
                   style={{
                     width: '100%',
-                    height: 60,
-                    padding: 5,
+                    paddingHorizontal: 5,
                   }}>
                   <Text numberOfLines={1} style={styles.text}>
                     Body: {item?.body}
@@ -271,6 +317,11 @@ const Complaints = () => {
                   <Text numberOfLines={1} style={styles.reportedAt}>
                     {item?.reported_at}
                   </Text>
+                  <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
+                  <Icons name="dot-circle-o" size={20} color={complaintStatus[item?.sts_pk].color}/>
+
+                    <Text style={{marginLeft:5,color:complaintStatus[item?.sts_pk].color}}>{complaintStatus[item?.sts_pk].status}</Text>
+                  </View>
                 </View>
               </View>
 
@@ -302,25 +353,19 @@ const Complaints = () => {
           </TouchableHighlight>
         )}
       />
-      <GestureRecognizer
-        onSwipe={(direction, state) => onSwipe(direction, state)}
-        config={config}
-        style={{
-          flex: 1,
-        }}>
-        <Modal
+       <Modal
           visible={isVisible}
           style={{margin: 0, justifyContent: 'flex-end'}}>
-          <View style={{flex: 1}}>
+          
+          <View style={{flex: 1,backgroundColor:'#623256'}}>
             <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'flex-end',
-                marginBottom: 50,
+                marginRight:10
               }}>
               <View
                 style={{
-                  width: '20%',
                   height: 50,
                 }}>
                 <Icon
@@ -333,7 +378,6 @@ const Complaints = () => {
               </View>
               <View
                 style={{
-                  width: '20%',
                   height: 50,
                 }}>
                 <Icon
@@ -347,26 +391,25 @@ const Complaints = () => {
 
               <Divider style={{marginTop: 20, backgroundColor: 'grey'}} />
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
+           
+            <Card
+              containerStyle={{
+                borderRadius:20,
+                flex:1
               }}>
-              <View
+                
+                <ScrollView style={{flexDirection: 'column',height:'100%'}}>
+              
+                <View style={{flex:1,marginTop:30}}>
+                <View
                 style={{
                   width: '100%',
                 }}>
-                <Input
+                <ModernInput
                   placeholder="Subject"
                   onChangeText={value => handleSubject(value)}
                 />
               </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-              }}>
               <View
                 style={{
                   width: '100%',
@@ -375,7 +418,7 @@ const Complaints = () => {
                   style={{
                     backgroundColor: 'white)',
                   }}>
-                  <Input
+                  <ModernInput
                     placeholder="Message"
                     multiline
                     numberOfLines={5}
@@ -388,9 +431,7 @@ const Complaints = () => {
                   width: '100%',
                 }}>
                 <View
-                  style={{
-                    backgroundColor: 'white)',
-                  }}>
+                  style={styles.pickerWrapper}>
                  <Picker
                       selectedValue={complaintType}
                       // value={Occationofthehouse}
@@ -436,30 +477,40 @@ const Complaints = () => {
                   />
                 </View>
               </View>
+              
             ):null}
           
-              <View style={{width: '30%', height: 100, padding: 5}}>
+          </View>
+             
+
+              <View
+              style={{
+                height:'50%',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                marginTop:20
+              }}>
+                <View style={{width: '100%', padding: 5, flexDirection:'row',justifyContent:'space-around'}}>
                 <Button
                   style={{color: 'black'}}
                   icon={<Icons name="file-image-o" size={15} color="green" />}
                   iconLeft
                   type="outline"
-                  title=" Photo"
+                  title="Attach a Photo"
                   onPress={selectFile}
                 />
+                    <Button
+                  style={{color: 'black'}}
+                  icon={<Icons name="camera" size={15} color="green" />}
+                  iconLeft
+                  type="outline"
+                  title="Take a Photo"
+                  onPress={takePicture}
+                />
               </View>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-              }}>
               <View
                 style={{
                   width: '100%',
-                  height: 450,
-                  maxHeight: 10000,
                 }}>
                 <View
                   style={{
@@ -469,44 +520,59 @@ const Complaints = () => {
                     Attached Image
                   </Text>
                 </View>
-                <ScrollView>
-                  <CustomFlexBox label="flexDirection" selectedValue={'column'}>
-                    {complaintResource.map((item, index) => (
-                      <View style={{width: 100 + '%'}} key={index}>
-                        <TouchableNativeFeedback
-                          onLongPress={() => handleRemoveItem(item, index)}
-                          underlayColor="white">
-                          <Card
-                            style={styles.avatar}
-                            radius={1}
-                            backgroundColor={'#ffffff'}>
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                height: 500,
-                                maxHeight: 2000,
-                                alignItems: 'center',
-                              }}>
-                              <ImageBackground
-                                source={{
-                                  uri: item.uri,
-                                }}
-                                style={styles.avatar}></ImageBackground>
-                            </View>
-                          </Card>
-                        </TouchableNativeFeedback>
-                      </View>
-                    ))}
-                  </CustomFlexBox>
-                </ScrollView>
+                { complaintResource.length > 0 ? 
+                <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-evenly'}}>
+               {complaintResource.length > 1 ? <View style={{width:'5%'}}>
+                <Icons name="chevron-left" size={15} color='gray'/>
+                </View> : null} 
+
+                <ScrollView horizontal  style={{width:'90%',height:220,marginHorizontal:5}}>
+                  
+                {complaintResource.map((item, index) => (
+                  <View style={{width: ScreenWidth - 60,height:'100%'}} key={index}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            backgroundColor:'blue',
+                            height:'100%'
+                          }}>
+                          <ImageBackground
+                            source={{
+                              uri: item.uri,
+                            }}
+                            style={styles.imageFile}></ImageBackground>
+                        </View>
+                  </View>
+                ))}
+              </ScrollView>
+
+              {complaintResource.length > 1 ? <View style={{width:'5%'}}>
+                <Icons name="chevron-right" size={15} color='gray'/>
+                </View> : null} 
+         </View>
+                : 
+                null
+                }
+             
+             
+                 
               </View>
             </View>
+            </ScrollView>
+            </Card>
           </View>
+         
         </Modal>
-      </GestureRecognizer>
+       
+      </View>
+      </View>
+      </View>
+    
       <FAB
         style={styles.fab}
         icon="plus"
+        color='white'
         onPress={() => handleFloatingIcon()}
       />
     </SafeAreaView>

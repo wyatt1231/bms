@@ -203,15 +203,17 @@ const NewsFeed = () => {
         onEndReachedThreshold={0.1}
         renderItem={({item, index}) => (
           <TouchableHighlight
+         
             onPress={() => gotonewsinfo(item)}
             underlayColor="white">
-            <Card style={{marginBottom: 5}}  containerStyle={{borderRadius:15,elevation:5,marginBottom:5}}>
+            <Card  containerStyle={{borderRadius:15,elevation:5,marginBottom:5,padding: 0}}>
               <View
                 style={{
-                  flexDirection: 'row',
+                  flexDirection: 'column',
                   height: 300,
                   alignItems: 'center',
                 }}>
+                   
                 <ImageBackground
                   source={{
                     uri: `${settings.BASE_URL}/${item?.upload_files[0]?.file_path}`,
@@ -221,25 +223,30 @@ const NewsFeed = () => {
                   //     'http://192.168.1.4:4050/src/Storage/Files/News/1613828094461images%20(2).jfif',
                   // }}
                   style={{
+                    borderTopLeftRadius: 15,
+                    borderTopRightRadius: 15,
                     width: '100%',
-                    height: '100%',
                     flex: 1,
                     resizeMode: 'cover',
                     justifyContent: 'center',
+                    overflow: 'hidden',
                   }}>
-                  <View
+                
+                </ImageBackground>
+                <View
                     style={{
-                      flex: 1,
-                      justifyContent: 'flex-end',
+                      height: 90,
+                      width:'100%',
+                      paddingVertical: 10,
+                      paddingHorizontal: 10,
                     }}>
-                    <Text numberOfLines={6} style={styles.text}>
+                      <Text numberOfLines={2} style={styles.title}>
                       {item.title}
-                      {'\n'}
-                      {'\n'}
+                    </Text>
+                    <Text numberOfLines={2} style={styles.body}>
                       {item.body}
                     </Text>
                   </View>
-                </ImageBackground>
               </View>
               {/* <View
                 style={{

@@ -51,6 +51,10 @@ const PostsInfo = () => {
   const onChangeText = useCallback(text => {
     setcomment(text);
   });
+  const defaultImages = {
+    m: require('../../../assets/default/male-profile.png'),
+    f: require('../../../assets/default/female-profile.png'),
+  };
   const base_url = useSelector(state => state.PostsReducers.base_url);
   const dispatch = useDispatch();
   const [posts_pk, setposts_pk] = useState('');
@@ -74,6 +78,7 @@ const PostsInfo = () => {
       setposts_pk(posts_info[0]?.posts_pk);
     };
     initializePosts();
+    console.log("posts_info",posts_info);
   }, [posts_info]);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -202,9 +207,10 @@ const PostsInfo = () => {
               }}>
               <View style={{width: 20 + '%', height: 20}}>
                 <Image
-                  source={{
+                  source={posts_info[0]?.user_pic ? {
                     uri: `${settings.BASE_URL}/${posts_info[0]?.user_pic}`,
-                  }}
+                  } : defaultImages[posts_info[0]?.gender] || defaultImages.m
+                }
                   style={{
                     marginTop: 10,
                     marginStart: 10,

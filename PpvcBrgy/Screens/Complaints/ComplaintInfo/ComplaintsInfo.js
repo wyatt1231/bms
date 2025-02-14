@@ -26,6 +26,7 @@ import {
 } from '../../../Services/Actions/ComplaintsActions';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import CustomBottomSheet from '../../../Plugins/CustomBottomSheet';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {ImageBackground} from 'react-native';
@@ -34,6 +35,7 @@ import moment from 'moment';
 import styles from './style';
 import {useNavigation} from '@react-navigation/native';
 import settings from '../../../settings.json'; 
+import { TouchableOpacity } from 'react-native-gesture-handler';
 const ComplaintsInfo = () => {
   const users_reducers = useSelector(state => state.UserInfoReducers.data);
   const {width, height} = Dimensions.get('window');
@@ -52,6 +54,10 @@ const ComplaintsInfo = () => {
   const complaint_id = useSelector(
     state => state.ComplaintsReducers.complaint_id,
   );
+  const defaultImages = {
+    m: require('../../../assets/default/male-profile.png'),
+    f: require('../../../assets/default/female-profile.png'),
+  };
   const socketRef = useRef();
 
   const dispatch = useDispatch();
@@ -215,11 +221,11 @@ const ComplaintsInfo = () => {
             }}>
             <View
               style={{
-                width: '30%',
-                height: 50,
               }}>
               <Image
-                source={{uri: imageUri, scale: 1}}
+                source={ users_reducers?.pic?.length > 0 || users_reducers?.pic !== null
+                  ? { uri: imageUri, scale: 1 }
+                  : defaultImages[users_reducers.gender] || defaultImages.f}
                 style={{
                   marginTop: 10,
                   marginStart: 10,
@@ -339,8 +345,18 @@ const ComplaintsInfo = () => {
           <CustomBottomSheet
             isVisible={isVisible}
             color="white"
+            Header={   
+             <View style={{backgroundColor:'red',width:'100%',height:'100%'}}>
+              <Icon
+                name="chevron-left"
+                size={20}
+                color="black"
+              />
+          </View>
+            }
             UI={
-              <ScrollView>
+                <View style={{flex:1,flexDirection:'column'}}>
+                <ScrollView style={{height:'90%'}}>
                 {complaint_messages.map((Notification, index) => {
                   console.log(Notification?.user?.pic);
 
@@ -355,12 +371,13 @@ const ComplaintsInfo = () => {
                         }}>
                         <Card
                           containerStyle={{
-                            backgroundColor: '#0099ff',
+                            backgroundColor: '#623256',
                           }}
                           borderRadius={20}>
-                          <Text style={{color: 'white'}}>
+                          <Text style={{color: 'white',fontWeight:'bold',fontSize:14}}>
                             Me
-                            {'\n'}
+                          </Text>
+                          <Text style={{color: 'white',fontSize:12}}>
                             {Notification?.body}
                           </Text>
                         </Card>
@@ -422,7 +439,9 @@ const ComplaintsInfo = () => {
                           </View> */
                   }
                 })}
-                <View style={{marginTop: 20}}>
+              </ScrollView>
+
+                <View style={{height:'10%'}}>
                   <View style={styles.containerNOTIFICATION}>
                     <View style={styles.contentNOTIFICATION}>
                       <View
@@ -430,13 +449,15 @@ const ComplaintsInfo = () => {
                           flex: 1,
                           flexDirection: 'row',
                           justifyContent: 'space-around',
-                          marginBottom: 50,
+                         
                         }}>
-                        <View style={{width: 320, height: 40}}>
+                        <View style={{width: '85%', height: 50}}>
                           <TextInput
                             style={{
                               borderWidth: 2,
-                              borderColor: '#f7f5f5',
+                              borderColor: '#623256',
+                              height:'100%',
+                              borderRadius:10
                             }}
                             multiline
                             placeholder="Type Message Here"
@@ -445,29 +466,27 @@ const ComplaintsInfo = () => {
                             value={sendmessage}
                           />
                         </View>
-                        <View style={{width: 50, height: 50, borderRadius: 15}}>
-                          <Button
-                            style={{borderRadius: 15}}
-                            icon={
-                              <Icon
-                                name="arrow-right"
-                                size={20}
+                            <TouchableHighlight
+                            style={{width: '15%', height: 50, borderRadius: 10,backgroundColor:'#623256',alignItems:'center',justifyContent:'center'}}
+                            onPress={() => handleMessageSend()}
+                            >
+                              <MaterialIcon
+                                name="send"
+                                size={30}
                                 color="white"
                               />
-                            }
-                            onPress={() => handleMessageSend()}
-                          />
-                        </View>
+                          </TouchableHighlight>
                       </View>
                     </View>
                   </View>
                 </View>
-              </ScrollView>
+              </View>
+              
             }
           />
         </GestureRecognizer>
         {complaint_info?.status?.sts_pk !=="C"? (  
-          <FAB style={styles.fab} icon="comment" onPress={() => onFABPress()} />
+          <FAB color='white' style={styles.fab} icon="comment" onPress={() => onFABPress()} />
         ):null}
     
     </SafeAreaView>

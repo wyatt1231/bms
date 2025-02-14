@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   texttime: {
     color: 'black',
-    fontSize: 10,
+    fontSize: 11,
     marginTop: 30,
   },
   statusText: {
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     textAlign: 'justify',
+    fontWeight:'bold'
   },
   flatlistcontainer: {
     backgroundColor: '#fafafa',
