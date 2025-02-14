@@ -38,7 +38,6 @@ import NewsActions from "../../../Services/Actions/NewsActions";
 import { setPageLinks } from "../../../Services/Actions/PageActions";
 import { YearlyStatsModel } from "../../../Services/Models/DashboardModel";
 import { RootStore } from "../../../Services/Store";
-import { Colors } from "../../../Storage/LocalDatabase";
 
 // import { ArcElement, Chart as ChartJS, Tooltip as ChartTooltip, Legend } from "chart.js";
 // ChartJS.register(ArcElement, ChartTooltip, Legend);
@@ -54,15 +53,16 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
 
   const fetch_overall_population = useSelector((store: RootStore) => store.DashboardReducer.fetch_overall_population);
 
-  const gender_stats = useSelector((store: RootStore) => store.DashboardReducer.gender_stats);
-
+  const gender_stats_year_1 = useSelector((store: RootStore) => store.DashboardReducer.gender_stats_year_1);
+  const gender_stats_year_2 = useSelector((store: RootStore) => store.DashboardReducer.gender_stats_year_2);
   const fetch_gender_stats = useSelector((store: RootStore) => store.DashboardReducer.fetch_gender_stats);
 
   const age_group_stats_year_1 = useSelector((store: RootStore) => store.DashboardReducer.age_group_stats_year_1);
   const age_group_stats_year_2 = useSelector((store: RootStore) => store.DashboardReducer.age_group_stats_year_2);
   const fetch_age_group_stats = useSelector((store: RootStore) => store.DashboardReducer.fetch_age_group_stats);
 
-  const life_stage_stats = useSelector((store: RootStore) => store.DashboardReducer.life_stage_stats);
+  const life_stage_stats_year_1 = useSelector((store: RootStore) => store.DashboardReducer.life_stage_stats_year_1);
+  const life_stage_stats_year_2 = useSelector((store: RootStore) => store.DashboardReducer.life_stage_stats_year_2);
   const fetch_life_stage_stats = useSelector((store: RootStore) => store.DashboardReducer.fetch_life_stage_stats);
 
   const news_stats = useSelector((store: RootStore) => store.DashboardReducer.news_stats);
@@ -96,17 +96,21 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
   const stats_biktima_pangabuso_year_2 = useSelector((store: RootStore) => store.DashboardReducer.stats_biktima_pangabuso_year_2);
   const fetch_stats_biktima_pangabuso = useSelector((store: RootStore) => store.DashboardReducer.fetch_stats_biktima_pangabuso);
   //
-  const stats_pasilidad_kuryente = useSelector((store: RootStore) => store.DashboardReducer.stats_pasilidad_kuryente);
+  const stats_pasilidad_kuryente_year_1 = useSelector((store: RootStore) => store.DashboardReducer.stats_pasilidad_kuryente_year_1);
+  const stats_pasilidad_kuryente_year_2 = useSelector((store: RootStore) => store.DashboardReducer.stats_pasilidad_kuryente_year_2);
   const fetch_stats_pasilidad_kuryente = useSelector((store: RootStore) => store.DashboardReducer.fetch_stats_pasilidad_kuryente);
 
   //
-  const stats_kahimtang_komunidad = useSelector((store: RootStore) => store.DashboardReducer.stats_kahimtang_komunidad);
+  const stats_kahimtang_komunidad_year_1 = useSelector((store: RootStore) => store.DashboardReducer.stats_kahimtang_komunidad_year_1);
+  const stats_kahimtang_komunidad_year_2 = useSelector((store: RootStore) => store.DashboardReducer.stats_kahimtang_komunidad_year_2);
   const fetch_stats_kahimtang_komunidad = useSelector((store: RootStore) => store.DashboardReducer.fetch_stats_kahimtang_komunidad);
   //
-  const stats_matang_basura = useSelector((store: RootStore) => store.DashboardReducer.stats_matang_basura);
+  const stats_matang_basura_year_1 = useSelector((store: RootStore) => store.DashboardReducer.stats_matang_basura_year_1);
+  const stats_matang_basura_year_2 = useSelector((store: RootStore) => store.DashboardReducer.stats_matang_basura_year_2);
   const fetch_stats_matang_basura = useSelector((store: RootStore) => store.DashboardReducer.fetch_stats_matang_basura);
   //
-  const stats_matang_kasilyas = useSelector((store: RootStore) => store.DashboardReducer.stats_matang_kasilyas);
+  const stats_matang_kasilyas_year_1 = useSelector((store: RootStore) => store.DashboardReducer.stats_matang_kasilyas_year_1);
+  const stats_matang_kasilyas_year_2 = useSelector((store: RootStore) => store.DashboardReducer.stats_matang_kasilyas_year_2);
   const fetch_stats_matang_kasilyas = useSelector((store: RootStore) => store.DashboardReducer.fetch_stats_matang_kasilyas);
 
   const [dashboard_year_1, set_dashboard_year_1] = useState(moment().subtract(1, `year`).toDate());
@@ -157,8 +161,8 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
     dispatch(DashboardActions.totalPwd(filters));
     dispatch(DashboardActions.totalSc(filters));
 
-    dispatch(DashboardActions.StatsPasilidadKuryente(filters));
     dispatch(DashboardActions.StatsBiktikmaPangabuso(filters));
+    dispatch(DashboardActions.StatsPasilidadKuryente(filters));
     dispatch(DashboardActions.StatsKahimtangKomunidad(filters));
     dispatch(DashboardActions.StatsMatangBasura(filters));
     dispatch(DashboardActions.StatsMatangKasilyas(filters));
@@ -225,7 +229,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                     }}
                     component="legend"
                   >
-                    Pilia nag purok na gusto makita
+                    Choose the purok that you want to see
                   </FormLabel>
                   <FormGroup row={true}>
                     <FormControlLabel
@@ -292,14 +296,14 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
             <Grid item xs={6} md={3}>
               <div className="stats-item">
                 <div className="value">{fetch_total_population ? <CircularProgress /> : total_population}</div>
-                <div className="label">TIBUOK PAPOLASYON</div>
+                <div className="label">TOTAL POPULATION</div>
               </div>
             </Grid>
 
             <Grid item xs={6} md={3}>
               <div className="stats-item">
                 <div className="value">{fetch_total_death ? <CircularProgress /> : total_death}</div>
-                <div className="label">NAMATAY</div>
+                <div className="label">DEATH</div>
               </div>
             </Grid>
             <Grid item xs={6} md={3}>
@@ -327,7 +331,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                 boxShadow: `0 2px 5px rgba(0,0,0,.1)`,
               }}
             >
-              <div className="title">Tinuig nga Estadistika sa sulod sa pulo (10) ka tuig</div>
+              <div className="title">Statistics for the last 10 years</div>
               {fetch_overall_population || !overall_population ? (
                 <CircularLoadingProgress />
               ) : (
@@ -338,7 +342,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                     labels: overall_population.labels,
                     datasets: [
                       {
-                        label: "Buhi",
+                        label: "Alive",
                         yAxesGroup: "1",
                         fill: false,
                         fillColor: "blue",
@@ -356,7 +360,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                         data: overall_population.alive,
                       },
                       {
-                        label: "Namatay",
+                        label: "Death",
                         yAxesGroup: "2",
                         fill: false,
                         fillColor: "red",
@@ -411,7 +415,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <DatePicker
                     views={["year"]}
-                    label={"Unang Tuig"}
+                    label={"First Year"}
                     value={dashboard_year_1}
                     onChange={(date: Date) => {
                       set_dashboard_year_1(date);
@@ -427,7 +431,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <DatePicker
                     views={["year"]}
-                    label={"Ikaduhang Tuig"}
+                    label={"Second Year"}
                     value={dashboard_year_2}
                     onChange={(date: Date) => {
                       set_dashboard_year_2(date);
@@ -453,7 +457,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                 height: `100%`,
               }}
             >
-              <div className="title">Estadistika sa Grupo sa Edad</div>
+              <div className="title">Statistics of Age Group</div>
 
               {fetch_age_group_stats || !age_group_stats_year_1 || !age_group_stats_year_2 ? (
                 <CircularLoadingProgress />
@@ -535,12 +539,11 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                 boxShadow: `0 2px 5px rgba(0, 0, 0, 0.1)`,
                 padding: `1em`,
                 paddingTop: `.5em`,
-
                 borderRadius: 5,
                 height: `100%`,
               }}
             >
-              <div className="title">Estadistika sa Biktima sa Pang-abuso</div>
+              <div className="title">Statistics sa Biktima sa Pang-abuso</div>
               <div
                 style={{
                   padding: `1em`,
@@ -554,7 +557,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                     <div className="pie-chart-wrapper">
                       <label>{getYear1()}</label>
 
-                      {stats_biktima_pangabuso_year_1.some((p) => p.total > 0) ? (
+                      {stats_biktima_pangabuso_year_1?.some((p) => p.total > 0) ? (
                         <Pie
                           type="pie"
                           data={{
@@ -596,7 +599,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
 
                     <div className="pie-chart-wrapper">
                       <label>{getYear2()}</label>
-                      {stats_biktima_pangabuso_year_2.some((p) => p.total > 0) ? (
+                      {stats_biktima_pangabuso_year_2?.some((p) => p.total > 0) ? (
                         <Pie
                           type="pie"
                           data={{
@@ -641,8 +644,6 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
             </div>
           </Grid>
 
-          <Grid item xs={12} md={4}></Grid>
-
           <Grid item xs={12} md={4}>
             <div
               style={{
@@ -650,302 +651,584 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                 boxShadow: `0 2px 5px rgba(0, 0, 0, 0.1)`,
                 padding: `1em`,
                 paddingTop: `.5em`,
-
                 borderRadius: 5,
                 height: `100%`,
               }}
             >
-              <div className="title">Estadistika sa Pasilidad sa Kuryente</div>
+              <div className="title">Statistics sa Pasilidad sa Kuryente</div>
               <div
                 style={{
                   padding: `1em`,
                   paddingTop: `.5em`,
                 }}
               >
-                {fetch_stats_pasilidad_kuryente || !stats_pasilidad_kuryente ? (
+                {fetch_stats_pasilidad_kuryente ? (
                   <CircularLoadingProgress />
                 ) : (
-                  <Pie
-                    type="pie"
-                    height={200}
-                    data={{
-                      labels: stats_pasilidad_kuryente.map((a) => a.label),
-                      datasets: [
-                        {
-                          labels: stats_pasilidad_kuryente.map((a) => a.label),
-                          data: stats_pasilidad_kuryente.map((a) => a.total),
-                          backgroundColor: stats_pasilidad_kuryente.map((a) => {
-                            const color = Colors[Math.floor(Math.random() * Colors.length)];
-                            return color;
-                          }),
-                          borderColor: "#fff",
-                        },
-                      ],
-                    }}
-                    options={{
-                      responsiveAnimationDuration: 1,
-                      tooltips: {
-                        enabled: false,
-                      },
-                      plugins: {
-                        labels: {
-                          render: "percentage",
-                          precision: 0,
-                          showZero: true,
-                          fontSize: 12,
-                          fontColor: "#fff",
-                        },
-                      },
-                    }}
-                  />
-                )}
-              </div>
-            </div>
-          </Grid>
+                  <div style={{ display: `grid`, gridAutoFlow: `column`, gridAutoColumns: `1fr 1fr` }}>
+                    <div className="pie-chart-wrapper">
+                      <label>{getYear1()}</label>
 
-          <Grid item xs={12} md={4}>
-            <div
-              style={{
-                backgroundColor: `#fff`,
-                boxShadow: `0 2px 5px rgba(0, 0, 0, 0.1)`,
-                padding: `1em`,
-                paddingTop: `.5em`,
+                      {stats_pasilidad_kuryente_year_1?.some((p) => p.total > 0) ? (
+                        <Pie
+                          type="pie"
+                          data={{
+                            datasets: [
+                              {
+                                labels: stats_pasilidad_kuryente_year_1.map((a) => a.label),
+                                data: stats_pasilidad_kuryente_year_1.map((a) => a.total),
+                                backgroundColor: [`red`, `orange`, `yellow`, `green`, `blue`],
+                                borderColor: "#fff",
+                              },
+                            ],
+                          }}
+                          options={{
+                            responsive: true, // Disable responsiveness
+                            maintainAspectRatio: false, // Allow custom width & height
+                            tooltips: {
+                              callbacks: {
+                                label: function (tooltipItem) {
+                                  const label = stats_pasilidad_kuryente_year_1.map((a) => a.label)[tooltipItem.index]; // Corresponding label
+                                  return `${label}`;
+                                },
+                              },
+                            },
+                            plugins: {
+                              labels: {
+                                render: "percentage",
+                                precision: 0,
+                                showZero: true,
+                                fontSize: 12,
+                                fontColor: "#fff",
+                              },
+                            },
+                          }}
+                        />
+                      ) : (
+                        <label>No census found in {getYear1()}</label>
+                      )}
+                    </div>
 
-                borderRadius: 5,
-                height: `100%`,
-              }}
-            >
-              <div className="title">Estadistika sa Kahimtang sa Komunidad</div>
-              <div
-                style={{
-                  padding: `1em`,
-                  paddingTop: `.5em`,
-                }}
-              >
-                {fetch_stats_kahimtang_komunidad || !stats_kahimtang_komunidad ? (
-                  <CircularLoadingProgress />
-                ) : (
-                  <Pie
-                    type="pie"
-                    height={200}
-                    data={{
-                      labels: stats_kahimtang_komunidad.map((a) => a.label),
-                      datasets: [
-                        {
-                          labels: stats_kahimtang_komunidad.map((a) => a.label),
-                          data: stats_kahimtang_komunidad.map((a) => a.total),
-                          backgroundColor: stats_kahimtang_komunidad.map((a) => {
-                            const color = Colors[Math.floor(Math.random() * Colors.length)];
-                            return color;
-                          }),
-                          borderColor: "#fff",
-                        },
-                      ],
-                    }}
-                    options={{
-                      responsiveAnimationDuration: 1,
-                      tooltips: {
-                        enabled: false,
-                      },
-                      plugins: {
-                        labels: {
-                          render: "percentage",
-                          precision: 0,
-                          showZero: true,
-                          fontSize: 12,
-                          fontColor: "#fff",
-                        },
-                      },
-                    }}
-                  />
-                )}
-              </div>
-            </div>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <div
-              style={{
-                backgroundColor: `#fff`,
-                boxShadow: `0 2px 5px rgba(0, 0, 0, 0.1)`,
-                padding: `1em`,
-                paddingTop: `.5em`,
-
-                borderRadius: 5,
-                height: `100%`,
-              }}
-            >
-              <div className="title">Estadistika sa Matang sa Basura</div>
-              <div
-                style={{
-                  padding: `1em`,
-                  paddingTop: `.5em`,
-                }}
-              >
-                {fetch_stats_matang_basura || !stats_matang_basura ? (
-                  <CircularLoadingProgress />
-                ) : (
-                  <Pie
-                    type="pie"
-                    height={200}
-                    data={{
-                      labels: stats_matang_basura.map((a) => a.label),
-                      datasets: [
-                        {
-                          labels: stats_matang_basura.map((a) => a.label),
-                          data: stats_matang_basura.map((a) => a.total),
-                          backgroundColor: stats_matang_basura.map((a) => {
-                            const color = Colors[Math.floor(Math.random() * Colors.length)];
-                            return color;
-                          }),
-                          borderColor: "#fff",
-                        },
-                      ],
-                    }}
-                    options={{
-                      responsiveAnimationDuration: 1,
-                      tooltips: {
-                        enabled: false,
-                      },
-                      plugins: {
-                        labels: {
-                          render: "percentage",
-                          precision: 0,
-                          showZero: true,
-                          fontSize: 12,
-                          fontColor: "#fff",
-                        },
-                      },
-                    }}
-                  />
-                )}
-              </div>
-            </div>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <div
-              style={{
-                backgroundColor: `#fff`,
-                boxShadow: `0 2px 5px rgba(0, 0, 0, 0.1)`,
-                padding: `1em`,
-                paddingTop: `.5em`,
-
-                borderRadius: 5,
-                height: `100%`,
-              }}
-            >
-              <div className="title">Estadistika sa Matang sa Kasilyas</div>
-              <div
-                style={{
-                  padding: `1em`,
-                  paddingTop: `.5em`,
-                }}
-              >
-                {fetch_stats_matang_kasilyas || !stats_matang_kasilyas ? (
-                  <CircularLoadingProgress />
-                ) : (
-                  <Pie
-                    type="pie"
-                    height={200}
-                    data={{
-                      labels: stats_matang_kasilyas.map((a) => a.label),
-                      datasets: [
-                        {
-                          labels: stats_matang_kasilyas.map((a) => a.label),
-                          data: stats_matang_kasilyas.map((a) => a.total),
-                          backgroundColor: stats_matang_kasilyas.map((a) => {
-                            const color = Colors[Math.floor(Math.random() * Colors.length)];
-                            return color;
-                          }),
-                          borderColor: "#fff",
-                        },
-                      ],
-                    }}
-                    options={{
-                      responsiveAnimationDuration: 1,
-                      tooltips: {
-                        enabled: false,
-                      },
-                      plugins: {
-                        labels: {
-                          render: "percentage",
-                          precision: 0,
-                          showZero: true,
-                          fontSize: 12,
-                          fontColor: "#fff",
-                        },
-                      },
-                    }}
-                  />
-                )}
-              </div>
-            </div>
-          </Grid>
-
-          <Grid item xs={12} md={8}>
-            <div
-              style={{
-                backgroundColor: `#fff`,
-                boxShadow: `0 2px 5px rgba(0, 0, 0, 0.1)`,
-                padding: `1em`,
-                paddingTop: `.5em`,
-                borderRadius: 5,
-                height: `100%`,
-              }}
-            >
-              <div className="title">Proporsiyon sa Sekso</div>
-
-              {fetch_gender_stats || !gender_stats ? (
-                <CircularLoadingProgress />
-              ) : (
-                <div className="sekso-ctnr">
-                  <div className="sekso-item">
-                    <img className="dp" src={img_female} alt="" />
-                    <div className="label">BABAE</div>
-                    <div className="value">{gender_stats.data_set[1].y}</div>
-                    <img className="graph" src={img_chart} alt="" />
+                    <div className="pie-chart-wrapper">
+                      <label>{getYear2()}</label>
+                      {stats_pasilidad_kuryente_year_2?.some((p) => p.total > 0) ? (
+                        <Pie
+                          type="pie"
+                          data={{
+                            datasets: [
+                              {
+                                labels: stats_pasilidad_kuryente_year_2.map((a) => a.label),
+                                data: stats_pasilidad_kuryente_year_2.map((a) => a.total),
+                                backgroundColor: [`red`, `orange`, `yellow`, `green`, `blue`],
+                                borderColor: "#fff",
+                              },
+                            ],
+                          }}
+                          options={{
+                            responsive: true, // Disable responsiveness
+                            maintainAspectRatio: false, // Allow custom width & height
+                            tooltips: {
+                              callbacks: {
+                                label: function (tooltipItem) {
+                                  const label = stats_pasilidad_kuryente_year_2.map((a) => a.label)[tooltipItem.index]; // Corresponding label
+                                  return `${label}`;
+                                },
+                              },
+                            },
+                            plugins: {
+                              labels: {
+                                render: "percentage",
+                                precision: 0,
+                                showZero: true,
+                                fontSize: 12,
+                                fontColor: "#fff",
+                              },
+                            },
+                          }}
+                        />
+                      ) : (
+                        <label>No census found in {getYear2()}</label>
+                      )}
+                    </div>
                   </div>
-                  <div className="sekso-item">
-                    <img className="dp" src={img_male} alt="" />
-                    <div className="label">LALAKI</div>
-                    <div className="value">{gender_stats.data_set[0].y}</div>
-                    <img className="graph" src={img_chart} alt="" />
-                  </div>
+                )}
+              </div>
+            </div>
+          </Grid>
 
-                  <div style={{ justifySelf: `center`, alignSelf: `center` }}>
-                    <Doughnut
-                      data={{
-                        labels: gender_stats.labels,
-                        datasets: [
-                          {
-                            labels: gender_stats.labels,
-                            data: findValuesOfStats(gender_stats.data_set),
-                            backgroundColor: ["#5c6bc0", "#66bb6a"],
-                            borderColor: "#fff",
-                          },
-                        ],
-                      }}
-                      options={{
-                        responsiveAnimationDuration: 1,
-                        tooltips: {
-                          enabled: false,
-                        },
-                        plugins: {
-                          labels: {
-                            render: "percentage",
-                            precision: 0,
-                            showZero: true,
-                            fontSize: 12,
-                            fontColor: "#fff",
-                          },
-                        },
-                      }}
-                    />
+          <Grid item xs={12} md={4}>
+            <div
+              style={{
+                backgroundColor: `#fff`,
+                boxShadow: `0 2px 5px rgba(0, 0, 0, 0.1)`,
+                padding: `1em`,
+                paddingTop: `.5em`,
+
+                borderRadius: 5,
+                height: `100%`,
+              }}
+            >
+              <div className="title">Statistics sa Kahimtang sa Komunidad</div>
+              <div
+                style={{
+                  padding: `1em`,
+                  paddingTop: `.5em`,
+                }}
+              >
+                {fetch_stats_kahimtang_komunidad ? (
+                  <CircularLoadingProgress />
+                ) : (
+                  <div style={{ display: `grid`, gridAutoFlow: `column`, gridAutoColumns: `1fr 1fr` }}>
+                    <div className="pie-chart-wrapper">
+                      <label>{getYear1()}</label>
+
+                      {stats_kahimtang_komunidad_year_1?.some((p) => p.total > 0) ? (
+                        <Pie
+                          type="pie"
+                          data={{
+                            datasets: [
+                              {
+                                labels: stats_kahimtang_komunidad_year_1.map((a) => a.label),
+                                data: stats_kahimtang_komunidad_year_1.map((a) => a.total),
+                                backgroundColor: [`red`, `orange`, `yellow`, `green`, `blue`],
+                                borderColor: "#fff",
+                              },
+                            ],
+                          }}
+                          options={{
+                            responsive: true, // Disable responsiveness
+                            maintainAspectRatio: false, // Allow custom width & height
+                            tooltips: {
+                              callbacks: {
+                                label: function (tooltipItem) {
+                                  const label = stats_kahimtang_komunidad_year_1.map((a) => a.label)[tooltipItem.index]; // Corresponding label
+                                  return `${label}`;
+                                },
+                              },
+                            },
+                            plugins: {
+                              labels: {
+                                render: "percentage",
+                                precision: 0,
+                                showZero: true,
+                                fontSize: 12,
+                                fontColor: "#fff",
+                              },
+                            },
+                          }}
+                        />
+                      ) : (
+                        <label>No census found in {getYear1()}</label>
+                      )}
+                    </div>
+
+                    <div className="pie-chart-wrapper">
+                      <label>{getYear2()}</label>
+                      {stats_kahimtang_komunidad_year_2?.some((p) => p.total > 0) ? (
+                        <Pie
+                          type="pie"
+                          data={{
+                            datasets: [
+                              {
+                                labels: stats_kahimtang_komunidad_year_2.map((a) => a.label),
+                                data: stats_kahimtang_komunidad_year_2.map((a) => a.total),
+                                backgroundColor: [`red`, `orange`, `yellow`, `green`, `blue`],
+                                borderColor: "#fff",
+                              },
+                            ],
+                          }}
+                          options={{
+                            responsive: true, // Disable responsiveness
+                            maintainAspectRatio: false, // Allow custom width & height
+                            tooltips: {
+                              callbacks: {
+                                label: function (tooltipItem) {
+                                  const label = stats_kahimtang_komunidad_year_2.map((a) => a.label)[tooltipItem.index]; // Corresponding label
+                                  return `${label}`;
+                                },
+                              },
+                            },
+                            plugins: {
+                              labels: {
+                                render: "percentage",
+                                precision: 0,
+                                showZero: true,
+                                fontSize: 12,
+                                fontColor: "#fff",
+                              },
+                            },
+                          }}
+                        />
+                      ) : (
+                        <label>No census found in {getYear2()}</label>
+                      )}
+                    </div>
                   </div>
+                )}
+              </div>
+            </div>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <div
+              style={{
+                backgroundColor: `#fff`,
+                boxShadow: `0 2px 5px rgba(0, 0, 0, 0.1)`,
+                padding: `1em`,
+                paddingTop: `.5em`,
+
+                borderRadius: 5,
+                height: `100%`,
+              }}
+            >
+              <div className="title">Statistics sa Matang sa Basura</div>
+              <div
+                style={{
+                  padding: `1em`,
+                  paddingTop: `.5em`,
+                }}
+              >
+                {fetch_stats_matang_basura ? (
+                  <CircularLoadingProgress />
+                ) : (
+                  <div style={{ display: `grid`, gridAutoFlow: `column`, gridAutoColumns: `1fr 1fr` }}>
+                    <div className="pie-chart-wrapper">
+                      <label>{getYear1()}</label>
+
+                      {stats_matang_basura_year_1?.some((p) => p.total > 0) ? (
+                        <Pie
+                          type="pie"
+                          data={{
+                            datasets: [
+                              {
+                                labels: stats_matang_basura_year_1.map((a) => a.label),
+                                data: stats_matang_basura_year_1.map((a) => a.total),
+                                backgroundColor: [`red`, `orange`, `yellow`, `green`, `blue`],
+                                borderColor: "#fff",
+                              },
+                            ],
+                          }}
+                          options={{
+                            responsive: true, // Disable responsiveness
+                            maintainAspectRatio: false, // Allow custom width & height
+                            tooltips: {
+                              callbacks: {
+                                label: function (tooltipItem) {
+                                  const label = stats_matang_basura_year_1.map((a) => a.label)[tooltipItem.index]; // Corresponding label
+                                  return `${label}`;
+                                },
+                              },
+                            },
+                            plugins: {
+                              labels: {
+                                render: "percentage",
+                                precision: 0,
+                                showZero: true,
+                                fontSize: 12,
+                                fontColor: "#fff",
+                              },
+                            },
+                          }}
+                        />
+                      ) : (
+                        <label>No census found in {getYear1()}</label>
+                      )}
+                    </div>
+
+                    <div className="pie-chart-wrapper">
+                      <label>{getYear2()}</label>
+                      {stats_matang_basura_year_2?.some((p) => p.total > 0) ? (
+                        <Pie
+                          type="pie"
+                          data={{
+                            datasets: [
+                              {
+                                labels: stats_matang_basura_year_2.map((a) => a.label),
+                                data: stats_matang_basura_year_2.map((a) => a.total),
+                                backgroundColor: [`red`, `orange`, `yellow`, `green`, `blue`],
+                                borderColor: "#fff",
+                              },
+                            ],
+                          }}
+                          options={{
+                            responsive: true, // Disable responsiveness
+                            maintainAspectRatio: false, // Allow custom width & height
+                            tooltips: {
+                              callbacks: {
+                                label: function (tooltipItem) {
+                                  const label = stats_matang_basura_year_2.map((a) => a.label)[tooltipItem.index]; // Corresponding label
+                                  return `${label}`;
+                                },
+                              },
+                            },
+                            plugins: {
+                              labels: {
+                                render: "percentage",
+                                precision: 0,
+                                showZero: true,
+                                fontSize: 12,
+                                fontColor: "#fff",
+                              },
+                            },
+                          }}
+                        />
+                      ) : (
+                        <label>No census found in {getYear2()}</label>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <div
+              style={{
+                backgroundColor: `#fff`,
+                boxShadow: `0 2px 5px rgba(0, 0, 0, 0.1)`,
+                padding: `1em`,
+                paddingTop: `.5em`,
+
+                borderRadius: 5,
+                height: `100%`,
+              }}
+            >
+              <div className="title">Statistics sa Matang sa Kasilyas</div>
+              <div
+                style={{
+                  padding: `1em`,
+                  paddingTop: `.5em`,
+                }}
+              >
+                {fetch_stats_matang_kasilyas ? (
+                  <CircularLoadingProgress />
+                ) : (
+                  <div style={{ display: `grid`, gridAutoFlow: `column`, gridAutoColumns: `1fr 1fr` }}>
+                    <div className="pie-chart-wrapper">
+                      <label>{getYear1()}</label>
+
+                      {stats_matang_kasilyas_year_1?.some((p) => p.total > 0) ? (
+                        <Pie
+                          type="pie"
+                          data={{
+                            datasets: [
+                              {
+                                labels: stats_matang_kasilyas_year_1.map((a) => a.label),
+                                data: stats_matang_kasilyas_year_1.map((a) => a.total),
+                                backgroundColor: [`red`, `orange`, `yellow`, `green`, `blue`],
+                                borderColor: "#fff",
+                              },
+                            ],
+                          }}
+                          options={{
+                            responsive: true, // Disable responsiveness
+                            maintainAspectRatio: false, // Allow custom width & height
+                            tooltips: {
+                              callbacks: {
+                                label: function (tooltipItem) {
+                                  const label = stats_matang_kasilyas_year_1.map((a) => a.label)[tooltipItem.index]; // Corresponding label
+                                  return `${label}`;
+                                },
+                              },
+                            },
+                            plugins: {
+                              labels: {
+                                render: "percentage",
+                                precision: 0,
+                                showZero: true,
+                                fontSize: 12,
+                                fontColor: "#fff",
+                              },
+                            },
+                          }}
+                        />
+                      ) : (
+                        <label>No census found in {getYear1()}</label>
+                      )}
+                    </div>
+
+                    <div className="pie-chart-wrapper">
+                      <label>{getYear2()}</label>
+                      {stats_matang_kasilyas_year_2?.some((p) => p.total > 0) ? (
+                        <Pie
+                          type="pie"
+                          data={{
+                            datasets: [
+                              {
+                                labels: stats_matang_kasilyas_year_2.map((a) => a.label),
+                                data: stats_matang_kasilyas_year_2.map((a) => a.total),
+                                backgroundColor: [`red`, `orange`, `yellow`, `green`, `blue`],
+                                borderColor: "#fff",
+                              },
+                            ],
+                          }}
+                          options={{
+                            responsive: true, // Disable responsiveness
+                            maintainAspectRatio: false, // Allow custom width & height
+                            tooltips: {
+                              callbacks: {
+                                label: function (tooltipItem) {
+                                  const label = stats_matang_kasilyas_year_2.map((a) => a.label)[tooltipItem.index]; // Corresponding label
+                                  return `${label}`;
+                                },
+                              },
+                            },
+                            plugins: {
+                              labels: {
+                                render: "percentage",
+                                precision: 0,
+                                showZero: true,
+                                fontSize: 12,
+                                fontColor: "#fff",
+                              },
+                            },
+                          }}
+                        />
+                      ) : (
+                        <label>No census found in {getYear2()}</label>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </Grid>
+
+          <Grid item xs={12}>
+            <div className="title">Proporstion of Gender </div>
+
+            <Grid container>
+              <Grid item xs={12} lg={6}>
+                <div
+                  style={{
+                    backgroundColor: `#fff`,
+                    boxShadow: `0 2px 5px rgba(0, 0, 0, 0.1)`,
+                    padding: `1em`,
+                    paddingTop: `.5em`,
+                    borderRadius: 5,
+                    height: `100%`,
+                  }}
+                >
+                  <div className="title">{getYear1()} </div>
+
+                  {fetch_gender_stats ? (
+                    <CircularLoadingProgress />
+                  ) : (
+                    <div className="sekso-ctnr">
+                      <div className="sekso-item">
+                        <img className="dp" src={img_female} alt="" />
+                        <div className="label">BABAE</div>
+                        <div className="value">{gender_stats_year_1?.data_set[1].y}</div>
+                        <img className="graph" src={img_chart} alt="" />
+                      </div>
+                      <div className="sekso-item">
+                        <img className="dp" src={img_male} alt="" />
+                        <div className="label">LALAKI</div>
+                        <div className="value">{gender_stats_year_1?.data_set[0].y}</div>
+                        <img className="graph" src={img_chart} alt="" />
+                      </div>
+
+                      <div style={{ justifySelf: `center`, alignSelf: `center` }}>
+                        <Doughnut
+                          data={{
+                            labels: gender_stats_year_1?.labels,
+                            datasets: [
+                              {
+                                labels: gender_stats_year_1?.labels,
+                                data: findValuesOfStats(gender_stats_year_1?.data_set),
+                                backgroundColor: ["#5c6bc0", "#66bb6a"],
+                                borderColor: "#fff",
+                              },
+                            ],
+                          }}
+                          options={{
+                            responsiveAnimationDuration: 1,
+                            tooltips: {
+                              enabled: false,
+                            },
+                            plugins: {
+                              labels: {
+                                render: "percentage",
+                                precision: 0,
+                                showZero: true,
+                                fontSize: 12,
+                                fontColor: "#fff",
+                              },
+                            },
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </Grid>
+
+              <Grid item xs={12} lg={6}>
+                <div
+                  style={{
+                    backgroundColor: `#fff`,
+                    boxShadow: `0 2px 5px rgba(0, 0, 0, 0.1)`,
+                    padding: `1em`,
+                    paddingTop: `.5em`,
+                    borderRadius: 5,
+                    height: `100%`,
+                  }}
+                >
+                  <div className="title">{getYear2()} </div>
+
+                  {fetch_gender_stats ? (
+                    <CircularLoadingProgress />
+                  ) : (
+                    <div className="sekso-ctnr">
+                      <div className="sekso-item">
+                        <img className="dp" src={img_female} alt="" />
+                        <div className="label">BABAE</div>
+                        <div className="value">{gender_stats_year_2?.data_set[1].y}</div>
+                        <img className="graph" src={img_chart} alt="" />
+                      </div>
+                      <div className="sekso-item">
+                        <img className="dp" src={img_male} alt="" />
+                        <div className="label">LALAKI</div>
+                        <div className="value">{gender_stats_year_2?.data_set[0].y}</div>
+                        <img className="graph" src={img_chart} alt="" />
+                      </div>
+
+                      <div style={{ justifySelf: `center`, alignSelf: `center` }}>
+                        <Doughnut
+                          data={{
+                            labels: gender_stats_year_2?.labels,
+                            datasets: [
+                              {
+                                labels: gender_stats_year_2?.labels,
+                                data: findValuesOfStats(gender_stats_year_2?.data_set),
+                                backgroundColor: ["#5c6bc0", "#66bb6a"],
+                                borderColor: "#fff",
+                              },
+                            ],
+                          }}
+                          options={{
+                            responsiveAnimationDuration: 1,
+                            tooltips: {
+                              enabled: false,
+                            },
+                            plugins: {
+                              labels: {
+                                render: "percentage",
+                                precision: 0,
+                                showZero: true,
+                                fontSize: 12,
+                                fontColor: "#fff",
+                              },
+                            },
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item xs={12} md={4}>
             <div
@@ -959,46 +1242,103 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                 height: `100%`,
               }}
             >
-              <div className="title">Proporsyon sa Edad</div>
+              <div className="title">Proportion of Age</div>
               <div
                 style={{
                   padding: `1em`,
                   paddingTop: `.5em`,
                 }}
               >
-                {fetch_life_stage_stats || !life_stage_stats ? (
+                {fetch_life_stage_stats ? (
                   <CircularLoadingProgress />
                 ) : (
-                  <Pie
-                    type="pie"
-                    height={200}
-                    data={{
-                      labels: life_stage_stats.labels,
-                      datasets: [
-                        {
-                          labels: life_stage_stats.labels,
-                          data: findValuesOfStats(life_stage_stats.data_set),
-                          backgroundColor: ["#ef5350", "#66bb6a", "#5c6bc0"],
-                          borderColor: "#fff",
-                        },
-                      ],
-                    }}
-                    options={{
-                      responsiveAnimationDuration: 1,
-                      tooltips: {
-                        enabled: false,
-                      },
-                      plugins: {
-                        labels: {
-                          render: "percentage",
-                          precision: 0,
-                          showZero: true,
-                          fontSize: 12,
-                          fontColor: "#fff",
-                        },
-                      },
-                    }}
-                  />
+                  <>
+                    <div style={{ display: `grid`, gridAutoFlow: `column`, gridAutoColumns: `1fr 1fr` }}>
+                      <div className="pie-chart-wrapper">
+                        <label>{getYear1()}</label>
+                        {life_stage_stats_year_1?.data_set?.some((p) => parseFloat(p.y + ``) > 0) ? (
+                          <Pie
+                            type="pie"
+                            data={{
+                              datasets: [
+                                {
+                                  labels: life_stage_stats_year_1?.data_set.map((p) => p.x),
+                                  data: life_stage_stats_year_1?.data_set.map((p) => p.y),
+                                  backgroundColor: [`red`, `orange`, `yellow`, `green`, `blue`],
+                                  borderColor: "#fff",
+                                },
+                              ],
+                            }}
+                            options={{
+                              responsive: true, // Disable responsiveness
+                              maintainAspectRatio: false, // Allow custom width & height
+                              tooltips: {
+                                callbacks: {
+                                  label: function (tooltipItem) {
+                                    const label = life_stage_stats_year_1?.data_set.map((p) => p.x)[tooltipItem.index]; // Corresponding label
+                                    return `${label}`;
+                                  },
+                                },
+                              },
+                              plugins: {
+                                labels: {
+                                  render: "percentage",
+                                  precision: 0,
+                                  showZero: true,
+                                  fontSize: 12,
+                                  fontColor: "#fff",
+                                },
+                              },
+                            }}
+                          />
+                        ) : (
+                          <label>No census found in {getYear1()}</label>
+                        )}
+                      </div>
+
+                      <div className="pie-chart-wrapper">
+                        <label>{getYear2()}</label>
+                        {life_stage_stats_year_2?.data_set?.some((p) => parseFloat(p.y + ``) > 0) ? (
+                          <Pie
+                            type="pie"
+                            data={{
+                              datasets: [
+                                {
+                                  labels: life_stage_stats_year_2?.data_set.map((p) => p.x),
+                                  data: life_stage_stats_year_2?.data_set.map((p) => p.y),
+                                  backgroundColor: [`red`, `orange`, `yellow`, `green`, `blue`],
+                                  borderColor: "#fff",
+                                },
+                              ],
+                            }}
+                            options={{
+                              responsive: true, // Disable responsiveness
+                              maintainAspectRatio: false, // Allow custom width & height
+                              tooltips: {
+                                callbacks: {
+                                  label: function (tooltipItem) {
+                                    const label = life_stage_stats_year_2?.data_set.map((p) => p.x)[tooltipItem.index]; // Corresponding label
+                                    return `${label}`;
+                                  },
+                                },
+                              },
+                              plugins: {
+                                labels: {
+                                  render: "percentage",
+                                  precision: 0,
+                                  showZero: true,
+                                  fontSize: 12,
+                                  fontColor: "#fff",
+                                },
+                              },
+                            }}
+                          />
+                        ) : (
+                          <label>No census found in {getYear2()}</label>
+                        )}
+                      </div>
+                    </div>
+                  </>
                 )}
               </div>
             </div>
@@ -1018,16 +1358,17 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                     height: `100%`,
                   }}
                 >
-                  <div className="title">Mga Bag-ong Reklamo</div>
+                  <div className="title">New Complaints</div>
 
                   <TableContainer style={{ maxHeight: 300 }}>
                     <LinearLoadingProgress show={fetch_latest_complaint} />
                     <Table size="small" stickyHeader>
                       <TableHead>
                         <TableRow>
-                          <TableCell>Nag Reklamo</TableCell>
-                          <TableCell>Ang Reklamo</TableCell>
-                          <TableCell>Oras sa Pagreklamo</TableCell>
+                          <TableCell>Complained By</TableCell>
+                          <TableCell>Title</TableCell>
+                          <TableCell>Type</TableCell>
+                          <TableCell>Date</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -1048,6 +1389,9 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                             </TableCell>
                             <TableCell>
                               <b>{f.title}</b>
+                            </TableCell>
+                            <TableCell>
+                              <b>{f.type}</b>
                             </TableCell>
                             <TableCell>
                               <small>{InvalidDateTimeToDefault(f.reported_at, "-")}</small>
@@ -1071,7 +1415,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                     height: `100%`,
                   }}
                 >
-                  <div className="title">Proporsyon sa estado sa mga reklamo</div>
+                  <div className="title">Proportion of Complaint Status</div>
                   <div
                     style={{
                       padding: `1em`,
@@ -1141,6 +1485,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                         <TableRow>
                           <TableCell>Created</TableCell>
                           <TableCell>News Title</TableCell>
+                          <TableCell>Status</TableCell>
                           <TableCell>Date</TableCell>
                         </TableRow>
                       </TableHead>
@@ -1162,6 +1507,9 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                             </TableCell>
                             <TableCell>
                               <b>{f.title}</b>
+                            </TableCell>
+                            <TableCell>
+                              <b>{f.status.sts_desc}</b>
                             </TableCell>
                             <TableCell>
                               <small>{InvalidDateTimeToDefault(f.encoded_at, "-")}</small>
@@ -1186,7 +1534,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                     height: `100%`,
                   }}
                 >
-                  <div className="title">Proporsyon sa estado sa mga balita</div>
+                  <div className="title">Proportion of News Status</div>
                   <div
                     style={{
                       padding: `1em`,
@@ -1245,7 +1593,7 @@ export default DashbboardAdminView;
 const findValuesOfStats = (data_set: Array<YearlyStatsModel>): Array<number | string> => {
   const values: Array<number | string> = [];
 
-  data_set.forEach((d) => {
+  data_set?.forEach((d) => {
     values.push(d.y);
   });
 

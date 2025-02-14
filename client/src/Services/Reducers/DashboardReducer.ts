@@ -36,10 +36,16 @@ const DashboardReducer = (state: DashboardReducerModel = defaultState, action: D
       };
     }
     //
-    case "gender_stats": {
+    case "gender_stats_year_1": {
       return {
         ...state,
-        gender_stats: action.gender_stats,
+        gender_stats_year_1: action.gender_stats_year_1,
+      };
+    }
+    case "gender_stats_year_2": {
+      return {
+        ...state,
+        gender_stats_year_2: action.gender_stats_year_2,
       };
     }
     case "fetch_gender_stats": {
@@ -49,10 +55,16 @@ const DashboardReducer = (state: DashboardReducerModel = defaultState, action: D
       };
     }
 
-    case "life_stage_stats": {
+    case "life_stage_stats_year_1": {
       return {
         ...state,
-        life_stage_stats: action.life_stage_stats,
+        life_stage_stats_year_1: action.life_stage_stats_year_1,
+      };
+    }
+    case "life_stage_stats_year_2": {
+      return {
+        ...state,
+        life_stage_stats_year_2: action.life_stage_stats_year_2,
       };
     }
     case "fetch_life_stage_stats": {
@@ -160,10 +172,35 @@ const DashboardReducer = (state: DashboardReducerModel = defaultState, action: D
       };
     }
     //
-    case "stats_kahimtang_komunidad": {
+    case "stats_pasilidad_kuryente_year_1": {
       return {
         ...state,
-        stats_kahimtang_komunidad: action.stats_kahimtang_komunidad,
+        stats_pasilidad_kuryente_year_1: action.stats_pasilidad_kuryente_year_1,
+      };
+    }
+    case "stats_pasilidad_kuryente_year_2": {
+      return {
+        ...state,
+        stats_pasilidad_kuryente_year_2: action.stats_pasilidad_kuryente_year_2,
+      };
+    }
+    case "fetch_stats_pasilidad_kuryente": {
+      return {
+        ...state,
+        fetch_stats_pasilidad_kuryente: action.fetch_stats_pasilidad_kuryente,
+      };
+    }
+    //
+    case "stats_kahimtang_komunidad_year_1": {
+      return {
+        ...state,
+        stats_kahimtang_komunidad_year_1: action.stats_kahimtang_komunidad_year_1,
+      };
+    }
+    case "stats_kahimtang_komunidad_year_2": {
+      return {
+        ...state,
+        stats_kahimtang_komunidad_year_2: action.stats_kahimtang_komunidad_year_2,
       };
     }
     case "fetch_stats_kahimtang_komunidad": {
@@ -173,10 +210,16 @@ const DashboardReducer = (state: DashboardReducerModel = defaultState, action: D
       };
     }
     //
-    case "stats_matang_basura": {
+    case "stats_matang_basura_year_1": {
       return {
         ...state,
-        stats_matang_basura: action.stats_matang_basura,
+        stats_matang_basura_year_1: action.stats_matang_basura_year_1,
+      };
+    }
+    case "stats_matang_basura_year_2": {
+      return {
+        ...state,
+        stats_matang_basura_year_2: action.stats_matang_basura_year_2,
       };
     }
     case "fetch_stats_matang_basura": {
@@ -186,29 +229,22 @@ const DashboardReducer = (state: DashboardReducerModel = defaultState, action: D
       };
     }
     //
-    case "stats_matang_kasilyas": {
+    case "stats_matang_kasilyas_year_1": {
       return {
         ...state,
-        stats_matang_kasilyas: action.stats_matang_kasilyas,
+        stats_matang_kasilyas_year_1: action.stats_matang_kasilyas_year_1,
+      };
+    }
+    case "stats_matang_kasilyas_year_2": {
+      return {
+        ...state,
+        stats_matang_kasilyas_year_2: action.stats_matang_kasilyas_year_2,
       };
     }
     case "fetch_stats_matang_kasilyas": {
       return {
         ...state,
         fetch_stats_matang_kasilyas: action.fetch_stats_matang_kasilyas,
-      };
-    }
-    //
-    case "stats_pasilidad_kuryente": {
-      return {
-        ...state,
-        stats_pasilidad_kuryente: action.stats_pasilidad_kuryente,
-      };
-    }
-    case "fetch_stats_pasilidad_kuryente": {
-      return {
-        ...state,
-        fetch_stats_pasilidad_kuryente: action.fetch_stats_pasilidad_kuryente,
       };
     }
 

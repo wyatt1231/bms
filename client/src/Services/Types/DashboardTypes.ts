@@ -24,16 +24,24 @@ export type DashboardReducerTypes =
     }
   //
   | {
-      type: "gender_stats";
-      gender_stats?: StatsDataSetModel;
+      type: "gender_stats_year_1";
+      gender_stats_year_1?: StatsDataSetModel;
+    }
+  | {
+      type: "gender_stats_year_2";
+      gender_stats_year_2?: StatsDataSetModel;
     }
   | {
       type: "fetch_gender_stats";
       fetch_gender_stats?: boolean;
     }
   | {
-      type: "life_stage_stats";
-      life_stage_stats?: StatsDataSetModel;
+      type: "life_stage_stats_year_1";
+      life_stage_stats_year_1?: StatsDataSetModel;
+    }
+  | {
+      type: "life_stage_stats_year_2";
+      life_stage_stats_year_2?: StatsDataSetModel;
     }
   | {
       type: "fetch_life_stage_stats";
@@ -108,8 +116,25 @@ export type DashboardReducerTypes =
     }
   //
   | {
-      type: "stats_kahimtang_komunidad";
-      stats_kahimtang_komunidad?: Array<StatsModel>;
+      type: "stats_pasilidad_kuryente_year_1";
+      stats_pasilidad_kuryente_year_1?: PieModel[];
+    }
+  | {
+      type: "stats_pasilidad_kuryente_year_2";
+      stats_pasilidad_kuryente_year_2?: PieModel[];
+    }
+  | {
+      type: "fetch_stats_pasilidad_kuryente";
+      fetch_stats_pasilidad_kuryente?: boolean;
+    }
+  //
+  | {
+      type: "stats_kahimtang_komunidad_year_1";
+      stats_kahimtang_komunidad_year_1?: PieModel[];
+    }
+  | {
+      type: "stats_kahimtang_komunidad_year_2";
+      stats_kahimtang_komunidad_year_2?: PieModel[];
     }
   | {
       type: "fetch_stats_kahimtang_komunidad";
@@ -117,8 +142,12 @@ export type DashboardReducerTypes =
     }
   //
   | {
-      type: "stats_matang_basura";
-      stats_matang_basura?: Array<StatsModel>;
+      type: "stats_matang_basura_year_1";
+      stats_matang_basura_year_1?: PieModel[];
+    }
+  | {
+      type: "stats_matang_basura_year_2";
+      stats_matang_basura_year_2?: PieModel[];
     }
   | {
       type: "fetch_stats_matang_basura";
@@ -126,21 +155,16 @@ export type DashboardReducerTypes =
     }
   //
   | {
-      type: "stats_matang_kasilyas";
-      stats_matang_kasilyas?: Array<StatsModel>;
+      type: "stats_matang_kasilyas_year_1";
+      stats_matang_kasilyas_year_1?: PieModel[];
+    }
+  | {
+      type: "stats_matang_kasilyas_year_2";
+      stats_matang_kasilyas_year_2?: PieModel[];
     }
   | {
       type: "fetch_stats_matang_kasilyas";
       fetch_stats_matang_kasilyas?: boolean;
-    }
-  //
-  | {
-      type: "stats_pasilidad_kuryente";
-      stats_pasilidad_kuryente?: Array<StatsModel>;
-    }
-  | {
-      type: "fetch_stats_pasilidad_kuryente";
-      fetch_stats_pasilidad_kuryente?: boolean;
     };
 
 export interface DashboardReducerModel {
@@ -151,10 +175,12 @@ export interface DashboardReducerModel {
   age_group_stats_year_2?: StatsDataSetModel;
   fetch_age_group_stats?: boolean;
 
-  gender_stats?: StatsDataSetModel;
+  gender_stats_year_1?: StatsDataSetModel;
+  gender_stats_year_2?: StatsDataSetModel;
   fetch_gender_stats?: boolean;
 
-  life_stage_stats?: StatsDataSetModel;
+  life_stage_stats_year_1?: StatsDataSetModel;
+  life_stage_stats_year_2?: StatsDataSetModel;
   fetch_life_stage_stats?: boolean;
 
   complaint_stats?: Array<StatsModel>;
@@ -181,15 +207,19 @@ export interface DashboardReducerModel {
   stats_biktima_pangabuso_year_2?: PieModel[];
   fetch_stats_biktima_pangabuso?: boolean;
   //
-  stats_kahimtang_komunidad?: Array<StatsModel>;
+  stats_pasilidad_kuryente_year_1?: PieModel[];
+  stats_pasilidad_kuryente_year_2?: PieModel[];
+  fetch_stats_pasilidad_kuryente?: boolean;
+  //
+  stats_kahimtang_komunidad_year_1?: PieModel[];
+  stats_kahimtang_komunidad_year_2?: PieModel[];
   fetch_stats_kahimtang_komunidad?: boolean;
   //
-  stats_matang_basura?: Array<StatsModel>;
+  stats_matang_basura_year_1?: PieModel[];
+  stats_matang_basura_year_2?: PieModel[];
   fetch_stats_matang_basura?: boolean;
   //
-  stats_matang_kasilyas?: Array<StatsModel>;
+  stats_matang_kasilyas_year_1?: PieModel[];
+  stats_matang_kasilyas_year_2?: PieModel[];
   fetch_stats_matang_kasilyas?: boolean;
-  //
-  stats_pasilidad_kuryente?: Array<StatsModel>;
-  fetch_stats_pasilidad_kuryente?: boolean;
 }

@@ -48,6 +48,20 @@ export const ManageResidentAdminView: FC<IManageResidentAdminView> = memo(() => 
     );
   }, []);
 
+  const handleToggleLogin = useCallback(() => {
+    dispatch(
+      setGeneralPrompt({
+        open: true,
+        continue_callback: () =>
+          dispatch(
+            ResidentActions.toggleResidentLogin(resident_pk, (msg: string) => {
+              dispatch(setSingleResidentAction(resident_pk));
+            })
+          ),
+      })
+    );
+  }, []);
+
   const fetch_family_of_resident = useSelector((store: RootStore) => store.FamilyReducer.fetch_family_of_resident);
 
   useEffect(() => {
@@ -78,6 +92,12 @@ export const ManageResidentAdminView: FC<IManageResidentAdminView> = memo(() => 
       <Grid container spacing={4}>
         <Grid item xs={12}>
           <Grid container justify="flex-end" spacing={1}>
+            <Grid item>
+              <Button variant="contained" color="primary" onClick={handleToggleLogin}>
+                {selected_resident?.allow_login === "y" && "Disable Login"}
+                {selected_resident?.allow_login === "n" && "Enable Login"}
+              </Button>
+            </Grid>
             <Grid item>
               <Button variant="contained" color="primary" onClick={handleToggleActive}>
                 {selected_resident?.sts_pk === "A" && "Deactivate"}
@@ -133,6 +153,17 @@ export const ManageResidentAdminView: FC<IManageResidentAdminView> = memo(() => 
                           color: selected_resident?.status?.sts_color,
                         }}
                       />
+                    </Grid>
+
+                    <Grid
+                      item
+                      xs={12}
+                      style={{
+                        display: `grid`,
+                        justifyItems: `center`,
+                      }}
+                    >
+                      <Chip label={selected_resident.allow_login === `y` ? `Login Enabled` : `Login Disabled`} />
                     </Grid>
                   </Grid>
                   <Grid item xs={12} md={9}>

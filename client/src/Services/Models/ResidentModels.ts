@@ -43,4 +43,5 @@ export interface ResidentModel {
   age?: number;
 
   brgy_official_pos?: string;
+  allow_login?: `y` | `n`;
 }

@@ -91,7 +91,7 @@ export const DtPostAdminView: FC<DtPostAdminViewProps> = memo(() => {
                 padding: `1em`,
               }}
             >
-              <div className="title">Mga Posts</div>
+              <div className="title">Posts</div>
 
               <div
                 style={{

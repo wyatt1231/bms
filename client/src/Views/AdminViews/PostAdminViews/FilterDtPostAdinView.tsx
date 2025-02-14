@@ -15,28 +15,28 @@ interface IFilterDtPostAdinView {
 
 const initialTableSort: Array<ITableInitialSort> = [
   {
-    label: "Pinakauna gibutang",
+    label: "Encoded Desc",
     value: {
       column: "encoded_at",
       direction: "desc",
     },
   },
   {
-    label: "Pinakaulahi gibutang",
+    label: "Encoded Asc",
     value: {
       column: "encoded_at",
       direction: "asc",
     },
   },
   {
-    label: "Pangalan (a-z) ",
+    label: "Name (a-z) ",
     value: {
       column: "full_name",
       direction: "asc",
     },
   },
   {
-    label: "Pangalan (z-a)",
+    label: "Name (z-a)",
     value: {
       column: "full_name",
       direction: "desc",

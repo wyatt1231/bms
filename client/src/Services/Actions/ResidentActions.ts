@@ -2,22 +2,18 @@ import { Dispatch } from "react";
 import helperErrorMessage from "../../Helpers/helperErrorMessage";
 import ResidentApi from "../Api/ResidentApi";
 import IServerResponse from "../Interface/IServerResponse";
-import { ResidentModel } from "../Models/ResidentModels";
 import { PaginationModel } from "../Models/PaginationModels";
-import { ResidentReducerTypes } from "../Types/ResidentTypes";
+import { ResidentModel } from "../Models/ResidentModels";
 import { PageReducerTypes } from "../Types/PageTypes";
+import { ResidentReducerTypes } from "../Types/ResidentTypes";
 
-export const setResidentDataTableAction = (payload: PaginationModel) => async (
-  dispatch: Dispatch<ResidentReducerTypes>
-) => {
+export const setResidentDataTableAction = (payload: PaginationModel) => async (dispatch: Dispatch<ResidentReducerTypes>) => {
   try {
     dispatch({
       type: "fetch_resident_data_table",
       fetch_resident_data_table: true,
     });
-    const response: IServerResponse = await ResidentApi.getResidentDataTableApi(
-      payload
-    );
+    const response: IServerResponse = await ResidentApi.getResidentDataTableApi(payload);
     console.log(`resident res`, response);
     dispatch({
       type: "fetch_resident_data_table",
@@ -35,17 +31,13 @@ export const setResidentDataTableAction = (payload: PaginationModel) => async (
   }
 };
 
-export const setSingleResidentAction = (resident_pk: string) => async (
-  dispatch: Dispatch<ResidentReducerTypes>
-) => {
+export const setSingleResidentAction = (resident_pk: string) => async (dispatch: Dispatch<ResidentReducerTypes>) => {
   try {
     dispatch({
       type: "fetch_selected_resident",
       fetch_selected_resident: true,
     });
-    const response: IServerResponse = await ResidentApi.getSingleResident(
-      resident_pk
-    );
+    const response: IServerResponse = await ResidentApi.getSingleResident(resident_pk);
     dispatch({
       type: "fetch_selected_resident",
       fetch_selected_resident: false,
@@ -62,112 +54,132 @@ export const setSingleResidentAction = (resident_pk: string) => async (
   }
 };
 
-export const addResidentAction = (
-  payload: ResidentModel,
-  onSuccess: (msg: string) => any
-) => async (dispatch: Dispatch<ResidentReducerTypes | PageReducerTypes>) => {
-  try {
-    dispatch({
-      type: "SET_PAGE_LOADING",
-      page_loading: {
-        loading_message: "Loading, thank you for your patience!",
-        show: true,
-      },
-    });
-    const response: IServerResponse = await ResidentApi.addResidentApi(payload);
-    dispatch({
-      type: "SET_PAGE_LOADING",
-      page_loading: {
-        show: false,
-      },
-    });
-    if (response.success) {
-      if (typeof onSuccess === "function") {
-        onSuccess(response.message.toString());
-      }
+export const addResidentAction =
+  (payload: ResidentModel, onSuccess: (msg: string) => any) => async (dispatch: Dispatch<ResidentReducerTypes | PageReducerTypes>) => {
+    try {
       dispatch({
-        type: "SET_PAGE_SNACKBAR",
-        page_snackbar: {
-          message: response.message.toString(),
-          options: {
-            variant: "success",
-          },
+        type: "SET_PAGE_LOADING",
+        page_loading: {
+          loading_message: "Loading, thank you for your patience!",
+          show: true,
         },
       });
-    } else {
-      helperErrorMessage(dispatch, response);
-    }
-  } catch (error) {
-    console.error(`action error`, error);
-  }
-};
-
-export const updateResidentAction = (
-  payload: ResidentModel,
-  onSuccess: (msg: string) => any
-) => async (dispatch: Dispatch<ResidentReducerTypes | PageReducerTypes>) => {
-  try {
-    dispatch({
-      type: "SET_PAGE_LOADING",
-      page_loading: {
-        loading_message: "Loading, thank you for your patience!",
-        show: true,
-      },
-    });
-    const response: IServerResponse = await ResidentApi.updateResidentApi(
-      payload
-    );
-    dispatch({
-      type: "SET_PAGE_LOADING",
-      page_loading: {
-        show: false,
-      },
-    });
-    if (response.success) {
-      if (typeof onSuccess === "function") {
-        onSuccess(response.message.toString());
+      const response: IServerResponse = await ResidentApi.addResidentApi(payload);
+      dispatch({
+        type: "SET_PAGE_LOADING",
+        page_loading: {
+          show: false,
+        },
+      });
+      if (response.success) {
+        if (typeof onSuccess === "function") {
+          onSuccess(response.message.toString());
+        }
+        dispatch({
+          type: "SET_PAGE_SNACKBAR",
+          page_snackbar: {
+            message: response.message.toString(),
+            options: {
+              variant: "success",
+            },
+          },
+        });
+      } else {
+        helperErrorMessage(dispatch, response);
       }
-    } else {
-      helperErrorMessage(dispatch, response);
+    } catch (error) {
+      console.error(`action error`, error);
     }
-  } catch (error) {
-    console.error(`action error`, error);
-  }
-};
+  };
 
-const toggleResidentStatus = (
-  resident_pk: number,
-  onSuccess: (msg: string) => any
-) => async (dispatch: Dispatch<ResidentReducerTypes | PageReducerTypes>) => {
-  try {
-    dispatch({
-      type: "SET_PAGE_LOADING",
-      page_loading: {
-        loading_message: "Loading, thank you for your patience!",
-        show: true,
-      },
-    });
-    const response: IServerResponse = await ResidentApi.toggleResidentStatus(
-      resident_pk
-    );
-    dispatch({
-      type: "SET_PAGE_LOADING",
-      page_loading: {
-        show: false,
-      },
-    });
-    if (response.success) {
-      if (typeof onSuccess === "function") {
-        onSuccess(response.message.toString());
+export const updateResidentAction =
+  (payload: ResidentModel, onSuccess: (msg: string) => any) => async (dispatch: Dispatch<ResidentReducerTypes | PageReducerTypes>) => {
+    try {
+      dispatch({
+        type: "SET_PAGE_LOADING",
+        page_loading: {
+          loading_message: "Loading, thank you for your patience!",
+          show: true,
+        },
+      });
+      const response: IServerResponse = await ResidentApi.updateResidentApi(payload);
+      dispatch({
+        type: "SET_PAGE_LOADING",
+        page_loading: {
+          show: false,
+        },
+      });
+      if (response.success) {
+        if (typeof onSuccess === "function") {
+          onSuccess(response.message.toString());
+        }
+      } else {
+        helperErrorMessage(dispatch, response);
       }
-    } else {
-      helperErrorMessage(dispatch, response);
+    } catch (error) {
+      console.error(`action error`, error);
     }
-  } catch (error) {
-    console.error(`action error`, error);
-  }
-};
+  };
+
+const toggleResidentStatus =
+  (resident_pk: number, onSuccess: (msg: string) => any) => async (dispatch: Dispatch<ResidentReducerTypes | PageReducerTypes>) => {
+    try {
+      dispatch({
+        type: "SET_PAGE_LOADING",
+        page_loading: {
+          loading_message: "Loading, thank you for your patience!",
+          show: true,
+        },
+      });
+      const response: IServerResponse = await ResidentApi.toggleResidentStatus(resident_pk);
+      dispatch({
+        type: "SET_PAGE_LOADING",
+        page_loading: {
+          show: false,
+        },
+      });
+      if (response.success) {
+        if (typeof onSuccess === "function") {
+          onSuccess(response.message.toString());
+        }
+      } else {
+        helperErrorMessage(dispatch, response);
+      }
+    } catch (error) {
+      console.error(`action error`, error);
+    }
+  };
+
+const toggleResidentLogin =
+  (resident_pk: number, onSuccess: (msg: string) => any) => async (dispatch: Dispatch<ResidentReducerTypes | PageReducerTypes>) => {
+    try {
+      dispatch({
+        type: "SET_PAGE_LOADING",
+        page_loading: {
+          loading_message: "Loading, thank you for your patience!",
+          show: true,
+        },
+      });
+      const response: IServerResponse = await ResidentApi.toggleResidentLogin(resident_pk);
+      dispatch({
+        type: "SET_PAGE_LOADING",
+        page_loading: {
+          show: false,
+        },
+      });
+      if (response.success) {
+        if (typeof onSuccess === "function") {
+          onSuccess(response.message.toString());
+        }
+      } else {
+        helperErrorMessage(dispatch, response);
+      }
+    } catch (error) {
+      console.error(`action error`, error);
+    }
+  };
 
 export default {
   toggleResidentStatus,
+  toggleResidentLogin,
 };

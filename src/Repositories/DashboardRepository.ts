@@ -317,6 +317,7 @@ const lifeStageStats = async (filters: DashboardFilterInterface): Promise<Respon
     }
 
     con.Commit();
+
     return {
       success: true,
       data: {
@@ -344,6 +345,8 @@ const genderStats = async (filters: DashboardFilterInterface): Promise<ResponseM
     let total_male;
     let total_female;
     await con.BeginTransaction();
+
+    console.log(`filters genderStats `, filters);
 
     if (isInvalidYear(filters.year)) {
       total_male = await con.QuerySingle(
@@ -477,8 +480,6 @@ const StatsBiktikmaPangabuso = async (filters: DashboardFilterInterface): Promis
       }
     );
 
-    //YEAR(resident_date) = @year
-
     const labels: string[] = [`gibeya-an`, `pangulata`, `ginabaligya/illegal rekroter`, `droga`, `krime`];
 
     const rows: PieModel[] = [];
@@ -505,12 +506,62 @@ const StatsBiktikmaPangabuso = async (filters: DashboardFilterInterface): Promis
   }
 };
 
+const StatsPasilidadKuryente = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
+  const con = await DatabaseConnection();
+  try {
+    await con.BeginTransaction();
+
+    const data: PieModel[] = await con.Query(
+      `
+      select total, concat(label,' (',total,')' ) as label, purok   from (
+        SELECT COUNT(fpk.descrip) AS total ,fpk.descrip as label, r.purok FROM family_pasilidad_kuryente fpk
+        JOIN family f ON f.fam_pk = fpk.fam_pk
+        JOIN resident r ON r.resident_pk = f.ulo_pamilya
+        WHERE r.purok IN @purok
+        AND YEAR(r.resident_date) = '${filters.year}' 
+        GROUP BY fpk.descrip
+        ) as tmp   
+     
+      `,
+      {
+        purok: filters.purok,
+        year: filters.year,
+      }
+    );
+
+    const labels: string[] = [`davao light`, `kandila`, `lampara (gas)`, `petromaks (gas)`, `walay koneksyon`];
+
+    const rows: PieModel[] = [];
+
+    labels.forEach((l) => {
+      const item = data.find((p) => p.label.includes(l));
+      rows.push({
+        label: item?.label ?? `${l} (0)`,
+        total: item?.total ?? 0,
+      });
+    });
+
+    con.Commit();
+    return {
+      success: true,
+      data: rows,
+    };
+  } catch (error) {
+    await con.Rollback();
+    console.error(`error`, error);
+    return {
+      success: false,
+      message: ErrorMessage(error),
+    };
+  }
+};
+
 const StatsKahimtangKomunidad = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
 
-    const stats_complaint: Array<any> = await con.Query(
+    const data: PieModel[] = await con.Query(
       `
       select total, concat(label,' (',total,')' ) as label, purok   from (
         SELECT COUNT(fpk.descrip) AS total ,fpk.descrip as label, r.purok FROM family_kahimtanang_komunidad fpk
@@ -521,13 +572,33 @@ const StatsKahimtangKomunidad = async (filters: DashboardFilterInterface): Promi
         GROUP BY fpk.descrip
         ) as tmp  
       `,
-      filters
+      {
+        purok: filters.purok,
+        year: filters.year,
+      }
     );
+
+    const labels: string[] = [
+      `demolisyon`,
+      `kawad-on/kulang sa panginabuhi`,
+      `presensya sa mga nagkalain-laing krimen/bisyo o pang-abuso`,
+      `walay igong o layo sa eskwelahan`,
+    ];
+
+    const rows: PieModel[] = [];
+
+    labels.forEach((l) => {
+      const item = data.find((p) => p.label.includes(l));
+      rows.push({
+        label: item?.label ?? `${l} (0)`,
+        total: item?.total ?? 0,
+      });
+    });
 
     con.Commit();
     return {
       success: true,
-      data: stats_complaint,
+      data: rows,
     };
   } catch (error) {
     await con.Rollback();
@@ -544,7 +615,7 @@ const StatsMatangBasura = async (filters: DashboardFilterInterface): Promise<Res
   try {
     await con.BeginTransaction();
 
-    const stats_complaint: Array<any> = await con.Query(
+    const data: PieModel[] = await con.Query(
       `
       select total, concat(label,' (',total,')' ) as label, purok   from (
         SELECT COUNT(fpk.descrip) AS total ,fpk.descrip as label, r.purok FROM family_matang_basura fpk
@@ -555,13 +626,28 @@ const StatsMatangBasura = async (filters: DashboardFilterInterface): Promise<Res
         GROUP BY fpk.descrip
         ) as tmp  
        `,
-      filters
+      {
+        purok: filters.purok,
+        year: filters.year,
+      }
     );
+
+    const labels: string[] = [`ginakolekta sa CENTRO O Barangay`, `ginalabay`, `ginalain ang mabulok ug dili mabulok`, `ginalubong`];
+
+    const rows: PieModel[] = [];
+
+    labels.forEach((l) => {
+      const item = data.find((p) => p.label.includes(l));
+      rows.push({
+        label: item?.label ?? `${l} (0)`,
+        total: item?.total ?? 0,
+      });
+    });
 
     con.Commit();
     return {
       success: true,
-      data: stats_complaint,
+      data: rows,
     };
   } catch (error) {
     await con.Rollback();
@@ -578,7 +664,7 @@ const StatsMatangKasilyas = async (filters: DashboardFilterInterface): Promise<R
   try {
     await con.BeginTransaction();
 
-    const stats_complaint: Array<any> = await con.Query(
+    const data: PieModel[] = await con.Query(
       `
       select total, concat(label,' (',total,')' ) as label, purok   from (
         SELECT COUNT(fpk.descrip) AS total ,fpk.descrip as label, r.purok FROM family_matang_kasilyas fpk
@@ -589,48 +675,28 @@ const StatsMatangKasilyas = async (filters: DashboardFilterInterface): Promise<R
         GROUP BY fpk.descrip
         ) as tmp  
       `,
-      filters
+      {
+        purok: filters.purok,
+        year: filters.year,
+      }
     );
+
+    const labels: string[] = [`antipolo`, `buhos`, `walay kasilyas`, `water-seated`];
+
+    const rows: PieModel[] = [];
+
+    labels.forEach((l) => {
+      const item = data.find((p) => p.label.includes(l));
+      rows.push({
+        label: item?.label ?? `${l} (0)`,
+        total: item?.total ?? 0,
+      });
+    });
 
     con.Commit();
     return {
       success: true,
-      data: stats_complaint,
-    };
-  } catch (error) {
-    await con.Rollback();
-    console.error(`error`, error);
-    return {
-      success: false,
-      message: ErrorMessage(error),
-    };
-  }
-};
-
-const StatsPasilidadKuryente = async (filters: DashboardFilterInterface): Promise<ResponseModel> => {
-  const con = await DatabaseConnection();
-  try {
-    await con.BeginTransaction();
-
-    const stats_complaint: Array<any> = await con.Query(
-      `
-      select total, concat(label,' (',total,')' ) as label, purok   from (
-        SELECT COUNT(fpk.descrip) AS total ,fpk.descrip as label, r.purok FROM family_pasilidad_kuryente fpk
-        JOIN family f ON f.fam_pk = fpk.fam_pk
-        JOIN resident r ON r.resident_pk = f.ulo_pamilya
-        WHERE r.purok IN @purok
-        AND YEAR(r.resident_date) = '${filters.year}' 
-        GROUP BY fpk.descrip
-        ) as tmp   
-     
-      `,
-      filters
-    );
-
-    con.Commit();
-    return {
-      success: true,
-      data: stats_complaint,
+      data: rows,
     };
   } catch (error) {
     await con.Rollback();

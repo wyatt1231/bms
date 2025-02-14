@@ -1,9 +1,5 @@
 import { DatabaseConnection } from "../Configurations/DatabaseConfig";
-import {
-  parseInvalidDateToDefault,
-  sqlFilterDate,
-  sqlFilterNumber,
-} from "../Hooks/useDateParser";
+import { parseInvalidDateToDefault, sqlFilterDate, sqlFilterNumber } from "../Hooks/useDateParser";
 import { ErrorMessage } from "../Hooks/useErrorMessage";
 import { GetUploadedImage, UploadImage } from "../Hooks/useFileUploader";
 import { GenerateSearch } from "../Hooks/useSearch";
@@ -15,10 +11,7 @@ import { UserModel } from "../Models/UserModels";
 import ResidentReport from "../PdfTemplates/ResidentReport";
 const puppeteer = require("puppeteer");
 
-const addResident = async (
-  payload: ResidentModel,
-  user_pk: number
-): Promise<ResponseModel> => {
+const addResident = async (payload: ResidentModel, user_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -130,10 +123,7 @@ const addResident = async (
   }
 };
 
-const updateResident = async (
-  payload: ResidentModel,
-  user_pk: number
-): Promise<ResponseModel> => {
+const updateResident = async (payload: ResidentModel, user_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -235,9 +225,7 @@ const updateResident = async (
   }
 };
 
-const toggleResidentStatus = async (
-  resident_pk: number
-): Promise<ResponseModel> => {
+const toggleResidentStatus = async (resident_pk: number): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -274,9 +262,45 @@ const toggleResidentStatus = async (
   }
 };
 
-const getDataTableResident = async (
-  payload: PaginationModel
-): Promise<ResponseModel> => {
+const toggleResidentLogin = async (resident_pk: number): Promise<ResponseModel> => {
+  const con = await DatabaseConnection();
+  try {
+    await con.BeginTransaction();
+
+    const sql_edit_resident = await con.Modify(
+      `
+      update user set allow_login  = if(allow_login = 'y', 'n', 'y')
+      where user_pk = (select r.user_pk  from resident r  where r.resident_pk  = @resident_pk limit 1);
+      `,
+      {
+        resident_pk: resident_pk,
+      }
+    );
+
+    if (sql_edit_resident > 0) {
+      con.Commit();
+      return {
+        success: true,
+        message: "The resident login status has been updated successfully",
+      };
+    } else {
+      con.Rollback();
+      return {
+        success: false,
+        message: "No affected rows while updating the resident",
+      };
+    }
+  } catch (error) {
+    await con.Rollback();
+    console.error(`error`, error);
+    return {
+      success: false,
+      message: ErrorMessage(error),
+    };
+  }
+};
+
+const getDataTableResident = async (payload: PaginationModel): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -296,14 +320,8 @@ const getDataTableResident = async (
       AND purok IN @purok
       AND age >= ${sqlFilterNumber(payload.filters.min_age, "age")}
       AND age <= ${sqlFilterNumber(payload.filters.max_age, "age")}
-      AND encoded_at >= ${sqlFilterDate(
-        payload.filters.encoded_from,
-        "encoded_at"
-      )}
-      AND encoded_at <= ${sqlFilterDate(
-        payload.filters.encoded_to,
-        "encoded_at"
-      )}
+      AND encoded_at >= ${sqlFilterDate(payload.filters.encoded_from, "encoded_at")}
+      AND encoded_at <= ${sqlFilterDate(payload.filters.encoded_to, "encoded_at")}
       `,
       payload
     );
@@ -314,9 +332,7 @@ const getDataTableResident = async (
       data.splice(data.length - 1, 1);
     }
 
-    const count: number = hasMore
-      ? -1
-      : payload.page.begin * payload.page.limit + data.length;
+    const count: number = hasMore ? -1 : payload.page.begin * payload.page.limit + data.length;
 
     for (const row of data) {
       row.pic = await GetUploadedImage(row.pic);
@@ -342,9 +358,7 @@ const getDataTableResident = async (
   }
 };
 
-const getDataTableResidentPdf = async (
-  payload: PaginationModel
-): Promise<ResponseModel> => {
+const getDataTableResidentPdf = async (payload: PaginationModel): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -374,26 +388,15 @@ const getDataTableResidentPdf = async (
       AND purok IN @purok
       AND age >= ${sqlFilterNumber(payload.filters.min_age, "age")}
       AND age >= ${sqlFilterNumber(payload.filters.max_age, "age")}
-      AND encoded_at >= ${sqlFilterDate(
-        payload.filters.encoded_from,
-        "encoded_at"
-      )}
-      AND encoded_at <= ${sqlFilterDate(
-        payload.filters.encoded_to,
-        "encoded_at"
-      )}
+      AND encoded_at >= ${sqlFilterDate(payload.filters.encoded_from, "encoded_at")}
+      AND encoded_at <= ${sqlFilterDate(payload.filters.encoded_to, "encoded_at")}
       ORDER BY ${payload.sort.column} ${payload.sort.direction}
       `,
       payload.filters
     );
 
     const browser = await puppeteer.launch({
-      args: [
-        "--disable-gpu",
-        "--disable-dev-shm-usage",
-        "--disable-setuid-sandbox",
-        "--no-sandbox",
-      ],
+      args: ["--disable-gpu", "--disable-dev-shm-usage", "--disable-setuid-sandbox", "--no-sandbox"],
       headless: true,
       ignoreDefaultArgs: ["--disable-extensions"],
     });
@@ -428,9 +431,7 @@ const getDataTableResidentPdf = async (
   }
 };
 
-const getSingleResident = async (
-  resident_pk: string
-): Promise<ResponseModel> => {
+const getSingleResident = async (resident_pk: string): Promise<ResponseModel> => {
   const con = await DatabaseConnection();
   try {
     await con.BeginTransaction();
@@ -438,8 +439,11 @@ const getSingleResident = async (
     const data: ResidentModel = await con.QuerySingle(
       `SELECT r.*,CONCAT(r.first_name,' ',r.last_name) fullname,IF((SELECT count(*) from family where ulo_pamilya=r.resident_pk) > 0 , 'oo','dili' ) as ulo_pamilya,s.sts_desc
       ,(SELECT position FROM barangay_official WHERE official_pk=r.resident_pk) brgy_official_pos
+      , u.allow_login 
       FROM resident r 
-      LEFT JOIN status s ON s.sts_pk = r.sts_pk where r.resident_pk =@resident_pk`,
+      LEFT JOIN status s ON s.sts_pk = r.sts_pk 
+      left join user u on u.user_pk  = r.user_pk 
+      where r.resident_pk =@resident_pk`,
       {
         resident_pk: resident_pk,
       }
@@ -449,13 +453,10 @@ const getSingleResident = async (
       data.pic = await GetUploadedImage(data.pic);
     }
 
-    if (!!data?.status) {
-      data.status = await con.QuerySingle(
-        `select * from status where sts_pk = @sts_pk;`,
-        {
-          sts_pk: data?.sts_pk,
-        }
-      );
+    if (!!data?.sts_pk) {
+      data.status = await con.QuerySingle(`select * from status where sts_pk = @sts_pk;`, {
+        sts_pk: data?.sts_pk,
+      });
     }
 
     con.Commit();
@@ -509,6 +510,7 @@ export default {
   getSingleResident,
   searchResident,
   toggleResidentStatus,
+  toggleResidentLogin,
   getDataTableResidentPdf,
 };
 

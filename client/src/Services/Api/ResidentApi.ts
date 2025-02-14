@@ -5,57 +5,43 @@ import { ResidentModel } from "../Models/ResidentModels";
 
 const API_DEFAULT_ROUTE = `api/resident/`;
 
-const getResidentDataTableApi = async (
-  payload: PaginationModel
-): Promise<IServerResponse> => {
-  const response = await PostFetch(
-    API_DEFAULT_ROUTE + "getDataTableResident",
-    payload
-  );
+const getResidentDataTableApi = async (payload: PaginationModel): Promise<IServerResponse> => {
+  const response = await PostFetch(API_DEFAULT_ROUTE + "getDataTableResident", payload);
   return response;
 };
 
-const getDataTableResidentPdf = async (
-  payload: PaginationModel
-): Promise<IServerResponse> => {
-  const response = await PostFetch(
-    API_DEFAULT_ROUTE + "getDataTableResidentPdf",
-    payload
-  );
+const getDataTableResidentPdf = async (payload: PaginationModel): Promise<IServerResponse> => {
+  const response = await PostFetch(API_DEFAULT_ROUTE + "getDataTableResidentPdf", payload);
   return response;
 };
 
-const addResidentApi = async (
-  payload: ResidentModel
-): Promise<IServerResponse> => {
+const addResidentApi = async (payload: ResidentModel): Promise<IServerResponse> => {
   const response = await PostFetch(API_DEFAULT_ROUTE + "addResident", payload);
   return response;
 };
 
-const updateResidentApi = async (
-  payload: ResidentModel
-): Promise<IServerResponse> => {
-  const response = await PostFetch(
-    API_DEFAULT_ROUTE + "updateResident",
-    payload
-  );
+const updateResidentApi = async (payload: ResidentModel): Promise<IServerResponse> => {
+  const response = await PostFetch(API_DEFAULT_ROUTE + "updateResident", payload);
   return response;
 };
 
-const toggleResidentStatus = async (
-  resident_pk: number
-): Promise<IServerResponse> => {
+const toggleResidentStatus = async (resident_pk: number): Promise<IServerResponse> => {
   const response = await PostFetch(API_DEFAULT_ROUTE + "toggleResidentStatus", {
     resident_pk,
   });
   return response;
 };
 
-const getSingleResident = async (
-  resident_pk: string | number
-): Promise<IServerResponse> => {
+const getSingleResident = async (resident_pk: string | number): Promise<IServerResponse> => {
   const response = await PostFetch(API_DEFAULT_ROUTE + "getSingleResident", {
     resident_pk: resident_pk,
+  });
+  return response;
+};
+
+const toggleResidentLogin = async (resident_pk: number): Promise<IServerResponse> => {
+  const response = await PostFetch(API_DEFAULT_ROUTE + "toggleResidentLogin", {
+    resident_pk,
   });
   return response;
 };
@@ -67,4 +53,5 @@ export default {
   updateResidentApi,
   getSingleResident,
   toggleResidentStatus,
+  toggleResidentLogin,
 };

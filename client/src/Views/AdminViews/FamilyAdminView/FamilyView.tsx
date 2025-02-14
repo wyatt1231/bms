@@ -66,7 +66,7 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
                   <Grid container spacing={1}>
                     <Grid item xs={12} lg={6}>
                       <div className="info-group">
-                        <div className="label">Pangalan sa Ulo sa Pamilya:</div>
+                        <div className="label">Head of the family Name:</div>
                         <div className="value">{single_fam_by_fam_pk?.ulo_fam_name}</div>
                       </div>
                     </Grid>
@@ -78,8 +78,8 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
                     </Grid>
                     <Grid item xs={12} lg={6}>
                       <div className="info-group">
-                        <div className="label">Kadugayon sa pagpuyo:</div>
-                        <div className="value">{single_fam_by_fam_pk?.kadugayon_pagpuyo} ka tuig</div>
+                        <div className="label">Years of being a resident:</div>
+                        <div className="value">{single_fam_by_fam_pk?.kadugayon_pagpuyo} years</div>
                       </div>
                     </Grid>
                     <Grid item xs={12} lg={6}>

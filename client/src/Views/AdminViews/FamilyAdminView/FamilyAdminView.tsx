@@ -48,55 +48,15 @@ const initialSearch = {
   ulo_pamilya_last_name: "",
   ulo_fam_purok: ["all", "1", "2", "3", "4", "5", "6", "7", "8"],
 
-  tinubdan_tubig: [
-    "all",
-    "blanko",
-    "walay konesyon sa tubig",
-    "bomba",
-    "ulan",
-    "barangay water work",
-    "tubod",
-    "balon",
-    "DCWD",
-  ],
+  tinubdan_tubig: ["all", "blanko", "walay konesyon sa tubig", "bomba", "ulan", "barangay water work", "tubod", "balon", "DCWD"],
 
-  matang_kasilyas: [
-    "all",
-    "blanko",
-    "walay kasilyas",
-    "antipolo",
-    "buhos",
-    "water-seated",
-  ],
+  matang_kasilyas: ["all", "blanko", "walay kasilyas", "antipolo", "buhos", "water-seated"],
 
-  pasilidad_kuryente: [
-    "all",
-    "blanko",
-    "walay koneksyon",
-    "lampara (gas)",
-    "kandila",
-    "petromaks (gas)",
-    "davao light",
-  ],
+  pasilidad_kuryente: ["all", "blanko", "walay koneksyon", "lampara (gas)", "kandila", "petromaks (gas)", "davao light"],
 
-  matang_basura: [
-    "all",
-    "blanko",
-    "ginalain ang mabulok ug dili mabulok",
-    "ginakolekta sa CENTRO O Barangay",
-    "ginalubong",
-    "ginalabay",
-  ],
+  matang_basura: ["all", "blanko", "ginalain ang mabulok ug dili mabulok", "ginakolekta sa CENTRO O Barangay", "ginalubong", "ginalabay"],
 
-  biktima_pangabuso: [
-    "all",
-    "blanko",
-    "gibeya-an",
-    "pangulata",
-    "ginabaligya/illegal rekroter",
-    "droga",
-    "krime",
-  ],
+  biktima_pangabuso: ["all", "blanko", "gibeya-an", "pangulata", "ginabaligya/illegal rekroter", "droga", "krime"],
 };
 
 const initialTableSort: Array<ITableInitialSort> = [
@@ -134,15 +94,10 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const family_table = useSelector(
-    (store: RootStore) => store.FamilyReducer.family_table
-  );
-  const fetch_family_table = useSelector(
-    (store: RootStore) => store.FamilyReducer.fetch_family_table
-  );
+  const family_table = useSelector((store: RootStore) => store.FamilyReducer.family_table);
+  const fetch_family_table = useSelector((store: RootStore) => store.FamilyReducer.fetch_family_table);
 
-  const [selected_family_member, set_selected_family_member] =
-    useState<null | Array<FamMemberModel>>(null);
+  const [selected_family_member, set_selected_family_member] = useState<null | Array<FamMemberModel>>(null);
 
   const [soa, set_soa] = useState();
   const [loading_soa, set_loading_soa] = useState(false);
@@ -184,24 +139,12 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
       sort: activeSort,
       filters: {
         ...tableSearch,
-        ulo_fam_purok: tableSearch.ulo_fam_purok.filter(
-          (o: any) => o !== "all"
-        ),
-        tinubdan_tubig: tableSearch.tinubdan_tubig.filter(
-          (o: any) => o !== "all"
-        ),
-        matang_kasilyas: tableSearch.matang_kasilyas.filter(
-          (o: any) => o !== "all"
-        ),
-        pasilidad_kuryente: tableSearch.pasilidad_kuryente.filter(
-          (o: any) => o !== "all"
-        ),
-        matang_basura: tableSearch.matang_basura.filter(
-          (o: any) => o !== "all"
-        ),
-        biktima_pangabuso: tableSearch.biktima_pangabuso.filter(
-          (o: any) => o !== "all"
-        ),
+        ulo_fam_purok: tableSearch.ulo_fam_purok.filter((o: any) => o !== "all"),
+        tinubdan_tubig: tableSearch.tinubdan_tubig.filter((o: any) => o !== "all"),
+        matang_kasilyas: tableSearch.matang_kasilyas.filter((o: any) => o !== "all"),
+        pasilidad_kuryente: tableSearch.pasilidad_kuryente.filter((o: any) => o !== "all"),
+        matang_basura: tableSearch.matang_basura.filter((o: any) => o !== "all"),
+        biktima_pangabuso: tableSearch.biktima_pangabuso.filter((o: any) => o !== "all"),
       },
     };
     const response = await FamilyApi.getFamilyDataTablePdf(filters);
@@ -223,24 +166,12 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
         sort: activeSort,
         filters: {
           ...tableSearch,
-          ulo_fam_purok: tableSearch.ulo_fam_purok.filter(
-            (o: any) => o !== "all"
-          ),
-          tinubdan_tubig: tableSearch.tinubdan_tubig.filter(
-            (o: any) => o !== "all"
-          ),
-          matang_kasilyas: tableSearch.matang_kasilyas.filter(
-            (o: any) => o !== "all"
-          ),
-          pasilidad_kuryente: tableSearch.pasilidad_kuryente.filter(
-            (o: any) => o !== "all"
-          ),
-          matang_basura: tableSearch.matang_basura.filter(
-            (o: any) => o !== "all"
-          ),
-          biktima_pangabuso: tableSearch.biktima_pangabuso.filter(
-            (o: any) => o !== "all"
-          ),
+          ulo_fam_purok: tableSearch.ulo_fam_purok.filter((o: any) => o !== "all"),
+          tinubdan_tubig: tableSearch.tinubdan_tubig.filter((o: any) => o !== "all"),
+          matang_kasilyas: tableSearch.matang_kasilyas.filter((o: any) => o !== "all"),
+          pasilidad_kuryente: tableSearch.pasilidad_kuryente.filter((o: any) => o !== "all"),
+          matang_basura: tableSearch.matang_basura.filter((o: any) => o !== "all"),
+          biktima_pangabuso: tableSearch.biktima_pangabuso.filter((o: any) => o !== "all"),
         },
       };
 
@@ -276,14 +207,7 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
             borderRadius: 10,
           }}
         >
-          <Grid
-            item
-            xs={12}
-            spacing={2}
-            container
-            justify="flex-end"
-            alignItems="center"
-          >
+          <Grid item xs={12} spacing={2} container justify="flex-end" alignItems="center">
             <Grid item>
               <NavLink to="/admin/family/add">
                 <Button disableElevation color="primary" variant="contained">
@@ -293,13 +217,7 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
             </Grid>
 
             <Grid item>
-              <LoadingButton
-                handleClick={handleClickSOA}
-                color="primary"
-                variant="contained"
-                loading={loading_soa}
-                type="button"
-              >
+              <LoadingButton handleClick={handleClickSOA} color="primary" variant="contained" loading={loading_soa} type="button">
                 View Pdf Report
               </LoadingButton>
             </Grid>
@@ -382,14 +300,7 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
             </Grid>
           </Grid> */}
 
-          <Grid
-            xs={12}
-            item
-            container
-            spacing={1}
-            alignItems="center"
-            alignContent="center"
-          >
+          <Grid xs={12} item container spacing={1} alignItems="center" alignContent="center">
             <Grid item xs={12}>
               <Formik
                 initialValues={tableSearch}
@@ -403,18 +314,10 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
               >
                 {() => (
                   <Form className="form" id="form_instance">
-                    <Grid
-                      container
-                      spacing={3}
-                      alignContent="center"
-                      alignItems="center"
-                      justify="flex-end"
-                    >
+                    <Grid container spacing={3} alignContent="center" alignItems="center" justify="flex-end">
                       <Grid item>
                         <DataTableSort
-                          handleChagenSelectedSortIndex={
-                            handleChagenSelectedSortIndex
-                          }
+                          handleChagenSelectedSortIndex={handleChagenSelectedSortIndex}
                           initialTableSort={initialTableSort}
                           selectedSortIndex={selectedSortIndex}
                         />
@@ -468,7 +371,7 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
                                     <Grid item xs={6}>
                                       <FormikInputField
                                         name="ulo_pamilya_first_name"
-                                        label="Pangalan sa Ulo sa Pamilya"
+                                        label="Head of the Family First Name"
                                         type="text"
                                         fullWidth={true}
                                         InputLabelProps={{
@@ -479,7 +382,7 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
                                     <Grid item xs={6}>
                                       <FormikInputField
                                         name="ulo_pamilya_last_name"
-                                        label="Apilyedo sa Ulo sa Pamilya"
+                                        label="Head of the Family Last Name"
                                         type="text"
                                         fullWidth={true}
                                         InputLabelProps={{
@@ -669,13 +572,11 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
                                             label: "Blanko",
                                           },
                                           {
-                                            label:
-                                              "ginalain ang mabulok ug dili mabulok",
+                                            label: "ginalain ang mabulok ug dili mabulok",
                                             id: "ginalain ang mabulok ug dili mabulok",
                                           },
                                           {
-                                            label:
-                                              "ginakolekta sa CENTRO O Barangay",
+                                            label: "ginakolekta sa CENTRO O Barangay",
                                             id: "ginakolekta sa CENTRO O Barangay",
                                           },
                                           {
@@ -713,8 +614,7 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
                                             id: "pangulata",
                                           },
                                           {
-                                            label:
-                                              "ginabaligya/illegal rekroter",
+                                            label: "ginabaligya/illegal rekroter",
                                             id: "ginabaligya/illegal rekroter",
                                           },
                                           {
@@ -730,11 +630,7 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
                                     </Grid>
 
                                     <Grid item xs={12}>
-                                      <Grid
-                                        container
-                                        spacing={2}
-                                        justify="flex-end"
-                                      >
+                                      <Grid container spacing={2} justify="flex-end">
                                         <Grid item>
                                           <Button
                                             variant="contained"
@@ -759,9 +655,7 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
 
                                                 search: ``,
                                               };
-                                              handleSetTableSearch(
-                                                filter_payload
-                                              );
+                                              handleSetTableSearch(filter_payload);
                                             }}
                                           >
                                             Clear Filters
@@ -777,20 +671,14 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
                                                 ...initialSearch,
                                                 search: tableSearch.search,
                                               };
-                                              handleSetTableSearch(
-                                                filter_payload
-                                              );
+                                              handleSetTableSearch(filter_payload);
                                             }}
                                           >
                                             Reset Filters
                                           </Button>
                                         </Grid>
                                         <Grid item>
-                                          <Button
-                                            type="submit"
-                                            variant="contained"
-                                            color="primary"
-                                          >
+                                          <Button type="submit" variant="contained" color="primary">
                                             Apply Filters
                                           </Button>
                                         </Grid>
@@ -811,15 +699,7 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
               <Grid item></Grid>
             </Grid>
 
-            <Grid
-              item
-              xs={12}
-              container
-              spacing={2}
-              justify="flex-start"
-              alignContent="center"
-              alignItems="center"
-            >
+            <Grid item xs={12} container spacing={2} justify="flex-start" alignContent="center" alignItems="center">
               <Grid item>
                 <TablePagination
                   rowsPerPageOptions={[50, 100, 250]}
@@ -859,39 +739,27 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
                             height={4}
                             width={4}
                             src={`${row?.ulo_pamilya_info?.pic}`}
-                            errorMessage={`${row?.ulo_pamilya_info?.first_name?.charAt(
-                              0
-                            )}${row?.ulo_pamilya_info?.first_name?.charAt(0)}`}
+                            errorMessage={`${row?.ulo_pamilya_info?.first_name?.charAt(0)}${row?.ulo_pamilya_info?.first_name?.charAt(0)}`}
                           />
-                          <NavLink
-                            className="title"
-                            to={`/admin/resident/${row?.ulo_pamilya_info.resident_pk}`}
-                          >
+                          <NavLink className="title" to={`/admin/resident/${row?.ulo_pamilya_info.resident_pk}`}>
                             <span style={{ textTransform: "capitalize" }}>
                               {row?.ulo_pamilya_info.last_name}
                               {", "}
-                              {row?.ulo_pamilya_info.first_name}{" "}
-                              {row?.ulo_pamilya_info.middle_name}{" "}
-                              {row?.ulo_pamilya_info.suffix}
+                              {row?.ulo_pamilya_info.first_name} {row?.ulo_pamilya_info.middle_name} {row?.ulo_pamilya_info.suffix}
                             </span>
                           </NavLink>
                         </div>
                       </TableCell>
 
-                      <TableCell>
-                        Purok {row?.ulo_pamilya_info?.purok}
-                      </TableCell>
+                      <TableCell>Purok {row?.ulo_pamilya_info?.purok}</TableCell>
                       <TableCell>
                         {/* */}
 
                         <Chip
-                          onClick={() =>
-                            set_selected_family_member(row.fam_members)
-                          }
+                          onClick={() => set_selected_family_member(row.fam_members)}
                           label={
                             <>
-                              <b>{row?.fam_members.length}</b>{" "}
-                              <small>kabuok miyembre</small>
+                              <b>{row?.fam_members.length}</b> <small>kabuok miyembre</small>
                             </>
                           }
                           // label={`${row?.fam_members.length} kabuok sakop`}
@@ -951,12 +819,7 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
           />
         )}
 
-        {selected_family_member && (
-          <DialogViewFamMem
-            family_members={selected_family_member}
-            handleClose={() => set_selected_family_member(null)}
-          />
-        )}
+        {selected_family_member && <DialogViewFamMem family_members={selected_family_member} handleClose={() => set_selected_family_member(null)} />}
       </Container>
     </>
   );

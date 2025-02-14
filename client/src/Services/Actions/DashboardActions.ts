@@ -68,7 +68,8 @@ const setAgeGroupStats = (filters: DashboardFilterInterface) => async (dispatch:
   }
 };
 
-const setGenderStats = (filters: DashboardFilterInterface) => async (dispatch: Dispatch<DashboardReducerTypes>) => {
+/*
+const _setGenderStats = (filters: DashboardFilterInterface) => async (dispatch: Dispatch<DashboardReducerTypes>) => {
   try {
     dispatch({
       type: "fetch_gender_stats",
@@ -91,8 +92,54 @@ const setGenderStats = (filters: DashboardFilterInterface) => async (dispatch: D
     console.error(`action error`, error);
   }
 };
+*/
 
-const setLifeStageStats = (filters: DashboardFilterInterface) => async (dispatch: Dispatch<DashboardReducerTypes>) => {
+const setGenderStats = (filters: DashboardFilterInterface) => async (dispatch: Dispatch<DashboardReducerTypes>) => {
+  try {
+    dispatch({
+      type: "fetch_gender_stats",
+      fetch_gender_stats: true,
+    });
+
+    var response: IServerResponse = await DashboardApi.genderStats({
+      ...filters,
+      year: filters.year_1,
+    });
+
+    console.log(`response year_1`, response);
+
+    if (response.success) {
+      dispatch({
+        type: "gender_stats_year_1",
+        gender_stats_year_1: response.data,
+      });
+    }
+
+    response = await DashboardApi.genderStats({
+      ...filters,
+      year: filters.year_2,
+    });
+
+    console.log(`response year_2`, response);
+
+    if (response.success) {
+      dispatch({
+        type: "gender_stats_year_2",
+        gender_stats_year_2: response.data,
+      });
+    }
+
+    dispatch({
+      type: "fetch_gender_stats",
+      fetch_gender_stats: false,
+    });
+  } catch (error) {
+    console.error(`action error`, error);
+  }
+};
+
+/*
+const _setLifeStageStats = (filters: DashboardFilterInterface) => async (dispatch: Dispatch<DashboardReducerTypes>) => {
   try {
     dispatch({
       type: "fetch_life_stage_stats",
@@ -104,6 +151,47 @@ const setLifeStageStats = (filters: DashboardFilterInterface) => async (dispatch
       dispatch({
         type: "life_stage_stats",
         life_stage_stats: response.data,
+      });
+    }
+
+    dispatch({
+      type: "fetch_life_stage_stats",
+      fetch_life_stage_stats: false,
+    });
+  } catch (error) {
+    console.error(`action error`, error);
+  }
+};
+*/
+
+const setLifeStageStats = (filters: DashboardFilterInterface) => async (dispatch: Dispatch<DashboardReducerTypes>) => {
+  try {
+    dispatch({
+      type: "fetch_life_stage_stats",
+      fetch_life_stage_stats: true,
+    });
+
+    var response: IServerResponse = await DashboardApi.lifeStageStats({
+      ...filters,
+      year: filters.year_1,
+    });
+
+    if (response.success) {
+      dispatch({
+        type: "life_stage_stats_year_1",
+        life_stage_stats_year_1: response.data,
+      });
+    }
+
+    response = await DashboardApi.lifeStageStats({
+      ...filters,
+      year: filters.year_2,
+    });
+
+    if (response.success) {
+      dispatch({
+        type: "life_stage_stats_year_2",
+        life_stage_stats_year_2: response.data,
       });
     }
 
@@ -266,12 +354,28 @@ const StatsPasilidadKuryente = (filters: DashboardFilterInterface) => async (dis
       type: "fetch_stats_pasilidad_kuryente",
       fetch_stats_pasilidad_kuryente: true,
     });
-    const response: IServerResponse = await DashboardApi.StatsPasilidadKuryente(filters);
 
-    if (response.success) {
+    let response1: IServerResponse = await DashboardApi.StatsPasilidadKuryente({
+      ...filters,
+      year: filters.year_1,
+    });
+
+    if (response1.success) {
       dispatch({
-        type: "stats_pasilidad_kuryente",
-        stats_pasilidad_kuryente: response.data,
+        type: "stats_pasilidad_kuryente_year_1",
+        stats_pasilidad_kuryente_year_1: response1.data,
+      });
+    }
+
+    let response2 = await DashboardApi.StatsPasilidadKuryente({
+      ...filters,
+      year: filters.year_2,
+    });
+
+    if (response2.success) {
+      dispatch({
+        type: "stats_pasilidad_kuryente_year_2",
+        stats_pasilidad_kuryente_year_2: response2.data,
       });
     }
 
@@ -291,8 +395,6 @@ const StatsBiktikmaPangabuso = (filters: DashboardFilterInterface) => async (dis
       fetch_stats_biktima_pangabuso: true,
     });
 
-    // console.log(`filters`, filters);
-
     let response: IServerResponse = await DashboardApi.StatsBiktikmaPangabuso({
       ...filters,
       year: filters.year_1,
@@ -305,15 +407,6 @@ const StatsBiktikmaPangabuso = (filters: DashboardFilterInterface) => async (dis
       });
     }
 
-    console.log(
-      `stats_biktima_pangabuso_year_1`,
-      {
-        ...filters,
-        year: filters.year_1,
-      },
-      response.data
-    );
-
     response = await DashboardApi.StatsBiktikmaPangabuso({
       ...filters,
       year: filters.year_2,
@@ -325,16 +418,6 @@ const StatsBiktikmaPangabuso = (filters: DashboardFilterInterface) => async (dis
         stats_biktima_pangabuso_year_2: response.data,
       });
     }
-
-    console.log(
-      `stats_biktima_pangabuso_year_2`,
-
-      {
-        ...filters,
-        year: filters.year_2,
-      },
-      response.data
-    );
 
     dispatch({
       type: "fetch_stats_biktima_pangabuso",
@@ -351,12 +434,28 @@ const StatsKahimtangKomunidad = (filters: DashboardFilterInterface) => async (di
       type: "fetch_stats_kahimtang_komunidad",
       fetch_stats_kahimtang_komunidad: true,
     });
-    const response: IServerResponse = await DashboardApi.StatsKahimtangKomunidad(filters);
+
+    let response: IServerResponse = await DashboardApi.StatsKahimtangKomunidad({
+      ...filters,
+      year: filters.year_1,
+    });
 
     if (response.success) {
       dispatch({
-        type: "stats_kahimtang_komunidad",
-        stats_kahimtang_komunidad: response.data,
+        type: "stats_kahimtang_komunidad_year_1",
+        stats_kahimtang_komunidad_year_1: response.data,
+      });
+    }
+
+    response = await DashboardApi.StatsKahimtangKomunidad({
+      ...filters,
+      year: filters.year_2,
+    });
+
+    if (response.success) {
+      dispatch({
+        type: "stats_kahimtang_komunidad_year_2",
+        stats_kahimtang_komunidad_year_2: response.data,
       });
     }
 
@@ -375,12 +474,28 @@ const StatsMatangBasura = (filters: DashboardFilterInterface) => async (dispatch
       type: "fetch_stats_matang_basura",
       fetch_stats_matang_basura: true,
     });
-    const response: IServerResponse = await DashboardApi.StatsMatangBasura(filters);
+
+    let response: IServerResponse = await DashboardApi.StatsMatangBasura({
+      ...filters,
+      year: filters.year_1,
+    });
 
     if (response.success) {
       dispatch({
-        type: "stats_matang_basura",
-        stats_matang_basura: response.data,
+        type: "stats_matang_basura_year_1",
+        stats_matang_basura_year_1: response.data,
+      });
+    }
+
+    response = await DashboardApi.StatsMatangBasura({
+      ...filters,
+      year: filters.year_2,
+    });
+
+    if (response.success) {
+      dispatch({
+        type: "stats_matang_basura_year_2",
+        stats_matang_basura_year_2: response.data,
       });
     }
 
@@ -399,12 +514,28 @@ const StatsMatangKasilyas = (filters: DashboardFilterInterface) => async (dispat
       type: "fetch_stats_matang_kasilyas",
       fetch_stats_matang_kasilyas: true,
     });
-    const response: IServerResponse = await DashboardApi.StatsMatangKasilyas(filters);
+
+    let response: IServerResponse = await DashboardApi.StatsMatangKasilyas({
+      ...filters,
+      year: filters.year_1,
+    });
 
     if (response.success) {
       dispatch({
-        type: "stats_matang_kasilyas",
-        stats_matang_kasilyas: response.data,
+        type: "stats_matang_kasilyas_year_1",
+        stats_matang_kasilyas_year_1: response.data,
+      });
+    }
+
+    response = await DashboardApi.StatsMatangKasilyas({
+      ...filters,
+      year: filters.year_2,
+    });
+
+    if (response.success) {
+      dispatch({
+        type: "stats_matang_kasilyas_year_2",
+        stats_matang_kasilyas_year_2: response.data,
       });
     }
 
@@ -417,6 +548,7 @@ const StatsMatangKasilyas = (filters: DashboardFilterInterface) => async (dispat
   }
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   setOverallPopulation,
   setAgeGroupStats,
