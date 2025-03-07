@@ -6,6 +6,7 @@ import {GET_USER_INFO} from '../Types/UserInfoTypes';
 
 export const action_get_userinfo = () => async (dispatch) => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/user/userinfo`;
   const user_id = await AsyncStorage.getItem('user_id');
   const token = await AsyncStorage.getItem('tokenizer');

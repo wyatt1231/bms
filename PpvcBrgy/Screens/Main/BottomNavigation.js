@@ -129,6 +129,7 @@ function BottomNavigation() {
     let mounted = true;
 
     const notify = async () => {
+      settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
       socketRef.current = io(`${settings.BASE_URL}/socket/complaint/chat`, {
         query: {
           token: token,

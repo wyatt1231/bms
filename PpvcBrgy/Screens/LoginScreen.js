@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {Image, StyleSheet, Text,Button, TouchableHighlight, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 //import {Actions} from 'react-native-router-flux';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -10,9 +10,14 @@ import {action_Login_user} from '../Services/Actions/LoginAction';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ModernInput from '../components/Forms/ModenInput';
 import GradientContainer from '../components/GradientContainer';
-import { brotliDecompressSync } from 'node:zlib';
-import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import Modal from "react-native-modal";
+import settings from '../settings.json'; 
+
 const LoginScreen = () => {
+    
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [input, setInput] = useState("");
+  const [tapTimes, setTapTimes] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [spinner, setspinner] = useState(false);
@@ -54,6 +59,28 @@ const LoginScreen = () => {
       //Actions.index();
     }
   });
+  const setBaseApiUrl = async() => {
+    settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
+  }
+  useEffect(() => {
+    setBaseApiUrl();
+  },[])
+  const handleTap = () => {
+    const now = Date.now();
+    const newTapTimes = [...tapTimes, now].filter(t => now - t < 500); // Keep only taps within 500ms
+
+    if (newTapTimes.length === 3) {
+      setModalVisible(true)
+      console.log("Triple Tap Detected!");
+      setTapTimes([]); // Reset tap counter
+    } else {
+      setTapTimes(newTapTimes);
+    }
+  };
+  const handleSaveApiURL = async() => {
+    await AsyncStorage.setItem('BASE_API_URL', input);
+    setModalVisible(false);
+  }
 
   return (
     <SafeAreaView style={styles.plate}>
@@ -62,18 +89,34 @@ const LoginScreen = () => {
         textContent={'Loading...'}
         textStyle={styles.spinnerTextStyle}
       />
+       <Modal isVisible={isModalVisible}>
+        <View style={styles.modalContent}>
+          <Text>Enter Text:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Type here..."
+            onChangeText={setInput}
+            value={input}
+          />
+          <View style={styles.buttonRow}>
+            <Button title="Cancel" onPress={() => setModalVisible(false)} />
+            <Button title="OK" onPress={handleSaveApiURL} />
+          </View>
+        </View>
+      </Modal>
        <GradientContainer
        gradientStyle={{}}
         >
           <View style={{flex:1,marginTop:50}}>
         <View style={{marginBottom:50,backgroundColor: 'white',alignSelf: 'center',height:110,width:110,borderRadius:55,alignItems:'center',justifyContent:'center'}}>
         
+        <TouchableHighlight onPress={handleTap}>
         <Image
           source={require('../assets/icons/applogo2.png')}
           resizeMode="contain"
           style={styles.image}
         />
-        
+        </TouchableHighlight>
         
         <View style={{marginVertical: 5}} />
         </View>
@@ -141,6 +184,9 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  modalContent: { backgroundColor: "white", padding: 20, borderRadius: 10 },
+  input: { borderBottomWidth: 1, marginVertical: 10, padding: 5 },
+  buttonRow: { flexDirection: "row", justifyContent: "space-around" },
   plate: {
     flex: 1,
     backgroundColor: 'rgba(255,255,355,0.5)',

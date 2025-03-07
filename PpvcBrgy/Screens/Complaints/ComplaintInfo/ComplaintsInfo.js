@@ -133,7 +133,8 @@ const ComplaintsInfo = () => {
   }, [dispatch]);
   useEffect(() => {
     let mounted = true;
-    const socketsio = () => {
+    const socketsio = async() => {
+      settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
       socketRef.current = io(`${settings.BASE_URL}/socket/complaint/chat`, {
         query: {
           token: token,
@@ -209,6 +210,13 @@ const ComplaintsInfo = () => {
     velocityThreshold: 0.3,
     directionalOffsetThreshold: 80,
   };
+
+  const setBaseApiUrl = async() => {
+    settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
+  }
+  useEffect(() => {
+    setBaseApiUrl();
+  },[])
 
   return (
     <SafeAreaView style={styles.safeareaviewcontainer}>

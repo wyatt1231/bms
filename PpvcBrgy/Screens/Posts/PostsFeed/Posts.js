@@ -36,6 +36,7 @@ import {
 } from '../../../Services/Actions/PostsActions';
 import settings from '../../../settings.json';
 import UILiked from '../Liked';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Posts = () => {
   const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
   var IMAGES_PER_ROW = 3;
@@ -139,7 +140,12 @@ const Posts = () => {
       mounted = false;
     };
   }, [offset]);
-
+  const setBaseApiUrl = async() => {
+    settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
+  }
+  useEffect(() => {
+    setBaseApiUrl();
+  },[])
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', backAction);
 

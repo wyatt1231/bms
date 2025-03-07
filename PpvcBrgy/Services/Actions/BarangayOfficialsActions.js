@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GET_DATA_BARANGAY} from '../Types/BarangaOfficialTypes';
 import settings from '../../settings.json'; 
 export const action_get_barangay_officials_list = () => async (dispatch) => {
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/official/getBrgyOfficialList`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;

@@ -73,6 +73,12 @@ const UINews = () => {
   AsyncStorage.getItem('news_id').then(async (item) => {
     await setnews_id(item);
   });
+  const setBaseApiUrl = async() => {
+    settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
+  }
+  useEffect(() => {
+    setBaseApiUrl();
+  },[])
   useEffect(() => {
     const getnewinfo = async () => {
       await dispatch(action_get_news_info(news_id));
@@ -82,6 +88,7 @@ const UINews = () => {
   }, [dispatch, news_id]);
   useEffect(() => {
     const initialize = async () => {
+    settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
       if (news_reducers_info?.loading) {
         await setEntries(ENTRIES1);
         setFilename(ENTRIES1[0]?.file_path.split("/")[3]);

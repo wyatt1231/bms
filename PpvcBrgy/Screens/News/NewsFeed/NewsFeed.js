@@ -67,6 +67,13 @@ const NewsFeed = () => {
     },
     [dispatch],
   );
+
+  const setBaseApiUrl = async() => {
+    settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
+  }
+  useEffect(() => {
+    setBaseApiUrl();
+  },[])
   const handleSelectedFilter = useCallback(
     (value, index) => {
       dispatch(action_filter(value, index, value));

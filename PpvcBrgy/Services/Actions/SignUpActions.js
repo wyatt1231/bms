@@ -26,6 +26,7 @@ export const action_SignUp_user = (
   houseownedby,
   password,
 ) => async () => {
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/residentmobile/addMobileResident`;
 
   let formdata = new FormData();
@@ -101,6 +102,7 @@ export const action_update_user = (
   houseownedby,
   grado,
 ) => async () => {
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/residentmobile/updateMobileResident`;
 
   let formdata = new FormData();

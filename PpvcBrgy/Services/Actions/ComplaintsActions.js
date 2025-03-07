@@ -9,6 +9,7 @@ import {
 import {NOTIFY} from '../Types/Default_Types';
 import settings from '../../settings.json'; 
 export const action_get_complaints = (reported_by) => async (dispatch) => {
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/complaintmobile/getComplaintList`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -37,6 +38,7 @@ export const action_get_complaints = (reported_by) => async (dispatch) => {
 export const action_get_complaints_info = (complaint_pk) => async (
   dispatch,
 ) => {
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/complaintmobile/getSingleComplaint`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -68,6 +70,7 @@ export const action_insert_complaints = (
   complaintType,
   complaint_file,
 ) => async () => {
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/complaintmobile/addComplaint`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -104,6 +107,7 @@ if (Array.isArray(complaint_file) && complaint_file.length > 0) {
 export const action_get_complaints_messages = (complaint_pk) => async (
   dispatch,
 ) => {
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/complaintmobile/getComplaintMessage`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -133,6 +137,7 @@ export const action_get_complaints_messages = (complaint_pk) => async (
 export const action_set_complaints_messages = (body, complaint_pk) => async (
   dispatch,
 ) => {
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/complaintmobile/addComplaintMessage`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;

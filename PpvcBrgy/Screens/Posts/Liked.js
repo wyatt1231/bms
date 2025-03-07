@@ -122,6 +122,12 @@ const UILiked = ({item}) => {
         break;
     }
   });
+  const setBaseApiUrl = async() => {
+    settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
+  }
+  useEffect(() => {
+    setBaseApiUrl();
+  },[])
   const config = {
     velocityThreshold: 0.3,
     directionalOffsetThreshold: 1000,

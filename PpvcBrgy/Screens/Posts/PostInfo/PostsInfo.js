@@ -116,6 +116,12 @@ const PostsInfo = () => {
       </>
     );
   };
+  const setBaseApiUrl = async() => {
+    settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
+  }
+  useEffect(() => {
+    setBaseApiUrl();
+  },[])
   const hadnleClickPhoto = img => {
     setvisible(true);
     setimgpath(`${settings.BASE_URL}/${img?.file_path}`);

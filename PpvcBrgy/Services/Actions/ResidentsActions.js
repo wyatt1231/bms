@@ -14,6 +14,7 @@ import {
 
 export const action_get_residents_list = searchname => async dispatch => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/residentmobile/getresidents`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -42,6 +43,7 @@ export const action_get_residents_list = searchname => async dispatch => {
 
 export const action_get_FAD_form = (resident_pk, fam_pk) => async dispatch => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/familymobile/getforms`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -69,6 +71,7 @@ export const action_get_FAD_form = (resident_pk, fam_pk) => async dispatch => {
 };
 export const action_get_FAD_exist = resident_pk => async dispatch => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/familymobile/getfamilyexist`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -97,6 +100,7 @@ export const action_get_FAD_exist = resident_pk => async dispatch => {
 export const action_reset_password =
   (email, password, currentpassword) => async dispatch => {
     //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+    settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
     var url = `${settings.BASE_URL}/api/residentmobile/updatepassword`;
     const token = await AsyncStorage.getItem('tokenizer');
     const bearer_token = token;
@@ -136,6 +140,7 @@ export const action_reset_password =
 
 export const action_forgot_password = (email, password) => async dispatch => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/residentmobile/forgotpassword`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -190,6 +195,7 @@ export const action_addfamily =
   ) =>
   async dispatch => {
     //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+    settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
     var url = `${settings.BASE_URL}/api/family/addFamily`;
     const token = await AsyncStorage.getItem('tokenizer');
     const bearer_token = token;
@@ -266,6 +272,7 @@ export const action_updatefamily =
   ) =>
   async dispatch => {
     //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+    settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
     var url = `${settings.BASE_URL}/api/family/updateFamily`;
     const token = await AsyncStorage.getItem('tokenizer');
     const bearer_token = token;
@@ -305,6 +312,7 @@ export const action_updatefamily =
     }
   };
 export const action_upadatenewuser = (user_pk,update) => async dispatch => {
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/residentmobile/upadatenewuser`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -330,6 +338,7 @@ export const action_upadatenewuser = (user_pk,update) => async dispatch => {
   }
 };
 export const action_getmembers = resident_pk => async dispatch => {
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/residentmobile/getmembers`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -355,6 +364,7 @@ export const action_getmembers = resident_pk => async dispatch => {
   }
 };
 export const action_getmembers_ulosapamilya = fam_pk => async dispatch => {
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/residentmobile/getmembers_ulosapamilya`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -382,6 +392,7 @@ export const action_getmembers_ulosapamilya = fam_pk => async dispatch => {
 };
 
 export const action_getreligion = () => async dispatch => {
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/residentmobile/getreligion`;
 
   const fetchdata = await fetch(url, {
@@ -406,6 +417,7 @@ export const action_set_reset = reset => async dispatch => {
 };
 
 export const action_getnationality = () => async dispatch => {
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/residentmobile/getnationality`;
 
   const fetchdata = await fetch(url, {

@@ -45,6 +45,7 @@ const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 import CustomFlexBox from '../../Plugins/CustomFlexBox';
 import {HelperText} from 'react-native-paper';
 import settings from '../../settings.json';
+
 const MeInfo = () => {
   const users_reducers = useSelector(state => state.UserInfoReducers.data);
   const user_posts = useSelector(state => state.PostsReducers.posts_user_data);
@@ -70,6 +71,13 @@ const MeInfo = () => {
     m: require('../../assets/default/male-profile.png'),
     f: require('../../assets/default/female-profile.png'),
   };
+
+  const setBaseApiUrl = async() => {
+    settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
+  }
+  useEffect(() => {
+    setBaseApiUrl();
+  },[])
   useEffect(() => {
     let mounted = true;
 

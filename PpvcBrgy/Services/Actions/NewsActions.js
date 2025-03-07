@@ -17,6 +17,7 @@ import settings from '../../settings.json';
 
 export const action_get_news_lastweek = () => async dispatch => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/newsmobile/getNewsDataPublishedLastWeek`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -37,6 +38,7 @@ export const action_get_news_lastweek = () => async dispatch => {
 
 export const action_get_news = () => async dispatch => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/newsmobile/getNewsDataPublished`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -57,6 +59,7 @@ export const action_get_news = () => async dispatch => {
 };
 export const action_get_news_info = news_pk => async dispatch => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/newsmobile/getSingleNewsWithPhoto`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -81,6 +84,7 @@ export const action_get_news_info = news_pk => async dispatch => {
 
 export const action_get_news_comments = news_pk => async dispatch => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/newsmobile/getNewsComments`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -105,6 +109,7 @@ export const action_get_news_comments = news_pk => async dispatch => {
 export const action_set_news_reactions =
   (news_pk, reaction) => async dispatch => {
     //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+    settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
     var url = `${settings.BASE_URL}/api/newsmobile/addNewsReaction`;
     const token = await AsyncStorage.getItem('tokenizer');
     const bearer_token = token;
@@ -129,6 +134,7 @@ export const action_set_news_reactions =
   };
 export const action_get_news_add_comment = (news_pk, body) => async () => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/newsmobile/addNewsComment`;
   const token = await AsyncStorage.getItem('tokenizer');
   const user_pk = await AsyncStorage.getItem('user_id');
@@ -157,7 +163,7 @@ export const action_filter_news = (value, index, text) => async dispatch => {
     type: SELECTED_FILTER_MONTH,
     payload: {value: value, index: index, text: text},
   });
-
+  settings.BASE_URL = await AsyncStorage.getItem('BASE_API_URL');
   var url = `${settings.BASE_URL}/api/newsmobile/getNewsDataPublishedByMonth`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
