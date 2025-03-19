@@ -90,7 +90,7 @@ export const ManageCoAdminView: FC<IManageCoAdminView> = memo(() => {
               backgroundColor: `#fff`,
             }}
           >
-            <div className="title">Impormasyon sa Administrator</div>
+            <div className="title">Information of Administrator</div>
             {fetching_selected_admin ? (
               <CircularLoadingProgress />
             ) : (
@@ -125,7 +125,7 @@ export const ManageCoAdminView: FC<IManageCoAdminView> = memo(() => {
                     <Grid container>
                       <Grid item xs={12} sm={6} md={4}>
                         <div className="info-group row">
-                          <div className="label">Sekso</div>
+                          <div className="label">Gender</div>
                           <div className="value">{selected_admin.gender === "m" ? "Lalaki" : "Babae"}</div>
                         </div>
                       </Grid>
@@ -138,7 +138,7 @@ export const ManageCoAdminView: FC<IManageCoAdminView> = memo(() => {
                       </Grid>
                       <Grid item xs={12} sm={6} md={4}>
                         <div className="info-group row ">
-                          <div className="label">Numero sa telepono</div>
+                          <div className="label">Telephone Number</div>
                           <div className="value">{StringEmptyToDefault(selected_admin.phone, "-")}</div>
                         </div>
                       </Grid>

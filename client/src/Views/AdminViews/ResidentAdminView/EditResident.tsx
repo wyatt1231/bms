@@ -16,7 +16,7 @@ import { setGeneralPrompt } from "../../../Services/Actions/PageActions";
 import { setSingleResidentAction, updateResidentAction } from "../../../Services/Actions/ResidentActions";
 import { ResidentModel } from "../../../Services/Models/ResidentModels";
 import { RootStore } from "../../../Services/Store";
-import { DbCivilStatus, DbNationality, DbReligion } from "../../../Storage/LocalDatabase";
+import { DbCivilStatus, DbNationality, DbReligion, DbSchoolAttainment, DbTribe } from "../../../Storage/LocalDatabase";
 interface IEditResident {
   resident_pk: number;
   open: boolean;
@@ -111,12 +111,12 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
                 >
                   <div className="">
                     <div className="box-header">
-                      <div className="form-title">Pun-a ang mga kinahanglan nga impormasyon sa residente</div>
+                      <div className="form-title">Resident Information Form</div>
                     </div>
                     <div className="box-body">
                       <Grid container spacing={2}>
                         <Grid item xs={12}>
-                          <div className="title">Personal Nga Impormasyon</div>
+                          <div className="title">Personal Information</div>
                         </Grid>
 
                         <Grid xs={12} container justify="center" item>
@@ -134,37 +134,25 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
                         </Grid>
 
                         <Grid xs={12} item>
-                          <FormikInputField
-                            label="Unang Pangalan"
-                            name="first_name"
-                            variant="outlined"
-                            InputLabelProps={{ shrink: true }}
-                            fullWidth
-                          />
+                          <FormikInputField label="First Name" name="first_name" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth />
                         </Grid>
 
                         <Grid xs={12} item>
-                          <FormikInputField
-                            label="Tungatunga nga ngalan"
-                            name="middle_name"
-                            variant="outlined"
-                            InputLabelProps={{ shrink: true }}
-                            fullWidth
-                          />
+                          <FormikInputField label="Middle Name" name="middle_name" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth />
                         </Grid>
 
                         <Grid xs={12} item>
-                          <FormikInputField label="Apelyido" name="last_name" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth />
+                          <FormikInputField label="Last Name" name="last_name" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth />
                         </Grid>
 
                         <Grid sm={3} item>
-                          <FormikInputField label="Sukwahi" name="suffix" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth />
+                          <FormikInputField label="Initial" name="suffix" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth />
                         </Grid>
 
                         <Grid xs={12} item>
                           <FormikRadio
                             name="gender"
-                            label="Sekso"
+                            label="Gender"
                             variant="vertical"
                             data={[
                               {
@@ -181,7 +169,7 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
 
                         <Grid xs={12} item>
                           {(() => {
-                            const label = "Adlawng Natawhan";
+                            const label = "Date of Birth";
                             const name = "birth_date";
                             const errorText = errors[name] && touched[name] ? errors[name] : "";
                             const handleChange = (date) => {
@@ -223,7 +211,7 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
                             return (
                               <TextField
                                 value={values[name] ? values[name] : ""}
-                                label="Nasyonalidad"
+                                label="Nationality"
                                 select
                                 onChange={handleChange}
                                 variant="outlined"
@@ -253,7 +241,7 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
                             return (
                               <TextField
                                 value={values[name] ? values[name] : ""}
-                                label="Relihiyon"
+                                label="Religion"
                                 select
                                 onChange={handleChange}
                                 variant="outlined"
@@ -283,7 +271,7 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
                             return (
                               <TextField
                                 value={values[name] ? values[name] : ""}
-                                label="Hahimtang Sibil"
+                                label="Civil Status"
                                 select
                                 onChange={handleChange}
                                 variant="outlined"
@@ -306,7 +294,7 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
                         <Grid xs={12} item>
                           <FormikRadio
                             name="purok"
-                            label="Asa na purok nag puyo ang residente?"
+                            label="Purok?"
                             variant="horizontal"
                             data={[
                               {
@@ -346,24 +334,67 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
                         </Grid>
 
                         <Grid xs={12} item>
-                          <FormikInputField label="Tribo" name="tribe" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth type="text" />
+                          {(() => {
+                            const name = "tribe";
+                            const errorText = errors[name] && touched[name] ? errors[name] : "";
+                            const handleChange = (e: any) => {
+                              setFieldValue(name, e.target.value);
+                            };
+                            return (
+                              <TextField
+                                value={values[name] ? values[name] : ""}
+                                label="Tribe"
+                                select
+                                onChange={handleChange}
+                                variant="outlined"
+                                InputLabelProps={{ shrink: true }}
+                                fullWidth
+                                error={!!errorText}
+                                helperText={errorText}
+                              >
+                                {DbTribe.map((value) => (
+                                  <MenuItem key={value} value={value}>
+                                    {value}
+                                  </MenuItem>
+                                ))}
+                              </TextField>
+                            );
+                          })()}
                         </Grid>
 
                         <Grid xs={12} item>
-                          <FormikInputField
-                            label="Grado nakab-ot | Nag-eskwela / wala nag eskwela"
-                            name="educ"
-                            variant="outlined"
-                            InputLabelProps={{ shrink: true }}
-                            fullWidth
-                            type="text"
-                          />
+                          {(() => {
+                            const name = "educ";
+                            const errorText = errors[name] && touched[name] ? errors[name] : "";
+                            const handleChange = (e: any) => {
+                              setFieldValue(name, e.target.value);
+                            };
+                            return (
+                              <TextField
+                                value={values[name] ? values[name] : ""}
+                                label="Educational Attainment"
+                                select
+                                onChange={handleChange}
+                                variant="outlined"
+                                InputLabelProps={{ shrink: true }}
+                                fullWidth
+                                error={!!errorText}
+                                helperText={errorText}
+                              >
+                                {DbSchoolAttainment.map((value) => (
+                                  <MenuItem key={value} value={value}>
+                                    {value}
+                                  </MenuItem>
+                                ))}
+                              </TextField>
+                            );
+                          })()}
                         </Grid>
 
                         <Grid xs={12} item>
                           <FormikRadio
                             name="employment"
-                            label="Matang sa trabaho, kanunay o panagsa?"
+                            label="Work Status"
                             variant="horizontal"
                             data={[
                               {
@@ -384,7 +415,7 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
 
                         <Grid xs={12} item>
                           <FormikInputField
-                            label="Binulan na kita"
+                            label="Monthly Income"
                             name="kita"
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
@@ -396,7 +427,7 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
                         <Grid xs={12} item>
                           <FormikRadio
                             name="with_disability"
-                            label="Matang sa disability"
+                            label="Disability Status"
                             variant="vertical"
                             data={[
                               {
@@ -412,12 +443,12 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
                         </Grid>
 
                         <Grid item xs={12}>
-                          <div className="title">Status sa pagkabuhi</div>
+                          <div className="title">Living Status</div>
                         </Grid>
 
                         <Grid xs={12} item>
                           {(() => {
-                            const label = "Adlaw sugod pagpuyo sa barangay";
+                            const label = "Resident Date";
                             const name = "resident_date";
                             const errorText = errors[name] && touched[name] ? errors[name] : "";
                             const handleChange = (date) => {
@@ -451,7 +482,7 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
 
                         <Grid xs={12} item>
                           {(() => {
-                            const label = "Adlaw pagkamatay (kung patay na)";
+                            const label = "Died Date";
                             const name = "died_date";
                             const errorText = errors[name] && touched[name] ? errors[name] : "";
                             const handleChange = (date) => {
@@ -484,7 +515,7 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
                         </Grid>
 
                         <Grid item xs={12}>
-                          <div className="title">Account Nga Impormasyon</div>
+                          <div className="title">Account Information</div>
                         </Grid>
 
                         <Grid xs={12} item>
@@ -500,7 +531,7 @@ export const EditResident: FC<IEditResident> = memo(({ resident_pk, open, handle
                         </Grid>
                         <Grid xs={12} item>
                           <FormikInputField
-                            label="Numero sa telepono"
+                            label="Telephone Number"
                             name="phone"
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}

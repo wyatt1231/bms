@@ -13,7 +13,7 @@ export const ResidentInfo: FC<IResidentInfo> = memo(({ resident, handleSetReside
     <>
       <FormDialog
         open={resident !== null}
-        title="Tibuok Impormasyon sa Risedente"
+        title="Tibuok Information of Risedente"
         maxWidth={"sm"}
         handleClose={() => handleSetResident(null)}
         body={
@@ -57,17 +57,16 @@ export const ResidentInfo: FC<IResidentInfo> = memo(({ resident, handleSetReside
                 <div className="value">{resident?.tribe}</div>
               </div>
               <div className="info-group-column">
-                <div className="label">Grado nakab-ot: Nag-eskwela/wala nag eskwela</div>
+                <div className="label">School Attainment</div>
                 {/* <div className="value">{resident?.suffix}</div> */}
               </div>
               <div className="info-group-column">
-                <div className="label">Matang sa trabaho kanunay / panagsa</div>
+                <div className="label">Living Status</div>
                 {/* <div className="value">{resident?.suffix}</div> */}
               </div>
-              <div className="info-group-column">
+              {/* <div className="info-group-column">
                 <div className="label">Kahimtang sa panglawas</div>
-                {/* <div className="value">{resident?.suffix}</div> */}
-              </div>
+              </div> */}
             </Grid>
           </Grid>
         }

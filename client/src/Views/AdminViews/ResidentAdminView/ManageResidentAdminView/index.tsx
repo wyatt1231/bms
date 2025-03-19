@@ -77,7 +77,7 @@ export const ManageResidentAdminView: FC<IManageResidentAdminView> = memo(() => 
       setPageLinks([
         {
           link: "/admin/resident",
-          title: "Residente",
+          title: "Resident",
         },
         {
           link: window.location.pathname,
@@ -106,7 +106,7 @@ export const ManageResidentAdminView: FC<IManageResidentAdminView> = memo(() => 
             </Grid>
             <Grid item>
               <Button variant="contained" color="primary" onClick={handleOpenEditDialog}>
-                Reset
+                Update
               </Button>
             </Grid>
           </Grid>
@@ -121,7 +121,7 @@ export const ManageResidentAdminView: FC<IManageResidentAdminView> = memo(() => 
               backgroundColor: `#fff`,
             }}
           >
-            <div className="title">Impormasyon sa residente</div>
+            <div className="title">Resident Information</div>
             {fetching_selected_resident ? (
               <CircularLoadingProgress />
             ) : (
@@ -170,31 +170,31 @@ export const ManageResidentAdminView: FC<IManageResidentAdminView> = memo(() => 
                     <Grid container>
                       <Grid item xs={12} sm={6} md={4}>
                         <div className="info-group row">
-                          <div className="label">Sekso</div>
+                          <div className="label">Gender</div>
                           <div className="value">{selected_resident.gender === "m" ? "Lalaki" : "Babae"}</div>
                         </div>
                       </Grid>
                       <Grid item xs={12} sm={6} md={4}>
                         <div className="info-group row">
-                          <div className="label">Adlawng Natawhan</div>
+                          <div className="label">Date of Birth</div>
                           <div className="value">{InvalidDateToDefault(selected_resident.birth_date, "-")}</div>
                         </div>
                       </Grid>
                       <Grid item xs={12} sm={6} md={4}>
                         <div className="info-group row">
-                          <div className="label">Nasyonalidad</div>
+                          <div className="label">Nationality</div>
                           <div className="value">{selected_resident.nationality}</div>
                         </div>
                       </Grid>
                       <Grid item xs={12} sm={6} md={4}>
                         <div className="info-group row">
-                          <div className="label">Relihiyon</div>
+                          <div className="label">Religion</div>
                           <div className="value">{StringEmptyToDefault(selected_resident.religion, "-")}</div>
                         </div>
                       </Grid>
                       <Grid item xs={12} sm={6} md={4}>
                         <div className="info-group row">
-                          <div className="label">Hahimtang Sibil</div>
+                          <div className="label">Civil Status</div>
                           <div className="value">{StringEmptyToDefault(selected_resident.civil_status, "-")}</div>
                         </div>
                       </Grid>
@@ -207,7 +207,7 @@ export const ManageResidentAdminView: FC<IManageResidentAdminView> = memo(() => 
 
                       <Grid item xs={12} sm={6} md={4}>
                         <div className="info-group row">
-                          <div className="label">Tribo</div>
+                          <div className="label">Tribe</div>
                           <div className="value">{StringEmptyToDefault(selected_resident.tribe, "-")}</div>
                         </div>
                       </Grid>
@@ -219,43 +219,43 @@ export const ManageResidentAdminView: FC<IManageResidentAdminView> = memo(() => 
                       </Grid>
                       <Grid item xs={12} sm={6} md={4}>
                         <div className="info-group row ">
-                          <div className="label">Numero sa telepono</div>
+                          <div className="label">Telephone Number</div>
                           <div className="value">{StringEmptyToDefault(selected_resident.phone, "-")}</div>
                         </div>
                       </Grid>
                       <Grid item xs={12}>
                         <div className="info-group row">
-                          <div className="label">Grado nakab-ot | Nag-eskwela / wala nag eskwela</div>
+                          <div className="label">School Attainment</div>
                           <div className="value">{StringEmptyToDefault(selected_resident.educ, "-")}</div>
                         </div>
                       </Grid>
                       <Grid item xs={12}>
                         <div className="info-group row">
-                          <div className="label">Matang sa trabaho, kanunay o panagsa?</div>
+                          <div className="label">Work Status</div>
                           <div className="value">{StringEmptyToDefault(selected_resident.employment, "-")}</div>
                         </div>
                       </Grid>
                       <Grid item xs={12} sm={6} md={4}>
                         <div className="info-group row">
-                          <div className="label">Binulan na kita</div>
+                          <div className="label">Monthly Income</div>
                           <div className="value">{selected_resident.kita}</div>
                         </div>
                       </Grid>
                       <Grid item xs={12} sm={6} md={4}>
                         <div className="info-group row">
-                          <div className="label">Matang sa disability</div>
+                          <div className="label">Disability Status</div>
                           <div className="value">{selected_resident.with_disability === "y" ? "Oo" : "Dili"}</div>
                         </div>
                       </Grid>
                       <Grid item xs={12} sm={6} md={4}>
                         <div className="info-group row">
-                          <div className="label">Adlaw sugod pagpuyo sa barangay</div>
+                          <div className="label">Resident Date</div>
                           <div className="value">{InvalidDateToDefault(selected_resident.resident_date, "-")}</div>
                         </div>
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <div className="info-group row">
-                          <div className="label">Adlaw pagkamatay (kung patay na)</div>
+                          <div className="label">Died Date</div>
                           <div className="value">{InvalidDateToDefault(selected_resident.died_date, "-")}</div>
                         </div>
                       </Grid>
@@ -278,13 +278,13 @@ export const ManageResidentAdminView: FC<IManageResidentAdminView> = memo(() => 
                 backgroundColor: `#fff`,
               }}
             >
-              <div className="title">Tibuok impormasyon sa pamilya sa residente</div>
+              <div className="title">Information of the Resident's Family</div>
 
               <Grid container>
                 <Grid item xs={6}>
                   <Grid item>
                     <div className="info-group">
-                      <div className="label">Ulo sa pamilya</div>
+                      <div className="label">Head of the Family</div>
                       <div className="value profile">
                         <CustomAvatar
                           src={family_of_resident?.ulo_pamilya_info?.pic}
@@ -309,7 +309,7 @@ export const ManageResidentAdminView: FC<IManageResidentAdminView> = memo(() => 
                   </Grid>
                   <Grid item>
                     <div className="info-group">
-                      <div className="label">Kadugayon sa pagpuyo sa Barangay (tuig)</div>
+                      <div className="label">Years of residency in the Barangay</div>
                       <div className="value">{family_of_resident?.kadugayon_pagpuyo}</div>
                     </div>
                   </Grid>
@@ -331,8 +331,8 @@ export const ManageResidentAdminView: FC<IManageResidentAdminView> = memo(() => 
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableCell>Residente</TableCell>
-                          <TableCell>Relasyon</TableCell>
+                          <TableCell>Resident</TableCell>
+                          <TableCell>Relationship</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -429,7 +429,7 @@ export const ManageResidentAdminView: FC<IManageResidentAdminView> = memo(() => 
                 backgroundColor: `#fff`,
               }}
             >
-              <div className="title">Aktibidad sa residente</div>
+              <div className="title">Aktibidad sa Resident</div>
             </div>
           </Grid> */}
       </Grid>

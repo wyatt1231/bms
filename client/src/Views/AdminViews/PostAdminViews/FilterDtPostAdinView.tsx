@@ -92,7 +92,7 @@ export const FilterDtPostAdinView: FC<IFilterDtPostAdinView> = memo(({ handleSet
                   name="search"
                   variant="outlined"
                   fullWidth={true}
-                  placeholder="Ibutang ang pangalan sa nag post"
+                  placeholder="Ibutang ang Name sa nag post"
                   InputLabelProps={{
                     shrink: true,
                   }}

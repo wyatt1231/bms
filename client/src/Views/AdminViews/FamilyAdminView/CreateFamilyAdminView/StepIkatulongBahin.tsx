@@ -11,7 +11,7 @@ export const StepIkaUpatBahin: FC<IStepIkaUpatBahin> = memo(() => {
         <Grid item xs={12}>
           <MultCheckboxHookForm
             name="kahimtanang_komunidad"
-            label="Kahimtang sa komunidad"
+            label="Community Status"
             // row={true}
             radio_items={[
               {
@@ -23,10 +23,8 @@ export const StepIkaUpatBahin: FC<IStepIkaUpatBahin> = memo(() => {
                 label: "walay igong o layo sa eskwelahan",
               },
               {
-                value:
-                  "presensya sa mga nagkalain-laing krimen/bisyo o pang-abuso",
-                label:
-                  "presensya sa mga nagkalain-laing krimen/bisyo o pang-abuso",
+                value: "presensya sa mga nagkalain-laing krimen/bisyo o pang-abuso",
+                label: "presensya sa mga nagkalain-laing krimen/bisyo o pang-abuso",
               },
               {
                 value: "walay maayong agianan/kanal sa tubig",

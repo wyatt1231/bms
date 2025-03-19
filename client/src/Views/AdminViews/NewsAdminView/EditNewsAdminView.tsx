@@ -104,7 +104,7 @@ export const EditNewsAdminView: FC<EditNewsAdminProps> = memo(({ news_pk, open, 
                           radio_items={[
                             {
                               value: "r",
-                              label: "Residente lang",
+                              label: "Resident lang",
                             },
                             {
                               value: "b",

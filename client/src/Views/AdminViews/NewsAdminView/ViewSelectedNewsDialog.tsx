@@ -53,7 +53,7 @@ export const ViewSelectedNewsDialog: FC<EditNewsAdminProps> = memo(
     return (
       <div>
         <FormDialog
-          title="Tibuok impormasyon sa balita"
+          title="Tibuok Information of balita"
           handleClose={() => handleClose()}
           open={open}
           minWidth={650}

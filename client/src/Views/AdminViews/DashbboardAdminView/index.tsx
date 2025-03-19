@@ -768,7 +768,7 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                 height: `100%`,
               }}
             >
-              <div className="title">Statistics sa Kahimtang sa Komunidad</div>
+              <div className="title">Statistics sa Community Status</div>
               <div
                 style={{
                   padding: `1em`,
@@ -1115,14 +1115,14 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                   {fetch_gender_stats ? (
                     <CircularLoadingProgress />
                   ) : (
-                    <div className="sekso-ctnr">
-                      <div className="sekso-item">
+                    <div className="Gender-ctnr">
+                      <div className="Gender-item">
                         <img className="dp" src={img_female} alt="" />
                         <div className="label">BABAE</div>
                         <div className="value">{gender_stats_year_1?.data_set[1].y}</div>
                         <img className="graph" src={img_chart} alt="" />
                       </div>
-                      <div className="sekso-item">
+                      <div className="Gender-item">
                         <img className="dp" src={img_male} alt="" />
                         <div className="label">LALAKI</div>
                         <div className="value">{gender_stats_year_1?.data_set[0].y}</div>
@@ -1180,14 +1180,14 @@ export const DashbboardAdminView: FC<IDashbboardAdminView> = memo(() => {
                   {fetch_gender_stats ? (
                     <CircularLoadingProgress />
                   ) : (
-                    <div className="sekso-ctnr">
-                      <div className="sekso-item">
+                    <div className="Gender-ctnr">
+                      <div className="Gender-item">
                         <img className="dp" src={img_female} alt="" />
                         <div className="label">BABAE</div>
                         <div className="value">{gender_stats_year_2?.data_set[1].y}</div>
                         <img className="graph" src={img_chart} alt="" />
                       </div>
-                      <div className="sekso-item">
+                      <div className="Gender-item">
                         <img className="dp" src={img_male} alt="" />
                         <div className="label">LALAKI</div>
                         <div className="value">{gender_stats_year_2?.data_set[0].y}</div>

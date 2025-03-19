@@ -1,18 +1,18 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Grid } from "@material-ui/core";
 import React, { FC, memo, useCallback, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import * as yup from "yup";
 import FormDialog from "../../../../Component/FormDialog/FormDialog";
 import AutocompleteHookForm from "../../../../Component/HookForm/AutocompleteHookForm";
 import MultiRadioFieldHookForm from "../../../../Component/HookForm/MultiRadioFieldHookForm";
 import LoadingButton from "../../../../Component/LoadingButton";
+import FamilyActions from "../../../../Services/Actions/FamilyActions";
 import { setSnackbar } from "../../../../Services/Actions/PageActions";
 import ResidentApi from "../../../../Services/Api/ResidentApi";
 import { FamMemberModel } from "../../../../Services/Models/FamilyModel";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { RootStore } from "../../../../Services/Store";
-import FamilyActions from "../../../../Services/Actions/FamilyActions";
 interface IAddFamMemDialog {
   ulo_pamilya: number;
 }
@@ -26,12 +26,8 @@ export const AddFamMemDialog: FC<IAddFamMemDialog> = memo(({ ulo_pamilya }) => {
   const dispatch = useDispatch();
   const [adding_fam_mem, set_adding_fam_mem] = useState(false);
 
-  const open_fam_member_dialog = useSelector(
-    (store: RootStore) => store.FamilyReducer.open_fam_member_dialog
-  );
-  const fam_members = useSelector(
-    (store: RootStore) => store.FamilyReducer.fam_members
-  );
+  const open_fam_member_dialog = useSelector((store: RootStore) => store.FamilyReducer.open_fam_member_dialog);
+  const fam_members = useSelector((store: RootStore) => store.FamilyReducer.fam_members);
 
   const handleAddFamMembers = useCallback(
     (fam_member: FamMemberModel) => {
@@ -48,15 +44,11 @@ export const AddFamMemDialog: FC<IAddFamMemDialog> = memo(({ ulo_pamilya }) => {
 
   const submitForm = async (formData: FamMemberModel) => {
     if (formData.resident_pk) {
-      const findMem = fam_members.findIndex(
-        (f) => f.resident_pk === formData.resident_pk
-      );
+      const findMem = fam_members.findIndex((f) => f.resident_pk === formData.resident_pk);
 
       if (findMem) {
         set_adding_fam_mem(true);
-        const response = await ResidentApi.getSingleResident(
-          formData.resident_pk
-        );
+        const response = await ResidentApi.getSingleResident(formData.resident_pk);
 
         set_adding_fam_mem(false);
 
@@ -66,9 +58,7 @@ export const AddFamMemDialog: FC<IAddFamMemDialog> = memo(({ ulo_pamilya }) => {
           dispatch(FamilyActions.setOpenFamMemberDialog(false));
         }
       } else {
-        dispatch(
-          setSnackbar("Makita nani nga residente sa sakop sa pamilya!", "error")
-        );
+        dispatch(setSnackbar("Makita nani nga Resident sa Family Members!", "error"));
       }
     }
   };
@@ -76,18 +66,13 @@ export const AddFamMemDialog: FC<IAddFamMemDialog> = memo(({ ulo_pamilya }) => {
     <>
       <FormDialog
         open={!!open_fam_member_dialog}
-        title="Pilia ang Residente nga Sakop sa Pamilya"
+        title="Choose Family Members"
         handleClose={() => {
           dispatch(FamilyActions.setOpenFamMemberDialog(false));
         }}
         body={
           <FormProvider {...form_add_fam}>
-            <form
-              id="form-add-family-member"
-              noValidate
-              onSubmit={form_add_fam.handleSubmit(submitForm)}
-              style={{ padding: `0 5em` }}
-            >
+            <form id="form-add-family-member" noValidate onSubmit={form_add_fam.handleSubmit(submitForm)} style={{ padding: `0 5em` }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <AutocompleteHookForm
@@ -97,20 +82,17 @@ export const AddFamMemDialog: FC<IAddFamMemDialog> = memo(({ ulo_pamilya }) => {
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    label="Pangalan sa Sako sa Pamilya"
+                    label="Name sa Sako sa Pamilya"
                     variant="outlined"
                     payload={{
-                      fam_members: [
-                        ...fam_members.map((f) => f.resident_pk),
-                        ulo_pamilya,
-                      ],
+                      fam_members: [...fam_members.map((f) => f.resident_pk), ulo_pamilya],
                     }}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <MultiRadioFieldHookForm
                     name="rel"
-                    label="Relasyon sa Ulo sa Pamilya"
+                    label="Relationship sa Head of the Family"
                     radio_items={[
                       {
                         value: "asawa",
@@ -157,7 +139,7 @@ export const AddFamMemDialog: FC<IAddFamMemDialog> = memo(({ ulo_pamilya }) => {
               loading={adding_fam_mem}
               color="primary"
             >
-              I-dungag sa Sakop sa Pamilya
+              Add in Family Members
             </LoadingButton>
           </>
         }

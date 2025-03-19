@@ -720,12 +720,12 @@ export const FamilyAdminView: FC<IFamilyAdminView> = memo(() => {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Ulo sa Pamilya</TableCell>
+                    <TableCell>Head of the Family</TableCell>
                     <TableCell>Purok</TableCell>
-                    <TableCell>Sakop sa Pamilya</TableCell>
+                    <TableCell>Family Members</TableCell>
                     {/* <TableCell>Kadugayon sa Pagpuyo</TableCell> */}
                     {/* <TableCell>Petsa</TableCell> */}
-                    <TableCell>Aksyon</TableCell>
+                    <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

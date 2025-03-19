@@ -78,10 +78,19 @@ const total_population = async (filters: DashboardFilterInterface): Promise<Resp
   try {
     await con.BeginTransaction();
 
-    const db_res = await con.QuerySingle(
+    console.log(`filters total_population`, filters);
+
+    /* const db_res = await con.QuerySingle(
       `
       select count(*) as total from resident where died_date is  null AND 
       ${isInvalidYear(filters.year) ? `` : `  YEAR(resident_date) = @year AND`}  purok in @purok ;
+    `,
+      filters
+    );*/
+
+    const db_res = await con.QuerySingle(
+      `
+      select count(*) as total from resident where died_date is  null AND  purok in @purok ;
     `,
       filters
     );
@@ -106,11 +115,18 @@ const total_death = async (filters: DashboardFilterInterface): Promise<ResponseM
   try {
     await con.BeginTransaction();
 
-    const db_res = await con.QuerySingle(
+    /*const db_res = await con.QuerySingle(
       `
       select count(*) as total from resident where died_date is not null AND
-      ${isInvalidYear(filters.year) ? `` : `  YEAR(resident_date) = @year AND`} 
+       ${isInvalidYear(filters.year) ? `` : `  YEAR(resident_date) = @year AND`} 
       purok in @purok
+    `,
+      filters
+    );*/
+
+    const db_res = await con.QuerySingle(
+      `
+      select count(*) as total from resident where died_date is not null AND purok in @purok
     `,
       filters
     );
@@ -135,10 +151,10 @@ const total_pwd = async (filters: DashboardFilterInterface): Promise<ResponseMod
   try {
     await con.BeginTransaction();
 
+    // ${isInvalidYear(filters.year) ? `` : `  YEAR(resident_date) = @year AND`}
     const db_res = await con.QuerySingle(
       `
       select count(*) as total from resident where died_date is  null  and with_disability = 'y' AND 
-      ${isInvalidYear(filters.year) ? `` : `  YEAR(resident_date) = @year AND`} 
       purok in @purok
     `,
       filters
@@ -164,12 +180,12 @@ const total_sc = async (filters: DashboardFilterInterface): Promise<ResponseMode
   try {
     await con.BeginTransaction();
 
+    // ${isInvalidYear(filters.year) ? `` : `  YEAR(resident_date) = @year AND`}
     const db_res = await con.QuerySingle(
       `
       SELECT count(*) as total FROM (
         SELECT  FLOOR(DATEDIFF(DATE(NOW()), birth_date)/365) AS age
         FROM resident WHERE died_date IS NULL  AND 
-        ${isInvalidYear(filters.year) ? `` : `  YEAR(resident_date) = @year AND`} 
         purok IN @purok
         ) AS tmp
         WHERE  age >= 60 
@@ -345,8 +361,6 @@ const genderStats = async (filters: DashboardFilterInterface): Promise<ResponseM
     let total_male;
     let total_female;
     await con.BeginTransaction();
-
-    console.log(`filters genderStats `, filters);
 
     if (isInvalidYear(filters.year)) {
       total_male = await con.QuerySingle(

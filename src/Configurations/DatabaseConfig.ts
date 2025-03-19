@@ -5,7 +5,7 @@ import { PaginationModel } from "../Models/PaginationModel";
 export let connection_string: mysql.PoolOptions | null = null;
 
 if (process.env.NODE_ENV === "production") {
-  //remove in deploy
+  // remove in deploy
   // connection_string = {
   //   host: "brgy-37d-ppvc.mysql.database.azure.com",
   //   user: "capstone_admin",

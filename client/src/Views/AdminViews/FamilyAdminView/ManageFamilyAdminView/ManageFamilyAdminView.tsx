@@ -55,7 +55,7 @@ export const ManageFamilyAdminView: FC<IManageFamilyAdminView> = memo(() => {
 
   const Steps = [
     {
-      label: "Unang Bahin",
+      label: "First Step",
       View: (
         <StepUnangBahin
           handleSetUloPamExtProps={handleSetUloPamExtProps}
@@ -64,21 +64,21 @@ export const ManageFamilyAdminView: FC<IManageFamilyAdminView> = memo(() => {
           defaultUloPamilya={single_fam_by_fam_pk?.ulo_fam_name}
         />
       ),
-      subtitle: "Miyembro sa pamilya",
+      subtitle: "Family Members",
     },
     {
-      label: "Ikaduhang Bahin",
+      label: "Second Step",
       subtitle: "Mga unang  problema  sa panimalay",
       View: <StepIkaduhangBahin />,
     },
     {
-      label: "Ikatulong Bahin",
-      subtitle: "Kahimtang sa komunidad",
+      label: "Third Step",
+      subtitle: "Community Status",
       View: <StepIkatulongBahin />,
     },
     {
-      label: "Ika-upat Nga Bahin",
-      subtitle: "Programa o serbisyo nga nadawat sa mga ahensya",
+      label: "Final Step",
+      subtitle: "Received programs and services form agencies",
       View: <StepIkaUpatBahin />,
     },
   ];
@@ -86,7 +86,7 @@ export const ManageFamilyAdminView: FC<IManageFamilyAdminView> = memo(() => {
   const submitForm = (payload) => {
     if (active_step === 0) {
       if (fam_members.length < 1) {
-        dispatch(setSnackbar("Kinahanglan magbutang og bisan isa ka miyembro sa pamilya!", "error"));
+        dispatch(setSnackbar("Kinahanglan magbutang og bisan isa ka Family Members!", "error"));
         return;
       }
     }
@@ -157,7 +157,7 @@ export const ManageFamilyAdminView: FC<IManageFamilyAdminView> = memo(() => {
     if (active_step === 0) {
       set_form_schema(
         yup.object({
-          ulo_pamilya: yup.string().required().label("Ulo sa Pamilya"),
+          ulo_pamilya: yup.string().required().label("Head of the Family"),
           kadugayon_pagpuyo: yup.number().nullable().required().label("Kadugayon sa pagpuyo"),
           okasyon_balay: yup.string().required().label("Okasyon sa balay"),
           okasyon_yuta: yup.string().required().label("Okasyon sa yuta"),
@@ -178,7 +178,7 @@ export const ManageFamilyAdminView: FC<IManageFamilyAdminView> = memo(() => {
     } else if (active_step === 2) {
       set_form_schema(
         yup.object({
-          kahimtanang_komunidad: yup.array().of(yup.string().required()).compact().label("Kahimtang sa komunidad"),
+          kahimtanang_komunidad: yup.array().of(yup.string().required()).compact().label("Community Status"),
         })
       );
     } else if (active_step === 3) {
@@ -307,7 +307,7 @@ export const ManageFamilyAdminView: FC<IManageFamilyAdminView> = memo(() => {
                         });
                       }}
                     >
-                      Miaging Bahin
+                      Previous
                     </Button>
                   </Grid>
                   <Grid item>

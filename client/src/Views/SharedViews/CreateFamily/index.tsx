@@ -1,14 +1,4 @@
-import {
-  Button,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-} from "@material-ui/core";
+import { Button, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@material-ui/core";
 import React, { FC, memo, useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,15 +10,9 @@ import MultiRadioFieldHookForm from "../../../Component/HookForm/MultiRadioField
 import TextFieldHookForm from "../../../Component/HookForm/TextFieldHookForm";
 import IconButtonPopper from "../../../Component/IconButtonPopper/IconButtonPopper";
 import FamilyActions from "../../../Services/Actions/FamilyActions";
-import {
-  setGeneralPrompt,
-  setSelectedHeadFam,
-} from "../../../Services/Actions/PageActions";
+import { setGeneralPrompt, setSelectedHeadFam } from "../../../Services/Actions/PageActions";
 import ResidentApi from "../../../Services/Api/ResidentApi";
-import {
-  FamMemberModel,
-  FamilyModel,
-} from "../../../Services/Models/FamilyModel";
+import { FamMemberModel, FamilyModel } from "../../../Services/Models/FamilyModel";
 import { ResidentModel } from "../../../Services/Models/ResidentModels";
 import { RootStore } from "../../../Services/Store";
 
@@ -41,21 +25,16 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
   const [open_add_dialog, set_open_add_dialog] = useState(false);
   const [reload_selected_head_fam, set_reload_selected_head_fam] = useState(0);
 
-  const single_fam = useSelector(
-    (store: RootStore) => store.FamilyReducer.single_fam
-  );
+  const single_fam = useSelector((store: RootStore) => store.FamilyReducer.single_fam);
 
-  const selected_head_fam = useSelector(
-    (store: RootStore) => store.PageReducer.selected_head_fam
-  );
+  const selected_head_fam = useSelector((store: RootStore) => store.PageReducer.selected_head_fam);
 
   const handleSetOpenDialog = useCallback((open: boolean) => {
     set_open_add_dialog(open);
   }, []);
 
   const [fam_members, set_fam_members] = useState<Array<FamMemberModel>>([]);
-  const [selected_resident, set_selected_resident] =
-    useState<ResidentModel>(null);
+  const [selected_resident, set_selected_resident] = useState<ResidentModel>(null);
 
   const handleAddFamMember = useCallback((fam_member: FamMemberModel) => {
     set_fam_members((prev) => {
@@ -106,9 +85,7 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
 
     const getResdentInfo = async () => {
       set_loading_resident(true);
-      const response = await ResidentApi.getSingleResident(
-        selected_head_fam.resident_pk
-      );
+      const response = await ResidentApi.getSingleResident(selected_head_fam.resident_pk);
 
       set_loading_resident(false);
 
@@ -116,9 +93,7 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
         set_ulo_pamilya(response.data);
 
         if (response.data?.ulo_pamilya === "oo") {
-          dispatch(
-            FamilyActions.getSingleFamily(selected_head_fam.resident_pk)
-          );
+          dispatch(FamilyActions.getSingleFamily(selected_head_fam.resident_pk));
         } else {
           dispatch(FamilyActions.getSingleFamily(null));
         }
@@ -146,24 +121,24 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
 
   const Steps = [
     {
-      label: "Unang Bahin",
-      View: <div>Unang Bahin</div>,
-      subtitle: "Miyembro sa pamilya",
+      label: "First Step",
+      View: <div>First Step</div>,
+      subtitle: "Family Members",
     },
     {
-      label: "Ikaduhang Bahin",
+      label: "Second Step",
       subtitle: "Mga unang  problema  sa panimalay",
-      View: <div>Mga unang problema sa panimalay</div>,
+      View: <div>First problems of the family</div>,
     },
     {
-      label: "Ikatulong Bahin",
-      subtitle: "Kahimtang sa komunidad",
-      View: <div>Kahimtang sa komunidad</div>,
+      label: "Third Step",
+      subtitle: "Community Status",
+      View: <div>Community Status</div>,
     },
     {
-      label: "Ika-upat Nga Bahin",
-      subtitle: "Programa o serbisyo nga nadawat sa mga ahensya",
-      View: <div>Programa o serbisyo nga nadawat sa mga ahensya</div>,
+      label: "Final Step",
+      subtitle: "Received programs and services form agencies",
+      View: <div>Received programs and services form agencies</div>,
     },
   ];
 
@@ -188,18 +163,13 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
           ) : (
             <>
               <FormProvider {...form_create_fam}>
-                <form
-                  id="form-add-fam"
-                  noValidate
-                  onSubmit={form_create_fam.handleSubmit(submitForm)}
-                  style={{ padding: `0 2em` }}
-                >
+                <form id="form-add-fam" noValidate onSubmit={form_create_fam.handleSubmit(submitForm)} style={{ padding: `0 2em` }}>
                   <CustomStepper steps={Steps} active_step={0} />
 
                   <Grid container spacing={2}>
                     <Grid item xs={12} spacing={2} container>
                       <Grid item xs={12}>
-                        <div className="title">Pangalan sa ulo sa pamilya</div>
+                        <div className="title">Head of the family Name</div>
                       </Grid>
                       <Grid item xs={12}>
                         <TextField
@@ -207,7 +177,7 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
                           variant="outlined"
                           disabled
                           name="last_name"
-                          label="Apelyido"
+                          label="Last Name"
                           InputLabelProps={{
                             shrink: true,
                           }}
@@ -220,7 +190,7 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
                           fullWidth
                           variant="outlined"
                           disabled
-                          label="Pangalan"
+                          label="Name"
                           InputLabelProps={{
                             shrink: true,
                           }}
@@ -235,7 +205,7 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
                           disabled
                           value={ulo_pamilya?.first_name}
                           name="middle_name"
-                          label="Apelyido sa inahan/pagkadalaga"
+                          label="Last Name sa inahan/pagkadalaga"
                           InputLabelProps={{
                             shrink: true,
                           }}
@@ -316,7 +286,7 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
                         fullWidth
                         variant="outlined"
                         name="kadugayon_pagpuyo"
-                        label="Kadugayon sa pagpuyo sa Barangay (tuig)"
+                        label="Years of residency in the Barangay"
                         type="number"
                         size="small"
                         InputLabelProps={{
@@ -345,8 +315,7 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
 
                           {
                             value: "binuhat sa mga nilabay na materyales",
-                            label:
-                              "binuhat sa mga nilabay na materyales sama sa (karton, plastic, kahoy, kawayan ug uban pa)(Salvaged materials)",
+                            label: "binuhat sa mga nilabay na materyales sama sa (karton, plastic, kahoy, kawayan ug uban pa)(Salvaged materials)",
                           },
                           // {
                           //   value: "uban matang",
@@ -385,7 +354,7 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
                             handleSetOpenDialog(true);
                           }}
                         >
-                          Dungag og Sakop sa Pamilya
+                          Add Family Members
                         </Button>
                       </Grid>
                     </Grid>
@@ -395,16 +364,16 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
                         <Table>
                           <TableHead>
                             <TableRow>
-                              <TableCell>Pangalan</TableCell>
-                              <TableCell>Relasyon</TableCell>
-                              <TableCell>Aksyon</TableCell>
+                              <TableCell>Name</TableCell>
+                              <TableCell>Relationship</TableCell>
+                              <TableCell>Action</TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
                             {fam_members.length <= 0 && (
                               <TableRow>
                                 <TableCell colSpan={4} align="center">
-                                  Walay sakop sa pamilya nga gi butang.
+                                  No Family Members added.
                                 </TableCell>
                               </TableRow>
                             )}
@@ -422,16 +391,11 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
                                     }}
                                   >
                                     <CustomAvatar
-                                      errorMessage={
-                                        f?.resident_info?.first_name.charAt(0) +
-                                        f?.resident_info?.last_name.charAt(0)
-                                      }
+                                      errorMessage={f?.resident_info?.first_name.charAt(0) + f?.resident_info?.last_name.charAt(0)}
                                       src={f?.resident_info?.pic}
                                     />
                                     <div>
-                                      {f?.resident_info?.last_name}{" "}
-                                      {f?.resident_info?.first_name}{" "}
-                                      {f?.resident_info?.middle_name}{" "}
+                                      {f?.resident_info?.last_name} {f?.resident_info?.first_name} {f?.resident_info?.middle_name}{" "}
                                       {f?.resident_info?.suffix}
                                     </div>
                                   </div>
@@ -443,13 +407,11 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
                                     buttons={[
                                       {
                                         text: "Ipakita ang tibuok impormasyon",
-                                        handleClick: () =>
-                                          handleSetResident(f.resident_info),
+                                        handleClick: () => handleSetResident(f.resident_info),
                                       },
                                       {
                                         text: "Tanggalon sa listahan",
-                                        handleClick: () =>
-                                          handleRemoveFamMember(i),
+                                        handleClick: () => handleRemoveFamMember(i),
                                       },
                                     ]}
                                   />
@@ -472,12 +434,7 @@ export const CreateFamily: FC<ICreateFamily> = memo(() => {
           )
         }
         actions={
-          <Button
-            form="form-add-fam"
-            type="submit"
-            color="primary"
-            variant="contained"
-          >
+          <Button form="form-add-fam" type="submit" color="primary" variant="contained">
             E-Save
           </Button>
         }

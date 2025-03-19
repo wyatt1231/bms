@@ -52,7 +52,7 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
             >
               <Grid container spacing={3}>
                 <Grid item xs={12} container>
-                  <h3>Impormasyon sa balay</h3>
+                  <h3>Information of balay</h3>
                 </Grid>
                 <Grid item xs={12} md={4} container justify="center">
                   <CustomAvatar
@@ -128,16 +128,16 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
                     <Table stickyHeader size="small">
                       <TableHead>
                         <TableRow>
-                          <TableCell>Pangalan</TableCell>
-                          <TableCell>Relasyon</TableCell>
-                          <TableCell>Aksyon</TableCell>
+                          <TableCell>Name</TableCell>
+                          <TableCell>Relationship</TableCell>
+                          <TableCell>Action</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         {single_fam_by_fam_pk?.fam_members?.length <= 0 && (
                           <TableRow>
                             <TableCell colSpan={4} align="center">
-                              Walay sakop sa pamilya nga gi butang.
+                              No Family Members added.
                             </TableCell>
                           </TableRow>
                         )}
@@ -200,7 +200,7 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
             >
               <Grid container spacing={3}>
                 <Grid item xs={12} container>
-                  <h3>Mga unang problema sa panimalay</h3>
+                  <h3>First problems of the family</h3>
                 </Grid>
 
                 <Grid item xs={12} container spacing={1}>
@@ -239,7 +239,7 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
                   </Grid>
                   <Grid item xs={12}>
                     <div className="info-group">
-                      <div className="label">Kahimtang sa komunidad: </div>
+                      <div className="label">Community Status: </div>
                       <div className="value">{single_fam_by_fam_pk?.kahimtanang_komunidad}</div>
                     </div>
                   </Grid>
@@ -285,7 +285,7 @@ const FamilyView: FC<FamilyViewProps> = memo(() => {
             >
               <Grid container spacing={3}>
                 <Grid item xs={12} container>
-                  <h3>Programa o serbisyo nga nadawat sa mga ahensya</h3>
+                  <h3>Received programs and services form agencies</h3>
                 </Grid>
 
                 <Grid item xs={12} container spacing={1}>
